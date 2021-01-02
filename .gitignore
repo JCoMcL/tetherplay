@@ -1,3 +1,6 @@
 *.out
 *.o
 .ccls-cache
+debug/
+target/
+**/*.rs.bk

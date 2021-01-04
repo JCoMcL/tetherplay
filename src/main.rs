@@ -1,10 +1,13 @@
 extern crate uinput;
 
-use uinput::event::keyboard;
+use uinput::event::controller;
 
 use std::thread;
 use std::time::Duration;
 
+// module controller
+mod controller_hashmap;
+use controller_hashmap::search_hashmaps;
 
 // Useed for creating each device
 // takes the devices name as input
@@ -13,24 +16,24 @@ use std::time::Duration;
 pub fn create_device(name: &str) -> uinput::Device{
     return uinput::default().unwrap()
     .name(name).unwrap()
-    .event(uinput::event::Keyboard::All).unwrap()
+    .event(uinput::event::Controller::All).unwrap()
     .create().unwrap();
 }
 
 // used to create a controller object
 // controller object only has the controller itslef for now
-pub struct Controller {
-    controller: uinput::Device,
+pub struct Contrl {
+    contrl: uinput::Device,
 }
 
 // this is the functions for the controller object
-impl Controller {
+impl Contrl {
     // for now it only sends the keyboard output of a and then sleeps for 1 seccond
     // the 1 seccond will be taken out later in the project
     pub fn keyboard_press_event(&mut self){
         // for controller input change keybaord to controller
-        self.controller.click(&keyboard::Key::A).unwrap();
-        self.controller.synchronize().unwrap();
+        self.contrl.click(&controller::GamePad::North).unwrap();
+        self.contrl.synchronize().unwrap();
         thread::sleep(Duration::from_secs(1));
     }
 }
@@ -40,7 +43,11 @@ impl Controller {
 // runs a for loop 10 times so we get 10 keypresses
 fn main() {
     let test = create_device("KeyboardTest");
-    let mut dev = Controller{controller: test};
+    println!("{}", search_hashmaps("Up"));
+    println!("{}", search_hashmaps("Select"));
+    println!("{}", search_hashmaps("Down"));
+    println!("{}", search_hashmaps("FUCK"));
+    let mut dev = Contrl{contrl: test};
     for _ in 0..10 {
         dev.keyboard_press_event();
     }

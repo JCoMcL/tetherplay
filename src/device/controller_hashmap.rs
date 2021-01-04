@@ -5,7 +5,7 @@ use uinput::event::controller::{GamePad, DPad};
 use std::collections::HashMap;
 
 // used for building the hashmap of GamePad inputs
-fn build_gamepad_hashmap() -> HashMap<&'static str, GamePad>{
+pub fn build_gamepad_hashmap() -> HashMap<&'static str, GamePad>{
     let mut controller_game_pad: HashMap<&str, GamePad> = HashMap::with_capacity(13);
     controller_game_pad.insert("Y", GamePad::North);
     controller_game_pad.insert("A", GamePad::South);
@@ -23,7 +23,7 @@ fn build_gamepad_hashmap() -> HashMap<&'static str, GamePad>{
     return controller_game_pad;
 }
 // this is used for building the hashmap for DPad inputs
-fn build_dpad_hashmap() -> HashMap<&'static str, DPad>{
+pub fn build_dpad_hashmap() -> HashMap<&'static str, DPad>{
     let mut controller_dpad: HashMap<&str, DPad> = HashMap::with_capacity(4);
     controller_dpad.insert("Up", DPad::Up);
     controller_dpad.insert("Down", DPad::Down);
@@ -31,16 +31,4 @@ fn build_dpad_hashmap() -> HashMap<&'static str, DPad>{
     controller_dpad.insert("Right", DPad::Right);
     return controller_dpad;
 }
-// simple serach function used for testing various inputs
-pub fn search_hashmaps(name: &str) -> &str{
-    let dpad_map = build_dpad_hashmap();
-    let gamepad_map = build_gamepad_hashmap();
 
-    if dpad_map.contains_key(name){
-        return "This is a dpad button";
-    } else if gamepad_map.contains_key(name){
-        return "This is a gamepad button";
-    } else {
-        return "Cannot Find This Button";
-    }
-}

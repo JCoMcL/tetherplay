@@ -14,7 +14,5 @@ function set(args) {
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
-console.log(set(test))
-sleep(1000);
 
 module.exports.set = set;

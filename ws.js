@@ -1,9 +1,9 @@
-var WebSocketServer = require('ws').Server,
-	wss = new WebSocketServer({port: 40510})
+const wss = new (require('ws').Server)({port: 40510})
 
-var rs = require('./redshift')
+const rs = require('./redshift')
 
 wss.on('connection', function (ws) {
+	console.log("new connection")
 	ws.on('message', function (message) {
 		ws.send(rs.set(message));
 	})

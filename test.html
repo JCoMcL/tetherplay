@@ -1,0 +1,23 @@
+<head>
+	<link rel="stylesheet" href="style.css">
+	<script>
+		var state = [[0, 0], false, false];
+      var display;
+		function showState() {
+			display.innerHTML = state;
+		}
+		function setState(i, val) {
+			state[i] = val;
+			showState();
+		}
+	</script>
+</head>
+<body>
+	<pre id="display"></pre>
+	<div id=input>
+	</div>
+	<script>
+      display = document.getElementById("display");
+		showState();
+	</script>
+</body>

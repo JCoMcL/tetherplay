@@ -14,17 +14,15 @@ use std::io;
 fn main() {
     let mut test = create_controller("KeyboardTest");
     println!("Test Controller Movements");
-//    for _ in 0..1 {
-//        let mut input = String::new();
-// 
-//        match io::stdin().read_line(&mut input) {
-//        Ok(_) => {
-//            test.click_event(&input.trim());
-//        },
-//        Err(e) => println!("Error has occured {}", e)
-//        }
-//        thread::sleep(Duration::from_secs(1));
-//    }
-    test.buttons_pressed();
-    thread::sleep(Duration::from_secs(10));
+    for _ in 0..1 {
+        let mut input = String::new();
+ 
+        match io::stdin().read_line(&mut input) {
+        Ok(_) => {
+            test.buttons_pressed(&input.trim());
+        },
+        Err(e) => println!("Error has occured {}", e)
+        }
+    }
+    thread::sleep(Duration::from_secs(5));
 }

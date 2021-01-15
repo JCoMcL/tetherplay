@@ -55,9 +55,9 @@ impl Contrl {
         }
 
     }
-    pub fn buttons_pressed(&mut self){
-        for x in ["Up", "Down", "Left", "Right", "Y", "B", "X", "A", "Start"].iter(){
-            let btn = self.buttons_map.get(x).unwrap();
+    pub fn buttons_pressed(&mut self, val: &str){
+//        for x in val.iter(){
+            let btn = self.buttons_map.get(val).unwrap();
             if btn.gpad() != None {
                 self.contrl.press(&btn.gpad().unwrap()).unwrap();
             } else{
@@ -65,7 +65,7 @@ impl Contrl {
             }
                 
             self.contrl.synchronize().unwrap();
-            thread::sleep(Duration::from_secs(3));
+            thread::sleep(Duration::from_secs(5));
              if btn.gpad() != None{
                 self.contrl.release(&btn.gpad().unwrap()).unwrap();
             } else{
@@ -74,7 +74,7 @@ impl Contrl {
             self.contrl.synchronize().unwrap();
 
 
-        }
+ //       }
     }
     fn click_event_gamepad(&mut self, val: &str){
         // for controller input change keybaord to controller

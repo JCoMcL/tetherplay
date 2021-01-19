@@ -1,6 +1,6 @@
 :root {
-	--reach: 40rem;
-	--button-diameter: calc(var(--reach) / 6);
+	--button-diameter: 5rem;
+	--reach: calc(var(--button-diameter) * 6);
 	--padding: 0px;
 }
 body {
@@ -9,10 +9,15 @@ body {
 	box-sizing: border-box;
 	width: 100vw;
 	height: 100vh;
+	overflow: hidden;
 
 	display: flex;
 	flex-flow: column nowrap;
 }
+button:focus {
+	outline: none;
+}
+
 #display {
 	display: block;
 	font-size: 20px;
@@ -33,12 +38,11 @@ body {
 	align-content: stretch;
 	justify-content: space-between;
 }
-#left, #right{
+#left, #right {
 	flex: 1 auto;
 	max-width: var(--reach);
 	box-sizing: border-box;
 	height: min(100%, var(--reach));
-	padding: inherit;
 
 	display: flex;
 	align-items: flex-end;
@@ -53,9 +57,16 @@ body {
 }
 
 .cluster {
-	background-color: #aaa;
 	transform: rotate(45deg);
-} .cluster button {
+} .cluster.of-2 {
+	margin-bottom: calc( var(--button-diameter) / 2); */
+} .cluster.of-3 {
+	transform: initial;
+} .cluster.of-4 {
+	margin-bottom: calc( var(--button-diameter) / 4);
+	margin-right: calc( var(--button-diameter) / 4); */
+}
+.cluster button {
 	transform: rotate(-45deg);
 	box-sizing: border-box;
 	padding: 0px;
@@ -63,6 +74,8 @@ body {
 	height: var(--button-diameter);
 	font-size:  calc(var(--button-diameter) / 1.5);
 	border-radius: calc(var(--button-diameter) / 2);
+} .cluster.of-3 button {
+	transform: initial;
 }
 /* xbox layout */
 #east::after {

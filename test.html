@@ -20,10 +20,15 @@
 			<div class="analogue-stick"></div>
 		</div>
 		<div id="right">
-			<div class="cluster">
-				<button onmousedown="setState(1, true)" onmouseup="setState(1, false)">X</button>
-				<button onmousedown="setState(2, true)" onmouseup="setState(2, false)">A</button>
-			</div>
+			<table class="cluster">
+				<tr>
+					<td><button id="north" onmousedown="setState(1, true)" onmouseup="setState(1, false)"></button></td>
+					<td><button id="east" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
+				</tr> <tr>
+					<td><button id="west" onmousedown="setState(1, true)" onmouseup="setState(1, false)"></button></td>
+					<td><button id="south" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<script>

@@ -1,6 +1,6 @@
 :root {
-	--reach: 400px;
-	--button-diameter: 50px;
+	--reach: 40rem;
+	--button-diameter: calc(var(--reach) / 6);
 	--padding: 0px;
 }
 body {
@@ -9,39 +9,75 @@ body {
 	box-sizing: border-box;
 	width: 100vw;
 	height: 100vh;
+
+	display: flex;
+	flex-flow: column nowrap;
 }
 #display {
+	display: block;
+	font-size: 20px;
 	background-color: #eee;
 	margin: 0px;
 	text-align: center;
 }
 #input {
+	flex: 1;
 	box-sizing: border-box;
 	width: 100%;
 	height: auto;
 	padding: 20px;
+
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	align-content: stretch;
+	justify-content: space-between;
 }
 #left, #right{
-	width: min(50%, var(--reach));
+	flex: 1 auto;
+	max-width: var(--reach);
+	box-sizing: border-box;
 	height: min(100%, var(--reach));
 	padding: inherit;
-}
-#left {
-	float: left;
+
+	display: flex;
+	align-items: flex-end;
+	align-content: stretch;
+	justify-content: space-between;
+} #left {
 	background-color: #dfd;
-}
-#right {
-	float: right;
+	flex-direction: row;
+} #right {
 	background-color: #fdd;
+	flex-direction: row-reverse;
 }
 
 .cluster {
-	width: 70%;
-	height: 0px;
-	padding-bottom: 70%;
 	background-color: #aaa;
+	transform: rotate(45deg);
 } .cluster button {
+	transform: rotate(-45deg);
+	box-sizing: border-box;
+	padding: 0px;
 	width: var(--button-diameter);
 	height: var(--button-diameter);
+	font-size:  calc(var(--button-diameter) / 1.5);
 	border-radius: calc(var(--button-diameter) / 2);
 }
+/* xbox layout */
+#east::after {
+	content: "B";
+	--color: red;
+} #north::after {
+	content: "Y";
+	--color: yellow;
+} #west::after {
+	content: "X";
+	--color: blue;
+} #south::after {
+	content: "A";
+	--color: green;
+}/* #east, #north, #west, #south {
+	color: var(--color);
+	border-color: var(--color);
+}*/

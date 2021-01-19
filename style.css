@@ -1,51 +1,41 @@
 :root {
-	--reach: 80mm;
-	--button-diameter: 10mm;
-	--padding: 40px;
+	--reach: 400px;
+	--button-diameter: 50px;
+	--padding: 0px;
 }
 body {
 	padding: 0px;
 	margin: 0px;
+	box-sizing: border-box;
 	width: 100vw;
 	height: 100vh;
-	box-sizing: border-box;
-	overflow: hidden;
 }
-
 #display {
-	display: block;
-	width: 100%;
 	background-color: #eee;
 	margin: 0px;
 	text-align: center;
 }
 #input {
-	position: relative;
 	box-sizing: border-box;
 	width: 100%;
-	height: 100%;
+	height: auto;
+	padding: 20px;
 }
 #left, #right{
-	position: absolute;
-	bottom: var(--padding);
-	width: min(50%, 80mm);
-	height: min(100%, 80mm);
+	width: min(50%, var(--reach));
+	height: min(100%, var(--reach));
 	padding: inherit;
 }
 #left {
-	left: var(--padding);
+	float: left;
 	background-color: #dfd;
 }
 #right {
-	right: var(--padding);
+	float: right;
 	background-color: #fdd;
 }
 
 .cluster {
-	position: absolute;
-	bottom: 0;
-	left: inherit;
-	right: inherit;
 	width: 70%;
 	height: 0px;
 	padding-bottom: 70%;

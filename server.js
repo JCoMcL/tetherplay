@@ -5,7 +5,10 @@ var ws = require('./ws')
 var app = express()
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/test.html');
+})
+app.get('/style.css', function (req, res) {
+    res.sendFile(__dirname + '/style.css');
 })
 app.get('/client.js', function (req, res) {
     res.sendFile(__dirname + '/client.js');

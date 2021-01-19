@@ -1,4 +1,5 @@
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
 	<script>
 		var state = [[0, 0], false, false];
@@ -13,8 +14,17 @@
 	</script>
 </head>
 <body>
-	<pre id="display"></pre>
+	<pre id="display"> </pre>
 	<div id=input>
+		<div id="left">
+			<div class="analogue-stick"></div>
+		</div>
+		<div id="right">
+			<div class="cluster">
+				<button onmousedown="setState(1, true)" onmouseup="setState(1, false)">X</button>
+				<button onmousedown="setState(2, true)" onmouseup="setState(2, false)">A</button>
+			</div>
+		</div>
 	</div>
 	<script>
       display = document.getElementById("display");

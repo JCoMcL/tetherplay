@@ -18,7 +18,15 @@
 	<pre id="display"> </pre>
 	<div id=input>
 		<div id="left">
-			<div class="analogue-stick"></div>
+			<table class="cluster of-4 dpad">
+				<tr>
+					<td><button onmousedown="setState(0, [0.0, 1.0])" onmouseup="setState(0, [0.0, 0.0])">▲</button></td>
+					<td><button onmousedown="setState(0, [1.0, 0.0])" onmouseup="setState(0, [0.0, 0.0])">►</button></td>
+				</tr><tr>
+					<td><button onmousedown="setState(0, [-1.0, 0.0])" onmouseup="setState(0, [0.0, 0.0])">◄</button></td>
+					<td><button onmousedown="setState(0, [0.0, -1.0])" onmouseup="setState(0, [0.0, 0.0])">▼</button></td>
+				</tr>
+			</table>
 		</div>
 		<div id="right">
 			<table class="cluster of-4">

@@ -49,24 +49,24 @@ button:focus {
 	align-content: stretch;
 	justify-content: space-between;
 } #left {
-	background-color: #dfd;
 	flex-direction: row;
 } #right {
-	background-color: #fdd;
 	flex-direction: row-reverse;
 }
 
 .cluster {
 	transform: rotate(45deg);
 } .cluster.of-2 {
-	margin-bottom: calc( var(--button-diameter) / 2); */
+	margin-bottom: calc( var(--button-diameter) / 2);
 } .cluster.of-3 {
 	transform: initial;
 } .cluster.of-4 {
 	margin-bottom: calc( var(--button-diameter) / 4);
-	margin-right: calc( var(--button-diameter) / 4); */
-}
-.cluster button {
+} #left .cluster.of-4 {
+	margin-left: calc( var(--button-diameter) / 4);
+} #right .cluster.of-4 {
+	margin-right: calc( var(--button-diameter) / 4);
+}.cluster button {
 	transform: rotate(-45deg);
 	box-sizing: border-box;
 	padding: 0px;
@@ -80,6 +80,9 @@ button:focus {
 	transform: initial;
 } .cluster button:active{
 	border: 2px solid;
+}
+.dpad button {
+	background-color: rgba(128, 128, 128, 0.6);
 }
 /* xbox layout */
 #east { --color: #ff5640; }

@@ -1,16 +1,13 @@
 :root {
-	--button-diameter: 5rem;
+	--button-diameter: 4rem;
 	--reach: calc(var(--button-diameter) * 6);
 	--padding: 0px;
-	/* dark mode
-	color: white;
-	background-color: black; */
-	/* light mode */
-	color: black;
+
+	color: rgba(0, 0, 0, 0.88);
 	background-color: white;
 
 	/* colors */
-	--gray: rgba(128, 128, 128, 0.6);
+	--gray: rgba(128, 128, 128, 0.3);
 }
 body {
 	padding: 0px;
@@ -24,35 +21,31 @@ body {
 	flex-flow: column nowrap;
 }
 button {
-	color: inherit;
-	background-color: inherit;
 	--color: var(--gray);
-	--border: 2px solid;
+	--border: 3px solid;
+	background-color: var(--color);
 	border: var(--border);
+	margin: .15em;
 } button:focus {
 	outline: none;
 } button:active {
 	filter: brightness(200%);
 	border: var(--border);
 }
-/* dark theme
-button {
-	background: transparent;
-	color: var(--color);
-	border-color: var(--color);
-} */
-/* light theme */
-button {
-	background-color: var(--color);
-}
 
-#display {
+.small {
+	font-size:  calc(var(--button-diameter) / 3);
+	color: inherit;
+}
+.display {
 	display: block;
 	font-size: 20px;
-	background-color: rgba(128, 128, 128, 0.3);
+	background-color:	var(--gray); 
 	margin: 0px;
+	padding: 0.3em;
 	text-align: center;
 }
+
 #input {
 	-webkit-user-select: none;
 	-moz-user-select: -moz-none;
@@ -63,7 +56,7 @@ button {
 	box-sizing: border-box;
 	width: 100%;
 	height: auto;
-	padding: 20px;
+	padding: 0px 20px 20px 20px;
 
 	display: flex;
 	flex-direction: row;
@@ -72,7 +65,7 @@ button {
 	justify-content: space-between;
 }
 #left, #right {
-	flex: 1 auto;
+	flex: 1;
 	max-width: var(--reach);
 	box-sizing: border-box;
 	height: min(100%, var(--reach));
@@ -80,10 +73,13 @@ button {
 	display: flex;
 	align-items: flex-end;
 	align-content: stretch;
+	flex-wrap: wrap;
 	justify-content: space-between;
 } #left {
+	border: 1px solid green;
 	flex-direction: row;
 } #right {
+	border: 1px solid red;
 	flex-direction: row-reverse;
 }
 
@@ -101,17 +97,14 @@ button {
 	margin-right: calc( var(--button-diameter) / 4);
 }.cluster button {
 	transform: rotate(-45deg);
-	box-sizing: border-box;
-	padding: 0px;
-	width: var(--button-diameter);
-	height: var(--button-diameter);
 	font-size:  calc(var(--button-diameter) / 1.5);
-	border-radius: calc(var(--button-diameter) / 2);
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: .75em;
 } .cluster.of-3 button {
 	transform: initial;
 }
-.dpad button {
-}
+
 /* xbox layout */
 #east { --color: #ff5640; }
 #east::after { content: "B"; }
@@ -125,16 +118,3 @@ button {
 #south { --color: #53ff40; }
 #south::after { content: "A"; }
 
-/* playstation layout
-#east { --color: #ff6a45; }
-#east::after { content: "○"; }
-
-#north { --color: #2ee885; }
-#north::after { content: "△"; }
-
-#west { --color: #ff6e83; }
-#west::after { content: "□"; }
-
-#south { --color: #6eb7ff; }
-#south::after { content: "⨉"; }
- */

@@ -1,0 +1,10 @@
+:root {
+	color: white;
+	background-color: black;
+}
+
+button {
+	background: transparent;
+	color: var(--color);
+	border-color: var(--color);
+}

@@ -1,0 +1,12 @@
+#east { --color: #ff6a45; }
+#east::after { content: "○"; }
+
+#north { --color: #2ee885; }
+#north::after { content: "△"; }
+
+#west { --color: #ff6e83; }
+#west::after { content: "□"; }
+
+#south { --color: #6eb7ff; }
+#south::after { content: "⨉"; }
+

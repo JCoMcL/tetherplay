@@ -2,11 +2,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href="style.css">
+	<!--<link rel="stylesheet" href="dark.css">-->
 	<script>
-		var state = [[0, 0], false, false];
-      var display;
+		var state = [[0, 0], false, false, false];
+      var debug;
 		function showState() {
-			display.innerHTML = state;
+			debug.innerHTML = state;
 		}
 		function setState(i, val) {
 			state[i] = val;
@@ -15,33 +16,31 @@
 	</script>
 </head>
 <body>
-	<pre id="display"> </pre>
+	<pre id="debug" class="display"> </pre>
 	<div id=input>
 		<div id="left">
 			<table class="cluster of-4 dpad">
 				<tr>
-					<td><button onmousedown="setState(0, [0.0, 1.0])" onmouseup="setState(0, [0.0, 0.0])">▲</button></td>
-					<td><button onmousedown="setState(0, [1.0, 0.0])" onmouseup="setState(0, [0.0, 0.0])">►</button></td>
+					<td><button onmousedown="setState(0, [0, 1])" onmouseup="setState(0, [0, 0])">▲</button></td>
+					<td><button onmousedown="setState(0, [1, 0])" onmouseup="setState(0, [0, 0])">►</button></td>
 				</tr><tr>
-					<td><button onmousedown="setState(0, [-1.0, 0.0])" onmouseup="setState(0, [0.0, 0.0])">◄</button></td>
-					<td><button onmousedown="setState(0, [0.0, -1.0])" onmouseup="setState(0, [0.0, 0.0])">▼</button></td>
+					<td><button onmousedown="setState(0, [-1, 0])" onmouseup="setState(0, [0, 0])">◄</button></td>
+					<td><button onmousedown="setState(0, [0, -1])" onmouseup="setState(0, [0, 0])">▼</button></td>
 				</tr>
 			</table>
 		</div>
 		<div id="right">
-			<table class="cluster of-4">
+			<table class="cluster of-2">
 				<tr>
-					<td><button id="north" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
-					<td><button id="east" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
-				</tr><tr>
 					<td><button id="west" onmousedown="setState(1, true)" onmouseup="setState(1, false)"></button></td>
 					<td><button id="south" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
 				</tr>
 			</table>
+			<button class="small" onmousedown="setState(3, true)" onmouseup="setState(3, false)">start</button>
 		</div>
 	</div>
 	<script>
-      display = document.getElementById("display");
+      debug = document.getElementById("debug");
 		showState();
 	</script>
 </body>

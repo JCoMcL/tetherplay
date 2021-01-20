@@ -2,15 +2,15 @@
 	--button-diameter: 5rem;
 	--reach: calc(var(--button-diameter) * 6);
 	--padding: 0px;
-	/* dark mode */
+	/* dark mode
 	color: white;
-	background-color: black;
-	/* light mode
+	background-color: black; */
+	/* light mode */
 	color: black;
-	background-color: white; */
+	background-color: white;
 
 	/* colors */
-	--gray: rgba(128, 128, 128, 0.3);
+	--gray: rgba(128, 128, 128, 0.6);
 }
 body {
 	padding: 0px;
@@ -26,9 +26,24 @@ body {
 button {
 	color: inherit;
 	background-color: inherit;
-}
-button:focus {
+	--color: var(--gray);
+	--border: 2px solid;
+	border: var(--border);
+} button:focus {
 	outline: none;
+} button:active {
+	filter: brightness(200%);
+	border: var(--border);
+}
+/* dark theme
+button {
+	background: transparent;
+	color: var(--color);
+	border-color: var(--color);
+} */
+/* light theme */
+button {
+	background-color: var(--color);
 }
 
 #display {
@@ -92,15 +107,10 @@ button:focus {
 	height: var(--button-diameter);
 	font-size:  calc(var(--button-diameter) / 1.5);
 	border-radius: calc(var(--button-diameter) / 2);
-	border: 2px solid;
-	border-bottom: 5px solid;
 } .cluster.of-3 button {
 	transform: initial;
-} .cluster button:active{
-	border: 2px solid;
 }
 .dpad button {
-	background-color: var(--gray);
 }
 /* xbox layout */
 #east { --color: #ff5640; }
@@ -128,13 +138,3 @@ button:focus {
 #south { --color: #6eb7ff; }
 #south::after { content: "⨉"; }
  */
-/* dark theme */
-#east, #north, #west, #south {
-	background: transparent;
-	color: var(--color);
-	border-color: var(--color);
-}
-/* light theme
-#east, #north, #west, #south {
-	background-color: var(--color);
-} */

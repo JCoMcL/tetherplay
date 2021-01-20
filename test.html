@@ -1,4 +1,5 @@
 <head>
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href="style.css">
 	<script>
@@ -20,8 +21,11 @@
 			<div class="analogue-stick"></div>
 		</div>
 		<div id="right">
-			<table class="cluster of-2">
+			<table class="cluster of-4">
 				<tr>
+					<td><button id="north" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
+					<td><button id="east" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
+				</tr><tr>
 					<td><button id="west" onmousedown="setState(1, true)" onmouseup="setState(1, false)"></button></td>
 					<td><button id="south" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
 				</tr>

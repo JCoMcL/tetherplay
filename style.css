@@ -78,19 +78,38 @@ button:focus {
 	transform: initial;
 }
 /* xbox layout */
-#east::after {
-	content: "B";
-	--color: red;
-} #north::after {
-	content: "Y";
-	--color: yellow;
-} #west::after {
-	content: "X";
-	--color: blue;
-} #south::after {
-	content: "A";
-	--color: green;
-}/* #east, #north, #west, #south {
+#east { --color: #ff5640; }
+#east::after { content: "B"; }
+
+#north { --color: #f9ff3d; }
+#north::after { content: "Y"; }
+
+#west { --color: #3da1ff; }
+#west::after { content: "X"; }
+
+#south { --color: #53ff40; }
+#south::after { content: "A"; }
+
+/* playstation layout
+#east { --color: #ff6a45; }
+#east::after { content: "○"; }
+
+#north { --color: #2ee885; }
+#north::after { content: "△"; }
+
+#west { --color: #ff6e83; }
+#west::after { content: "□"; }
+
+#south { --color: #6eb7ff; }
+#south::after { content: "⨉"; }
+ */
+/* dark theme
+#east, #north, #west, #south {
+	background: transparent;
 	color: var(--color);
 	border-color: var(--color);
-}*/
+} */
+/* light theme */
+#east, #north, #west, #south {
+	background-color: var(--color);
+}

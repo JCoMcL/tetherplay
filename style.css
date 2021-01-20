@@ -2,6 +2,15 @@
 	--button-diameter: 5rem;
 	--reach: calc(var(--button-diameter) * 6);
 	--padding: 0px;
+	/* dark mode */
+	color: white;
+	background-color: black;
+	/* light mode
+	color: black;
+	background-color: white; */
+
+	/* colors */
+	--gray: rgba(128, 128, 128, 0.3);
 }
 body {
 	padding: 0px;
@@ -14,6 +23,10 @@ body {
 	display: flex;
 	flex-flow: column nowrap;
 }
+button {
+	color: inherit;
+	background-color: inherit;
+}
 button:focus {
 	outline: none;
 }
@@ -21,11 +34,16 @@ button:focus {
 #display {
 	display: block;
 	font-size: 20px;
-	background-color: #eee;
+	background-color: rgba(128, 128, 128, 0.3);
 	margin: 0px;
 	text-align: center;
 }
 #input {
+	-webkit-user-select: none;
+	-moz-user-select: -moz-none;
+	-ms-user-select: none;
+	-select: none;
+
 	flex: 1;
 	box-sizing: border-box;
 	width: 100%;
@@ -82,7 +100,7 @@ button:focus {
 	border: 2px solid;
 }
 .dpad button {
-	background-color: rgba(128, 128, 128, 0.6);
+	background-color: var(--gray);
 }
 /* xbox layout */
 #east { --color: #ff5640; }
@@ -110,13 +128,13 @@ button:focus {
 #south { --color: #6eb7ff; }
 #south::after { content: "⨉"; }
  */
-/* dark theme
+/* dark theme */
 #east, #north, #west, #south {
 	background: transparent;
 	color: var(--color);
 	border-color: var(--color);
-} */
-/* light theme */
+}
+/* light theme
 #east, #north, #west, #south {
 	background-color: var(--color);
-}
+} */

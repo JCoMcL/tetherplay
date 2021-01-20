@@ -74,8 +74,12 @@ button:focus {
 	height: var(--button-diameter);
 	font-size:  calc(var(--button-diameter) / 1.5);
 	border-radius: calc(var(--button-diameter) / 2);
+	border: 2px solid;
+	border-bottom: 5px solid;
 } .cluster.of-3 button {
 	transform: initial;
+} .cluster button:active{
+	border: 2px solid;
 }
 /* xbox layout */
 #east { --color: #ff5640; }

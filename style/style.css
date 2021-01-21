@@ -25,7 +25,8 @@ button {
 	--border: 3px solid;
 	background-color: var(--color);
 	border: var(--border);
-	margin: .15em;
+	border-radius: 0.3em;
+	margin: 0.15em;
 } button:focus {
 	outline: none;
 } button:active {
@@ -35,8 +36,18 @@ button {
 
 .small {
 	font-size:  calc(var(--button-diameter) / 3);
-	color: inherit;
+	margin: 0.8em;
+	align-self: flex-start;
+} #left .small {
+	border-top-left-radius: 1em;
+	border-bottom-left-radius: 1em;
+	padding-left: 0.5em;
+} #right .small {
+	border-top-right-radius: 1em;
+	border-bottom-right-radius: 1em;
+	padding-right: 0.5em;
 }
+
 .display {
 	display: block;
 	font-size: 20px;

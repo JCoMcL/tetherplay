@@ -5,16 +5,81 @@
 	<!--<link rel="stylesheet" href="dark.css">-->
 	<script src="client.js"></script>
 	<script>
-		var state = [[0, 0], false, false, false];
-      var debug;
-		function showState() {
-			debug.innerHTML = state;
-		}
-		function setState(i, val) {
-			state[i] = val;
-			showState();
-			send(state)
-		}
+class State {
+	constructor(value) {
+		this.value = value
+	}
+	valueOf() {
+		return this.value
+	}
+}
+
+class StateWriter extends State {
+	constructor(value, stateStack) {
+		super(value)
+		this.stateStack = stateStack
+	}
+	set(value) {
+		this.value = value
+		this.stateStack.onUpdate(this)
+	}
+	release() {
+		this.stateStack.releaseWriter(this)
+	}
+}
+
+class StateStack {
+	constructor(defaultVal) {
+		this.states = [new State(defaultVal)]
+	}
+	addWriter(initialValue) {
+		// gee I sure hope this isn't a race condition
+		this.states.unshift( new StateWriter(initialValue, this) )
+		this._update()
+		return this.current()
+	}
+	releaseWriter(writer) {
+		//apparently this is how you remove an element
+		this.states = this.states.splice(this.states.indexOf(writer), 1)
+	}
+	valueOf() {
+		return this.current().valueOf()
+	}
+	_update() {
+		showState()
+	}
+	onUpdate(writer) {
+		if ( writer === this.current() ) { this._update() }
+	}
+	current() {
+		return this.states[0]
+	}
+}
+
+var state = [[0, 0], false, false, false].map(
+	val => new StateStack(val)
+);
+
+var debug;
+function showState() {
+	debug.innerHTML = state.map( v => v.valueOf() );
+}
+function setState(i, val) {
+	state[i] = val;
+	showState();
+	send(state)
+}
+function addRequiredListeners(element, stateIndex, defaultState, activeState) {
+	['mousedown', "touchstart"].forEach( evt =>
+		element.addEventListener(evt, setState [stateIndev, activeState])
+	);
+	['mouseup', "touchend"].forEach( evt =>
+		element.addEventListener(evt, setState [stateIndev, defaultState])
+	);
+}
+function printEvent(evt) {
+	console.log(evt)
+}
 	</script>
 </head>
 <body>
@@ -23,26 +88,28 @@
 		<div id="left">
 			<table class="cluster of-4 dpad">
 				<tr>
-					<td><button onmousedown="setState(0, [0, 1])" onmouseup="setState(0, [0, 0])">▲</button></td>
-					<td><button onmousedown="setState(0, [1, 0])" onmouseup="setState(0, [0, 0])">►</button></td>
+					<td><button id="dpad-u" on="addRequiredListeners(event, 0, [0,0], [0,1])">▲</button></td>
+					<td><button id="dpad-r" onload="addRequiredListeners(event, 0, [0,0], [1,0])">►</button></td>
 				</tr><tr>
-					<td><button onmousedown="setState(0, [-1, 0])" onmouseup="setState(0, [0, 0])">◄</button></td>
-					<td><button onmousedown="setState(0, [0, -1])" onmouseup="setState(0, [0, 0])">▼</button></td>
+					<td><button id="dpad-l" onload="addRequiredListeners(event, 0, [0,0], [-1,0])">◄</button></td>
+					<td><button id="dpad-d" onload="addRequiredListeners(event, 0, [0,0], [0,-1])">▼</button></td>
 				</tr>
 			</table>
 		</div>
 		<div id="right">
 			<table class="cluster of-2">
 				<tr>
-					<td><button id="west" onmousedown="setState(1, true)" onmouseup="setState(1, false)"></button></td>
-					<td><button id="south" onmousedown="setState(2, true)" onmouseup="setState(2, false)"></button></td>
+					<td><button id="west" onmousedown="setState(1, true)"></button></td>
+					<td><button id="south" onload="addRequiredListeners(event, 2, false, true)"></button></td>
 				</tr>
 			</table>
-			<button class="small" onmousedown="setState(3, true)" onmouseup="setState(3, false)">start</button>
+			<button class="small" onclick="printEvent(event)">start</button>
 		</div>
 	</div>
 	<script>
       debug = document.getElementById("debug");
-		showState();
+document.addEventListener("touchend", printEvent)
+document.addEventListener("mousedown", printEvent)
+		showState()
 	</script>
 </body>

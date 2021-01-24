@@ -1,10 +1,10 @@
 const spawn = require("child_process").spawn;
 
 function open() {
-	process = spawn("./stddump");
-	[process.stdout, process.stderr].forEach(stream => {
+	controller = spawn("./stddump");
+	[controller.stdout, controller.stderr].forEach(stream => {
 		stream.setEncoding('utf8')
-		stream.on('data', (chunk) => console.log(chunk))
+		stream.on('data', (chunk) => process.stdout.write(chunk))
 	});
 
 	return process

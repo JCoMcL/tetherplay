@@ -1,8 +1,9 @@
 const wss = new (require('ws').Server)({port: 40510})
+const tpinput = require('./tpinput')
 
 wss.on('connection', function (ws) {
-	console.log(__dirname)
+	controller = tpinput.open()
 	ws.on('message', function (message) {
-		console.log(message)
+		controller.stdin.write(message)
 	})
 })

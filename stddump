@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
 
-mkfifo dumpipe 2> /dev/null
-cat /dev/stdin > dumpipe
+mkfifo dumpipe
+echo " iu am stupid"
+cat > dumpipe
+echo "that's all folks"

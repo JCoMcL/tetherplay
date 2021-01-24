@@ -5,6 +5,7 @@
 	<!--<link rel="stylesheet" href="dark.css">-->
 	<script src="client.js"></script>
 	<script>
+
 class State {
 	constructor(value) {
 		this.value = value
@@ -56,15 +57,15 @@ class StateStack {
 	}
 }
 
-var state = [[0, 0], false, false, false].map(
-	val => new StateStack(val)
-);
+var state = [[0, 0], false, false, false].map(val => new StateStack(val))
+var activeWriters = []
 
 var debug;
 function showState() {
 	debug.innerHTML = state.map( v => v.valueOf() );
 }
-function setState(i, val) {
+function setState(evt, i, val) {
+	console.log(evt)
 	state[i] = val;
 	showState();
 	send(state)
@@ -77,8 +78,32 @@ function addRequiredListeners(element, stateIndex, defaultState, activeState) {
 		element.addEventListener(evt, setState [stateIndev, defaultState])
 	);
 }
-function printEvent(evt) {
-	console.log(evt)
+
+class PressEvent extends Event {
+//add an identifier
+}
+
+function getEventIndex(evt) {
+	switch (typeof(evt)) {
+		case 'TouchEvent':
+			return evt.changedTouches[0].identifier + 1;
+		default:
+			return 0;
+	}
+}
+
+function handlePressEvent(evt) {
+	i = getEventIndex(evt)
+	//pressEvt = (evt as PressEvent)
+	pressEvt = evt
+	pressEvt.id = i
+	pressEvt.type = "mousedown"
+	pressEvt.path[0].dispatchEvent(pressEvt)
+}
+
+function handleReleaseEvent(evt) {
+	writer = activeWriters[getEventIndex(evt)]
+	writer.release()
 }
 	</script>
 </head>
@@ -88,19 +113,19 @@ function printEvent(evt) {
 		<div id="left">
 			<table class="cluster of-4 dpad">
 				<tr>
-					<td><button id="dpad-u" on="addRequiredListeners(event, 0, [0,0], [0,1])">▲</button></td>
-					<td><button id="dpad-r" onload="addRequiredListeners(event, 0, [0,0], [1,0])">►</button></td>
+					<td><button id="dpad-u" onmousedown="setState(event, 0, [0,1])">▲</button></td>
+					<td><button id="dpad-r" onmousedown="setState(event, 0, [1,0])">►</button></td>
 				</tr><tr>
-					<td><button id="dpad-l" onload="addRequiredListeners(event, 0, [0,0], [-1,0])">◄</button></td>
-					<td><button id="dpad-d" onload="addRequiredListeners(event, 0, [0,0], [0,-1])">▼</button></td>
+					<td><button id="dpad-l" onmousedown="setState(event, 0, [-1,0])">◄</button></td>
+					<td><button id="dpad-d" onmousedown="setState(event, 0, [0,-1])">▼</button></td>
 				</tr>
 			</table>
 		</div>
 		<div id="right">
 			<table class="cluster of-2">
 				<tr>
-					<td><button id="west" onmousedown="setState(1, true)"></button></td>
-					<td><button id="south" onload="addRequiredListeners(event, 2, false, true)"></button></td>
+					<td><button id="west" onmousedown="setState(event, 1, true)"></button></td>
+					<td><button id="south" onmousedown="setState(event, 2, true)"></button></td>
 				</tr>
 			</table>
 			<button class="small" onclick="printEvent(event)">start</button>
@@ -108,8 +133,10 @@ function printEvent(evt) {
 	</div>
 	<script>
       debug = document.getElementById("debug");
-document.addEventListener("touchend", printEvent)
-document.addEventListener("mousedown", printEvent)
+document.addEventListener("touchstart", handlePressEvent)
+document.addEventListener("mousedown", handlePressEvent)
+document.addEventListener("mouseup", handleReleaseEvent)
+document.addEventListener("touchend", handleReleaseEvent)
 		showState()
 	</script>
 </body>

@@ -1,6 +1,6 @@
 
-var express = require('express')
-var ws = require('./ws')
+const express = require('express')
+require('./ws')
 
 var app = express()
 

@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+mkfifo dumpipe 2> /dev/null
+cat /dev/stdin > dumpipe

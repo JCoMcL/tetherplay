@@ -1,18 +1,7 @@
-const { exec } = require("child_process");
+const spawn = require("child_process").spawn;
 
-var test = "-PO 2000";
-
-function set(args) {
-	exec("redshift " + args, (error, stdout, stderr) => {
-		if (error) {
-			return error.message;
-		} if (stderr) {
-			return stderr;
-		} return stdout;
-})};
-
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+function open() {
+	return spawn("./stddump", { stdio: ['pipe', 0, 0] } )
 }
 
-module.exports.set = set;
+module.exports.open = open;

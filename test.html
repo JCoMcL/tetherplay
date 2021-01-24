@@ -3,6 +3,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href="style.css">
 	<!--<link rel="stylesheet" href="dark.css">-->
+	<script src="client.js"></script>
 	<script>
 		var state = [[0, 0], false, false, false];
       var debug;
@@ -12,6 +13,7 @@
 		function setState(i, val) {
 			state[i] = val;
 			showState();
+			send(state)
 		}
 	</script>
 </head>

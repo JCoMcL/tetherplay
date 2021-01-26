@@ -1,10 +1,10 @@
-
 const express = require('express')
 require('./ws')
 
 var app = express()
 
 app.use(express.static('style'));
+app.use(express.static('client-scripts'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/test.html');

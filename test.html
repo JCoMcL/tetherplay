@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="style.css">
 	<!--<link rel="stylesheet" href="dark.css">-->
 	<!--<link rel="stylesheet" href="playstation.css">-->
-	<script src="client.js"></script>
+	<script src="websocket.js"></script>
 	<script>
 function criticalMisjudgement(severity, description) {
 	options = [
@@ -68,7 +68,7 @@ class StateStack {
 		return this.current().valueOf()
 	}
 	_update() {
-		showState()
+		onStateUpdate()
 	}
 	onUpdate(writer) {
 		if ( writer === this.current() ) { this._update() }
@@ -82,8 +82,14 @@ var state = [[0, 0], false, false, false].map(val => new StateStack(val))
 var activeWriters = []
 
 var debug;
+
 function showState() {
-	debug.innerHTML = state.map( v => v.valueOf() );
+	debug.innerHTML = state.map( v => v.valueOf() )
+}
+
+function onStateUpdate() {
+	send(state)
+	showState()
 }
 
 function setState(evt, i, val) {
@@ -96,16 +102,7 @@ function setState(evt, i, val) {
 		releaseActiveWriter(evt.index)
 	}
 	activeWriters[evt.index] = writer
-	showState();
-	send(state)
-}
-function addRequiredListeners(element, stateIndex, defaultState, activeState) {
-	['mousedown', "touchstart"].forEach( evt =>
-		element.addEventListener(evt, setState [stateIndev, activeState])
-	);
-	['mouseup', "touchend"].forEach( evt =>
-		element.addEventListener(evt, setState [stateIndev, defaultState])
-	);
+	onStateUpdate();
 }
 
 class PressEvent extends Event {

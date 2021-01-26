@@ -86,7 +86,6 @@ function setState(evt, i, val) {
 		releaseActiveWriter(evt.index)
 	}
 	activeWriters[evt.index] = writer
-	onStateUpdate();
 }
 
 class PressEvent extends Event {

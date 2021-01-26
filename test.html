@@ -1,10 +1,26 @@
+<!DOCTYPE html>
 <head>
+	<title>Tetherplay</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href="style.css">
 	<!--<link rel="stylesheet" href="dark.css">-->
+	<!--<link rel="stylesheet" href="playstation.css">-->
 	<script src="client.js"></script>
 	<script>
+function criticalMisjudgement(severity, description) {
+	options = [
+		console.error,
+		function(s) {with(window){alert(s)}}
+	]
+	for (var i = 0; i <= severity && i < options.length; i++) {
+		options[i](description)
+	}
+}
+
+function arrayHasElem(a, i) {
+	return typeof(a[i]) !== 'undefined'
+}
 
 class State {
 	constructor(value) {
@@ -34,14 +50,19 @@ class StateStack {
 		this.states = [new State(defaultVal)]
 	}
 	addWriter(initialValue) {
-		// gee I sure hope this isn't a race condition
 		this.states.unshift( new StateWriter(initialValue, this) )
 		this._update()
 		return this.current()
 	}
 	releaseWriter(writer) {
-		//apparently this is how you remove an element
-		this.states = this.states.splice(this.states.indexOf(writer), 1)
+		if (this.states.length == 1) {
+			criticalMisjudgement(1, "attempt to release writer that was never claimed")
+		}
+
+		var i = this.states.indexOf(writer)
+		this.states.splice(i, 1)
+		if (i == 0)
+			this._update()
 	}
 	valueOf() {
 		return this.current().valueOf()
@@ -64,9 +85,17 @@ var debug;
 function showState() {
 	debug.innerHTML = state.map( v => v.valueOf() );
 }
+
 function setState(evt, i, val) {
-	console.log(evt)
-	state[i] = val;
+	writer = state[i].addWriter(val)
+
+	if (arrayHasElem(activeWriters, evt.index)) {
+		// occurs when a release event is not generated for a corresponding press event
+		// you can reproduce by opening the context menu while holding down a button
+		criticalMisjudgement(0, "writer was never properly released")
+		releaseActiveWriter(evt.index)
+	}
+	activeWriters[evt.index] = writer
 	showState();
 	send(state)
 }
@@ -80,29 +109,40 @@ function addRequiredListeners(element, stateIndex, defaultState, activeState) {
 }
 
 class PressEvent extends Event {
-//add an identifier
-}
-
-function getEventIndex(evt) {
-	switch (typeof(evt)) {
-		case 'TouchEvent':
-			return evt.changedTouches[0].identifier + 1;
-		default:
-			return 0;
+	constructor(index, typeArg, eventInit) {
+		super(typeArg, eventInit)
+		this.index = index
 	}
 }
 
+function getEventIndex(evt) {
+	if (evt instanceof TouchEvent)
+		return evt.changedTouches[0].identifier + 1
+	return 0
+}
+
 function handlePressEvent(evt) {
-	i = getEventIndex(evt)
-	//pressEvt = (evt as PressEvent)
-	pressEvt = evt
-	pressEvt.id = i
-	pressEvt.type = "mousedown"
-	pressEvt.path[0].dispatchEvent(pressEvt)
+	//TODO add function for finding element to dispatch to which is better than evt.path[0]
+	evt.path[0].dispatchEvent(new PressEvent(
+		getEventIndex(evt),
+		'load', //I'm using onload because it's an event that will never be triggered by default, it's a terrible hack but you'd be surprised how few options there are
+		evt
+	))
 }
 
 function handleReleaseEvent(evt) {
-	writer = activeWriters[getEventIndex(evt)]
+	i = getEventIndex(evt)
+	if (arrayHasElem(activeWriters, i)) {
+		// this just means that the last corresponding press didn't do anything, nothing to worry about
+		return
+	}
+	releaseActiveWriter(i)
+}
+
+function releaseActiveWriter(i) {
+	//FIXME this is a potential race condition, whole function should be atomic
+	writer = activeWriters[i]
+	activeWriters[i] = undefined
 	writer.release()
 }
 	</script>
@@ -111,32 +151,32 @@ function handleReleaseEvent(evt) {
 	<pre id="debug" class="display"> </pre>
 	<div id=input>
 		<div id="left">
-			<table class="cluster of-4 dpad">
+			<table id="ljoy" class="dpad cluster of-4">
 				<tr>
-					<td><button id="dpad-u" onmousedown="setState(event, 0, [0,1])">▲</button></td>
-					<td><button id="dpad-r" onmousedown="setState(event, 0, [1,0])">►</button></td>
+					<td><button onload="setState(event, 0, [0,1])">▲</button></td>
+					<td><button onload="setState(event, 0, [1,0])">►</button></td>
 				</tr><tr>
-					<td><button id="dpad-l" onmousedown="setState(event, 0, [-1,0])">◄</button></td>
-					<td><button id="dpad-d" onmousedown="setState(event, 0, [0,-1])">▼</button></td>
+					<td><button onload="setState(event, 0, [-1,0])">◄</button></td>
+					<td><button onload="setState(event, 0, [0,-1])">▼</button></td>
 				</tr>
 			</table>
 		</div>
 		<div id="right">
 			<table class="cluster of-2">
 				<tr>
-					<td><button id="west" onmousedown="setState(event, 1, true)"></button></td>
-					<td><button id="south" onmousedown="setState(event, 2, true)"></button></td>
+					<td><button id="west" onload="setState(event, 1, true)"></button></td>
+					<td><button id="south" onload="setState(event, 2, true)"></button></td>
 				</tr>
 			</table>
-			<button class="small" onclick="printEvent(event)">start</button>
+			<button class="small" onload="setState(event, 3, true)">start</button>
 		</div>
 	</div>
 	<script>
-      debug = document.getElementById("debug");
+debug = document.getElementById("debug");
 document.addEventListener("touchstart", handlePressEvent)
 document.addEventListener("mousedown", handlePressEvent)
 document.addEventListener("mouseup", handleReleaseEvent)
 document.addEventListener("touchend", handleReleaseEvent)
-		showState()
+showState()
 	</script>
 </body>

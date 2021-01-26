@@ -132,7 +132,7 @@ function handlePressEvent(evt) {
 
 function handleReleaseEvent(evt) {
 	i = getEventIndex(evt)
-	if (arrayHasElem(activeWriters, i)) {
+	if (! arrayHasElem(activeWriters, i)) {
 		// this just means that the last corresponding press didn't do anything, nothing to worry about
 		return
 	}

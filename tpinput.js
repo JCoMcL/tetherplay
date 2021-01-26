@@ -7,7 +7,7 @@ function open() {
 		stream.on('data', (chunk) => process.stdout.write(chunk))
 	});
 
-	return process
+	return controller
 }
 
 module.exports.open = open;

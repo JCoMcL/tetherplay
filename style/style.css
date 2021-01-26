@@ -3,11 +3,12 @@
 	--reach: calc(var(--button-diameter) * 6);
 	--padding: 0px;
 
-	color: rgba(0, 0, 0, 0.88);
+	color: rgba(0, 0, 0, 0.8);
 	background-color: white;
 
 	/* colors */
-	--gray: rgba(128, 128, 128, 0.3);
+	--gray: rgba(128, 128, 128, 0.25);
+	--grayer: #888;
 }
 body {
 	padding: 0px;
@@ -21,6 +22,7 @@ body {
 	flex-flow: column nowrap;
 }
 button {
+	color: inherit;
 	--color: var(--gray);
 	--border: 3px solid;
 	background-color: var(--color);
@@ -87,19 +89,18 @@ button {
 	flex-wrap: wrap;
 	justify-content: space-between;
 } #left {
-	border: 1px solid green;
 	flex-direction: row;
 } #right {
-	border: 1px solid red;
 	flex-direction: row-reverse;
 }
 
 .cluster {
-	transform: rotate(45deg);
+	--rotation: 45deg;
+	transform: rotate(var(--rotation));
 } .cluster.of-2 {
 	margin-bottom: calc( var(--button-diameter) / 2);
 } .cluster.of-3 {
-	transform: initial;
+	--rotation: 0deg;
 } .cluster.of-4 {
 	margin-bottom: calc( var(--button-diameter) / 4);
 } #left .cluster.of-4 {
@@ -107,15 +108,12 @@ button {
 } #right .cluster.of-4 {
 	margin-right: calc( var(--button-diameter) / 4);
 }.cluster button {
-	transform: rotate(-45deg);
+	transform: rotate(calc( 0deg - var(--rotation) ));
 	font-size:  calc(var(--button-diameter) / 1.5);
 	width: 1.5em;
 	height: 1.5em;
 	border-radius: .75em;
-} .cluster.of-3 button {
-	transform: initial;
 }
-
 /* xbox layout */
 #east { --color: #ff5640; }
 #east::after { content: "B"; }

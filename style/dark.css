@@ -5,6 +5,7 @@
 
 button {
 	background: transparent;
+	--color: var(--grayer);
 	color: var(--color);
 	border-color: var(--color);
 }

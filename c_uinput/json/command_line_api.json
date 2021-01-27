@@ -1,0 +1,39 @@
+{
+    "name" :{
+        "acceptsinput": "frue",
+        "type": "string",
+        "dependant": "nil",
+        "description": "sets the name of the device must be called at run time"
+    },
+    "gamepad": {
+        "acceptsinput": "true",
+        "type": "intager",
+        "dependant": "name",
+        "description": "enables controller to have a gamepad. takes in intager input for the amount of buttons between 2-4"
+    },
+    "dpad": {
+        "acceptsinput": "false",
+        "type": "nil",
+        "dependant": "name",
+        "description": "enables controller to have a dpad"
+    },
+    "rightstick": {
+        "acceptsinput": "true",
+        "type": "vec16/vec32",
+        "dependant": "leftstick",
+        "description": "enables a right joystick on the controller. is dependant on the left stick"
+    },
+    "leftstick": {
+        "acceptsinput": "true",
+        "type": "vac16/vec32",
+        "dependant": "name",
+        "description": "enables a left joystick on the controller."
+    },
+    "menu": {
+        "acceptsinput": "false",
+        "type": "nil",
+        "dependant": "name",
+        "description": "enables the start and select buttons on the controller"
+    }
+}
+

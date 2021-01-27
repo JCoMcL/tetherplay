@@ -1,6 +1,5 @@
 #include "headers/device.h"
-#include <getopt.h>
-
+#define loop for(;;)
 // options for setting up the controller
 static const struct option longopts[] = {
     {"name", 1, 0, 'n'},
@@ -10,6 +9,8 @@ static const struct option longopts[] = {
     {"leftstick", 0, 0, 'l'},
     {"menu", 0, 0, 'm'},
 };
+
+
 
 
 int main(int argc, char *argv[]){
@@ -42,6 +43,27 @@ int main(int argc, char *argv[]){
     }
     // creates the device
     create_device(name);
+    char inp[10];
+    loop {
+        scanf("%s", inp);
+        printf("FUCK");
+        if (!strcmp(inp,"quit")){
+            break;
+        }
+        if (!strcmp(inp, "press")){
+            printf("Press DPAD LEFT");
+            press(BTN_DPAD_LEFT);
+        }
+        if (!strcmp(inp, "release")){
+            printf("Release DPAD Left");
+            release(BTN_DPAD_LEFT);
+        }
+        sync_events();
+    }
+
+
+    printf(inp);
+
     // destroys device and closes the uinput file
     destroy_device();
     return 0;

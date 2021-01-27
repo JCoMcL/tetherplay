@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <unistd.h> // for sleep
 #include <stdlib.h>
-
+#include <getopt.h>
 // global variables
 int fd;
 

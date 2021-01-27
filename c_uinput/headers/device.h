@@ -35,40 +35,21 @@ void sync_events(){
 
 
 
-void press(struct input_event ie){
-   if (!ie.value){
-      ie = create_key_event(ie.code, 1);
-      write(fd, &ie, sizeof(ie));
-   } else {
-      fprintf(stderr, "Button Is Pressed...Exiting\n");
-      exit(EXIT_FAILURE);
-   }
+void press(int code){
+   struct input_event ie = create_key_event(code, 1);
+   write(fd, &ie, sizeof(ie));
 }
-void release(struct input_event ie){
-   if (ie.value){
-      ie = create_key_event(ie.code, 0);
-      write(fd, &ie, sizeof(ie));
-   } else {
-      fprintf(stderr, "Button Is Released...Exiting\n");
-      exit(EXIT_FAILURE);
-   }
-}
-
-// toggles event from pressed to released
-void toggle(struct input_event ie){
-   if (ie.value){
-      release(ie);
-   } else {
-      press(ie);
-   }
+void release(int code){
+   struct input_event ie = create_key_event(ie.code, 0);
+   write(fd, &ie, sizeof(ie));
 }
 
 // clicks event
-void click(struct input_event ie){
-   write(fd, &ie, sizeof(ie));
-   sync_events(fd);
-   write(fd, &ie, sizeof(ie));
-   sync_events(fd);
+void click(int code){
+   press(code);
+   sync_events();
+   release(code);
+   sync_events();
 }
 
 // enables dpad events when called
@@ -97,19 +78,26 @@ void setup_menupad_events(){
    ioctl(fd, UI_SET_KEYBIT, BTN_START);
    ioctl(fd, UI_SET_KEYBIT, BTN_SELECT);
 }
-// used for testing the k key
-void test_events(){
-   
-   ioctl(fd, UI_SET_KEYBIT, KEY_K);
+// left joystick enabled
+void setup_joystick_left_events(){
+   ioctl(fd, UI_SET_KEYBIT, ABS_X);
+   ioctl(fd, UI_SET_KEYBIT, ABS_Y);
 }
+
+// enable right joystick
+void setup_joystick_right_events(){
+   ioctl(fd, UI_SET_KEYBIT, ABS_RX);
+   ioctl(fd, UI_SET_KEYBIT, ABS_RY);
+}
+
 // creates a device
-void create_device(){
+void create_device(char* str){
    struct uinput_setup usetup;
    memset(&usetup, 0, sizeof(usetup));
    usetup.id.bustype = BUS_USB;
    usetup.id.vendor = 0x1234;
    usetup.id.product = 0x5678;
-   strcpy(usetup.name, "TEST");
+   strcpy(usetup.name, str);
    // links device to use other events
    ioctl(fd, UI_DEV_SETUP, &usetup);
    ioctl(fd, UI_DEV_CREATE);

@@ -1,4 +1,5 @@
-#include "headers/device.h"
+#include "device/device.h"
+#include <getopt.h>
 #define loop for(;;)
 // options for setting up the controller
 static const struct option longopts[] = {

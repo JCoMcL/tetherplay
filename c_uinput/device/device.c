@@ -6,9 +6,7 @@
 #include <unistd.h> // for sleep
 #include <stdlib.h>
 #include <getopt.h>
-// global variables
-int fd;
-
+#include "device.h"
 
 // creates the button so it can be easily called without the need of recreating the struct
 struct input_event create_key_event(int code, int val){
@@ -34,11 +32,12 @@ void sync_events(){
 }
 
 
-
+// sets press event
 void press(int code){
    struct input_event ie = create_key_event(code, 1);
    write(fd, &ie, sizeof(ie));
 }
+// sets release event
 void release(int code){
    struct input_event ie = create_key_event(ie.code, 0);
    write(fd, &ie, sizeof(ie));
@@ -120,4 +119,3 @@ void open_path(char* path){
 void open_default(){
    open_path("/dev/uinput");
 }
-

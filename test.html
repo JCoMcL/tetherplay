@@ -6,6 +6,14 @@
 	<link rel="stylesheet" href="style.css">
 	<!--<link rel="stylesheet" href="dark.css">-->
 	<!--<link rel="stylesheet" href="playstation.css">-->
+	<script>
+		const configuration = [
+			{id: gp-ljoy, type: vec},
+			{id: gp-west, type: bool},
+			{id: gp-south, type: bool},
+			{id: gp-ljoy, type: bool}
+		]
+	</script>
 	<script src="websocket.js"></script>
 	<script src="input.js"></script>
 	<script>
@@ -17,9 +25,9 @@ function showState() {
 </head>
 <body>
 	<pre id="debug" class="display"> </pre>
-	<div id=input>
+	<div id="input">
 		<div id="left">
-			<table id="ljoy" class="dpad cluster of-4">
+			<table id="gp-ljoy" class="dpad cluster of-4">
 				<tr>
 					<td><button onload="setState(event, 0, [0,1])">▲</button></td>
 					<td><button onload="setState(event, 0, [1,0])">►</button></td>
@@ -32,11 +40,11 @@ function showState() {
 		<div id="right">
 			<table class="cluster of-2">
 				<tr>
-					<td><button id="west" onload="setState(event, 1, true)"></button></td>
-					<td><button id="south" onload="setState(event, 2, true)"></button></td>
+					<td><button id="gp-west" onload="setState(event, 1, true)"></button></td>
+					<td><button id="gp-south" onload="setState(event, 2, true)"></button></td>
 				</tr>
 			</table>
-			<button class="small" onload="setState(event, 3, true)">start</button>
+			<button id="gp-start" class="small" onload="setState(event, 3, true)">start</button>
 		</div>
 	</div>
 	<script>

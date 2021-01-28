@@ -1,3 +1,7 @@
+# this makefile is from one of the templates I have kicking around.
+# It is for creating standalone programs, not libraries as we are doing here
+# It will need to be modified to work for our needs
+
 PREFIX = /
 MANPREFIX = $(PREFIX)/share/man
 

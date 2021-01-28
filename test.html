@@ -29,22 +29,22 @@ function showState() {
 		<div id="left">
 			<table id="gp-ljoy" class="dpad cluster of-4">
 				<tr>
-					<td><button onload="setState(event, 0, [0,1])">▲</button></td>
-					<td><button onload="setState(event, 0, [1,0])">►</button></td>
+					<td><button>▲</button></td>
+					<td><button>►</button></td>
 				</tr><tr>
-					<td><button onload="setState(event, 0, [-1,0])">◄</button></td>
-					<td><button onload="setState(event, 0, [0,-1])">▼</button></td>
+					<td><button>◄</button></td>
+					<td><button>▼</button></td>
 				</tr>
 			</table>
 		</div>
 		<div id="right">
 			<table class="cluster of-2">
 				<tr>
-					<td><button id="gp-west" onload="setState(event, 1, true)"></button></td>
-					<td><button id="gp-south" onload="setState(event, 2, true)"></button></td>
+					<td><button id="gp-west"></button></td>
+					<td><button id="gp-south"></button></td>
 				</tr>
 			</table>
-			<button id="gp-start" class="small" onload="setState(event, 3, true)">start</button>
+			<button id="gp-start" class="small" >start</button>
 		</div>
 	</div>
 	<script>

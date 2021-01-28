@@ -10,6 +10,17 @@ function criticalMisjudgement(severity, description) {
 	}
 }
 
+function assert(expression, errormsg, severity = 0) {
+	try {
+		if (! expression) {
+			criticalMisjudgement(severity, errormsg)
+		}
+		return expression
+	} catch (e) {
+		return false
+	}
+}
+
 function arrayHasElem(a, i) {
 	return typeof(a[i]) !== 'undefined'
 }
@@ -54,16 +65,18 @@ class StateStack {
 		this.states = [this.states[this.states.length - 1]]
 	}
 	releaseWriter(writer) {
-		if (this.states.length == 1) {
-			criticalMisjudgement(1, "attempt to release writer that was never claimed")
-			return
-		}
+		if (! assert(
+				this.states.length > 1,
+				"attempt to release writer that was never claimed",
+				1
+		)) { return }
 
 		var i = this.states.indexOf(writer)
-		if (i == -1) {
-			criticalMisjudgement(1, "attempt to release writer that has already been released")
-			return
-		}
+		if (! assert(
+				i == -1,
+				"attempt to release writer that has already been released",
+				1
+		)) { return }
 
 		this.states.splice(i, 1)
 		if (i == 0)
@@ -103,12 +116,12 @@ function onStateUpdate(which = null) {
 function setState(evt, i, val) {
 	writer = state[i].addWriter(val)
 
-	if (arrayHasElem(activeWriters, evt.index)) {
-		// occurs when a release event is not generated for a corresponding press event
-		// you can reproduce by opening the context menu while holding down a button
-		criticalMisjudgement(0, "writer was never properly released")
-		releaseActiveWriter(evt.index)
-	}
+	// occurs when a release event is not generated for a corresponding press event
+	// you can reproduce by opening the context menu while holding down a button
+	if (! assert(
+			arrayHasElem(activeWriters, evt.index),
+			"writer was never properly released")
+	) { releaseActiveWriter(evt.index) }
 	activeWriters[evt.index] = writer
 }
 

@@ -1,6 +1,8 @@
 function criticalMisjudgement(severity, description) {
 	options = [
 		console.error,
+		//TODO put logging func here
+		function(desc){throw desc},
 		window.alert
 	]
 	for (var i = 0; i <= severity && i < options.length; i++) {
@@ -31,7 +33,11 @@ class StateWriter extends State {
 		this.stateStack.onUpdate(this)
 	}
 	release() {
-		this.stateStack.releaseWriter(this)
+		try {
+			this.stateStack.releaseWriter(this)
+		} catch(e) {
+			this.stateStack.reset()
+		}
 	}
 }
 
@@ -44,12 +50,21 @@ class StateStack {
 		this._update()
 		return this.current()
 	}
+	reset() {
+		this.states = [this.states[this.states.length - 1]]
+	}
 	releaseWriter(writer) {
 		if (this.states.length == 1) {
 			criticalMisjudgement(1, "attempt to release writer that was never claimed")
+			return
 		}
 
 		var i = this.states.indexOf(writer)
+		if (i == -1) {
+			criticalMisjudgement(1, "attempt to release writer that has already been released")
+			return
+		}
+
 		this.states.splice(i, 1)
 		if (i == 0)
 			this._update()
@@ -131,7 +146,10 @@ function handleReleaseEvent(evt) {
 function releaseActiveWriter(i) {
 	//FIXME this is a potential race condition, whole function should be atomic
 	writer = activeWriters[i]
+	try { writer.release() }
+	catch (e) {
+		return
+	}
 	activeWriters[i] = undefined
-	writer.release()
 }
 	

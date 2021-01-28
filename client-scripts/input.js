@@ -10,15 +10,11 @@ function criticalMisjudgement(severity, description) {
 	}
 }
 
-function assert(expression, errormsg, severity = 0) {
-	try {
-		if (! expression) {
-			criticalMisjudgement(severity, errormsg)
-		}
-		return expression
-	} catch (e) {
-		return false
+function insanityCheck(expression, errormsg, severity = 0) {
+	if (expression) {
+		criticalMisjudgement(severity, errormsg)
 	}
+	return expression
 }
 
 function arrayHasElem(a, i) {
@@ -46,7 +42,7 @@ class StateWriter extends State {
 	release() {
 		try {
 			this.stateStack.releaseWriter(this)
-		} catch(e) {
+		} catch (e) {
 			this.stateStack.reset()
 		}
 	}
@@ -63,16 +59,17 @@ class StateStack {
 	}
 	reset() {
 		this.states = [this.states[this.states.length - 1]]
+		this._update()
 	}
 	releaseWriter(writer) {
-		if (! assert(
-				this.states.length > 1,
+		if (insanityCheck(
+				this.states.length == 1,
 				"attempt to release writer that was never claimed",
 				1
 		)) { return }
 
 		var i = this.states.indexOf(writer)
-		if (! assert(
+		if (insanityCheck(
 				i == -1,
 				"attempt to release writer that has already been released",
 				1
@@ -114,14 +111,15 @@ function onStateUpdate(which = null) {
 }
 
 function setState(evt, i, val) {
-	writer = state[i].addWriter(val)
 
 	// occurs when a release event is not generated for a corresponding press event
 	// you can reproduce by opening the context menu while holding down a button
-	if (! assert(
+	if (insanityCheck(
 			arrayHasElem(activeWriters, evt.index),
-			"writer was never properly released")
-	) { releaseActiveWriter(evt.index) }
+			"previous writer was never properly released"
+	)) { releaseActiveWriter(evt.index) }
+
+	writer = state[i].addWriter(val)
 	activeWriters[evt.index] = writer
 }
 

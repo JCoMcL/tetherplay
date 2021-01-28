@@ -58,7 +58,7 @@ class StateStack {
 		return this.current().valueOf()
 	}
 	_update() {
-		onStateUpdate()
+		onStateUpdate(this)
 	}
 	onUpdate(writer) {
 		if ( writer === this.current() ) { this._update() }
@@ -71,8 +71,17 @@ class StateStack {
 var state = [[0, 0], false, false, false].map(val => new StateStack(val))
 var activeWriters = []
 
-function onStateUpdate() {
-	send(state)
+function encodeState(index) {
+	return JSON.stringify({i:index, v:state[index].valueOf()})
+}
+
+function onStateUpdate(which = null) {
+	if (which) {
+		send(encodeState(state.indexOf(which)))
+	} else {
+		for(i = 0; i < state.length; i++)
+			{send(encodeState(i))}
+	}
 	showState()
 }
 

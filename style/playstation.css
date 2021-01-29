@@ -1,12 +1,12 @@
-#east { --color: #ff6a45; }
-#east::after { content: "○"; }
+#gp-east { --color: #ff6a45; }
+#gp-east::after { content: "○"; }
 
-#north { --color: #2ee885; }
-#north::after { content: "△"; }
+#gp-north { --color: #2ee885; }
+#gp-north::after { content: "△"; }
 
-#west { --color: #ff6e83; }
-#west::after { content: "□"; }
+#gp-west { --color: #ff6e83; }
+#gp-west::after { content: "□"; }
 
-#south { --color: #6eb7ff; }
-#south::after { content: "⨉"; }
+#gp-south { --color: #6eb7ff; }
+#gp-south::after { content: "⨉"; }
 

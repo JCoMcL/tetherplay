@@ -115,15 +115,15 @@ button {
 	border-radius: .75em;
 }
 /* xbox layout */
-#east { --color: #ff5640; }
-#east::after { content: "B"; }
+#gp-east { --color: #ff5640; }
+#gp-east::after { content: "B"; }
 
-#north { --color: #f9ff3d; }
-#north::after { content: "Y"; }
+#gp-north { --color: #f9ff3d; }
+#gp-north::after { content: "Y"; }
 
-#west { --color: #3da1ff; }
-#west::after { content: "X"; }
+#gp-west { --color: #3da1ff; }
+#gp-west::after { content: "X"; }
 
-#south { --color: #53ff40; }
-#south::after { content: "A"; }
+#gp-south { --color: #53ff40; }
+#gp-south::after { content: "A"; }
 

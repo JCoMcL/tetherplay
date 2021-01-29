@@ -1,26 +1,3 @@
-function criticalMisjudgement(severity, description) {
-	options = [
-		console.error,
-		//TODO put logging func here
-		function(desc){throw desc},
-		window.alert
-	]
-	for (var i = 0; i <= severity && i < options.length; i++) {
-		options[i](description)
-	}
-}
-
-function insanityCheck(expression, errormsg, severity = 0) {
-	if (expression) {
-		criticalMisjudgement(severity, errormsg)
-	}
-	return expression
-}
-
-function arrayHasElem(a, i) {
-	return typeof(a[i]) !== 'undefined'
-}
-
 class State {
 	constructor(value) {
 		this.value = value
@@ -62,14 +39,14 @@ class StateStack {
 		this._update()
 	}
 	releaseWriter(writer) {
-		if (insanityCheck(
+		if (checks.isNot(
 				this.states.length == 1,
 				"attempt to release writer that was never claimed",
 				1
 		)) { return }
 
 		var i = this.states.indexOf(writer)
-		if (insanityCheck(
+		if (checks.isNot(
 				i == -1,
 				"attempt to release writer that has already been released",
 				1
@@ -114,8 +91,8 @@ function setState(evt, i, val) {
 
 	// occurs when a release event is not generated for a corresponding press event
 	// you can reproduce by opening the context menu while holding down a button
-	if (insanityCheck(
-			arrayHasElem(activeWriters, evt.index),
+	if (checks.isNot(
+			checks.arrayHasElem(activeWriters, evt.index),
 			"previous writer was never properly released"
 	)) { releaseActiveWriter(evt.index) }
 
@@ -147,7 +124,7 @@ function handlePressEvent(evt) {
 
 function handleReleaseEvent(evt) {
 	i = getEventIndex(evt)
-	if (! arrayHasElem(activeWriters, i)) {
+	if (! checks.arrayHasElem(activeWriters, i)) {
 		// this just means that the last corresponding press didn't do anything, nothing to worry about
 		return
 	}
@@ -163,4 +140,3 @@ function releaseActiveWriter(i) {
 	}
 	activeWriters[i] = undefined
 }
-	

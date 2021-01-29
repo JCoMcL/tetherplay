@@ -113,13 +113,35 @@ function getEventIndex(evt) {
 	return 0
 }
 
-function handlePressEvent(evt) {
-	//TODO add function for finding element to dispatch to which is better than evt.path[0]
-	evt.path[0].dispatchEvent(new PressEvent(
-		getEventIndex(evt),
-		'load', //I'm using onload because it's an event that will never be triggered by default, it's a terrible hack but you'd be surprised how few options there are
-		evt
-	))
+function getEventTarget(evt) {
+	for (i = 0; i < evt.path.length; i++) {
+		var target = evt.path[i]
+		if (controlMap.hasId(target.id))
+			{ return target }
+	}
+	return undefined
+}
+
+function handleTouchPress(evt) {
+	//evt.preventDefault()
+	var driverIndex = evt.changedTouches[0].identifier + 1
+	handlePress(evt, driverIndex)
+}
+
+function handleMousePress(evt) {
+	handlePress(evt, 0)
+}
+
+function handlePress(evt, driverIndex) {
+	var target = getEventTarget(evt)
+	if (!target)
+		{ return }
+
+	var control = controlMap.byId(target.id)
+	var i = control.index
+	var val = true
+	evt.index = driverIndex
+	setState(evt, i, val)
 }
 
 function handleReleaseEvent(evt) {

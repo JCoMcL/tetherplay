@@ -1,4 +1,4 @@
-const eventMap = {
+const controlMap = {
 	_configuration: [
 		{id: "gp-ljoy", type: "vec"},
 		{id: "gp-west", type: "bool"},
@@ -16,6 +16,12 @@ const eventMap = {
 	byId(id) {
 		return this._idMap[id]
 	},
+	hasIndex(i) {
+		return  i < this._configuration.length && 0 <= i
+	},
+	hasId(id) {
+		return  this._idMap[id] !== undefined
+	},
 
 	_setupIdMap() {
 		this._idMap = {}
@@ -25,4 +31,4 @@ const eventMap = {
 	}
 
 }
-eventMap.setup()
+controlMap.setup()

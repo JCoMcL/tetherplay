@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="style.css">
 	<!--<link rel="stylesheet" href="dark.css">-->
 	<!--<link rel="stylesheet" href="playstation.css">-->
-	<script src="eventMap.js"></script>
+	<script src="controlMap.js"></script>
 	<script src="checks.js"></script>
 	<script src="websocket.js"></script>
 	<script src="input.js"></script>
@@ -43,8 +43,10 @@ function showState() {
 	</div>
 	<script>
 debug = document.getElementById("debug");
-document.addEventListener("touchstart", handlePressEvent)
-document.addEventListener("mousedown", handlePressEvent)
+document.addEventListener("touchstart", handleTouchPress)
+document.addEventListener("mousedown", handleMousePress)
+document.addEventListener("touchend", handleReleaseEvent)
+document.addEventListener("mouseup", handleReleaseEvent)
 showState()
 	</script>
 </body>

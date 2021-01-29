@@ -1,6 +1,6 @@
 const checks = {
 	criticalMisjudgement(severity, description) {
-		options = [
+		const options = [
 			console.error,
 			//TODO put logging func here
 			function(desc){throw desc},
@@ -12,6 +12,8 @@ const checks = {
 	},
 
 	isNot(expression, errormsg, severity = 0) {
+		expression = Boolean(expression)
+		console.log(expression)
 		if (expression) {
 			this.criticalMisjudgement(severity, errormsg)
 		}

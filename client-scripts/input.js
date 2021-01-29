@@ -122,6 +122,33 @@ function getEventTarget(evt) {
 	return undefined
 }
 
+function ival2sval(ival) {
+	return ival * 2 - 1
+}
+
+function getRelativeCoordinates(element, coordinates) {
+	var bounds = element.getBoundingClientRect()
+	return [
+		(coordinates[0] - bounds.x) / bounds.width,
+		(coordinates[1] - bounds.y) / bounds.height
+	].map(ival2sval)
+}
+
+function getControlSetValue(controlType, evt = null, target = null) {
+	switch (controlType) {
+		case "inst":
+			return true
+		case "bool":
+			return true
+		case "vec":
+			if (!evt)
+				{ throw "evt argument required for " + controlType }
+			if (checks.isNot(target == null), "element not given! Trying to find", 0)
+				{ target = getEventTarget(evt) }
+			return getRelativeCoordinates(target, [evt.clientX, evt.clientY])
+	}
+}
+
 function handleTouchPress(evt) {
 	//evt.preventDefault()
 	var driverIndex = evt.changedTouches[0].identifier + 1
@@ -139,7 +166,7 @@ function handlePress(evt, driverIndex) {
 
 	var control = controlMap.byId(target.id)
 	var i = control.index
-	var val = true
+	var val = getControlSetValue(control.type, evt, target)
 	evt.index = driverIndex
 	setState(evt, i, val)
 }

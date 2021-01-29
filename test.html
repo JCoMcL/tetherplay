@@ -6,17 +6,7 @@
 	<link rel="stylesheet" href="style.css">
 	<!--<link rel="stylesheet" href="dark.css">-->
 	<!--<link rel="stylesheet" href="playstation.css">-->
-	<script>
-const configuration = [ 
-	{id: "gp-ljoy", type: "vec"},
-	{id: "gp-west", type: "bool"},
-	{id: "gp-south", type: "bool"},
-	{id: "gp-select", type: "inst"}
-]
-
-function (
-
-	</script>
+	<script src="eventMap.js"></script>
 	<script src="checks.js"></script>
 	<script src="websocket.js"></script>
 	<script src="input.js"></script>
@@ -52,9 +42,6 @@ function showState() {
 		</div>
 	</div>
 	<script>
-		configuration.forEach( item => {
-console.log(item.id, item.type)
-		})
 debug = document.getElementById("debug");
 document.addEventListener("touchstart", handlePressEvent)
 document.addEventListener("mousedown", handlePressEvent)

@@ -1,0 +1,14 @@
+[package]
+name = "tpinput"
+version = "0.1.0"
+authors = ["Niall Bermingham <niallbermingham4@mail.dcu.ie>"]
+edition = "2018"
+build = "build.rs"
+link = "device"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libc = "0.2.84"
+uinput-sys = "0.1.7"
+[build-dependencies]
+cc = "1.0.66"

@@ -43,9 +43,17 @@ function showState() {
 		</div>
 	</div>
 	<script>
+state = configuration.getSetup().map(item =>
+	new control[item.type] (
+		document.getElementById(item.id),
+		onStateUpdate
+	)
+)
+
 debug = document.getElementById("debug");
-document.addEventListener("touchstart", handleTouchPress)
-document.addEventListener("mousedown", handleMousePress)
+
+document.addEventListener("touchstart", handlePressEvent)
+document.addEventListener("mousedown", handlePressEvent)
 document.addEventListener("touchend", handleReleaseEvent)
 document.addEventListener("mouseup", handleReleaseEvent)
 showState()

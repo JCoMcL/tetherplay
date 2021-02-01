@@ -7,13 +7,14 @@ class _Control{
 		this.element = element
 		this.onUpdate = updateCallback
 	}
-	_set(val) {
+	set(val) {
 		this.value = val
 		this.onUpdate(this)
 	}
 	onPress() { }
 	onRelease() { }
 	onDrag() { }
+	valueOf() { return this.value }
 }
 
 const control = {

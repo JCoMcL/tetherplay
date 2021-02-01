@@ -13,7 +13,6 @@ const checks = {
 
 	isNot(expression, errormsg, severity = 0) {
 		expression = Boolean(expression)
-		console.log(expression)
 		if (expression) {
 			this.criticalMisjudgement(severity, errormsg)
 		}

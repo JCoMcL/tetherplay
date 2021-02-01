@@ -1,5 +1,5 @@
-const controlMap = {
-	_configuration: [
+const configuration = {
+	_indexMap: [
 		{id: "gp-ljoy", type: "vec"},
 		{id: "gp-west", type: "bool"},
 		{id: "gp-south", type: "bool"},
@@ -11,13 +11,13 @@ const controlMap = {
 	},
 
 	byIndex(i) {
-		return this._configuration[i]
+		return this._indexMap[i]
 	},
 	byId(id) {
 		return this._idMap[id]
 	},
 	hasIndex(i) {
-		return  i < this._configuration.length && 0 <= i
+		return  i < this._indexMap.length && 0 <= i
 	},
 	hasId(id) {
 		return  this._idMap[id] !== undefined
@@ -25,10 +25,10 @@ const controlMap = {
 
 	_setupIdMap() {
 		this._idMap = {}
-		this._configuration.forEach((item, index) => {
+		this._indexMap.forEach((item, index) => {
 			this._idMap[item.id] = {index: index, type: item.type}
 		})
 	}
 
 }
-controlMap.setup()
+configuration.setup()

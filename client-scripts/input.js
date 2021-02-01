@@ -70,6 +70,17 @@ class StateStack {
 	}
 }
 
+class Control {
+	constructor(type) {
+		this.type = type
+		this.initial = eventTypes.initial(type)
+		this.value = this.initial
+	}
+	onPress() { }
+	onRelease() { }
+	onDrag() { }
+}
+
 var state = [[0, 0], false, false, false].map(val => new StateStack(val))
 var activeWriters = []
 
@@ -116,7 +127,7 @@ function getEventIndex(evt) {
 function getEventTarget(evt) {
 	for (i = 0; i < evt.path.length; i++) {
 		var target = evt.path[i]
-		if (controlMap.hasId(target.id))
+		if (configuration.hasId(target.id))
 			{ return target }
 	}
 	return undefined
@@ -164,7 +175,7 @@ function handlePress(evt, driverIndex) {
 	if (!target)
 		{ return }
 
-	var control = controlMap.byId(target.id)
+	var control = configuration.byId(target.id)
 	var i = control.index
 	var val = getControlSetValue(control.type, evt, target)
 	evt.index = driverIndex

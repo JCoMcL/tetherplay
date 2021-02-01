@@ -5,11 +5,11 @@ function capitalizeFirstLetter(s) {
 class _Control{
 	constructor(element, updateCallback) {
 		this.element = element
-		this.onUpdate = updateCallback
+		this.onUpdate = () => updateCallback(this)
 	}
 	set(val) {
 		this.value = val
-		this.onUpdate(this)
+		this.onUpdate()
 	}
 	onPress() { }
 	onRelease() { }
@@ -18,13 +18,14 @@ class _Control{
 }
 
 const control = {
+
 	inst: class InstControl extends _Control {
 		constructor(element, updateCallback) {
 			super(element, updateCallback)
 			this.value = undefined
 		}
 		onPress() {
-			this.onUpdate(this)
+			this.onUpdate()
 		}
 		onRelease() { }
 	},

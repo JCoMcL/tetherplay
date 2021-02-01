@@ -25,6 +25,7 @@ fn main() {
         let res = serde_json::from_str::<JsonValue>(&mut line.unwrap());
         if res.is_ok(){
             let inp: JsonValue = res.unwrap();
+
             unsafe{
                 device::press(uinput_sys::BTN_SOUTH);
                 device::sync_events();

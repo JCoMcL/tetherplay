@@ -70,7 +70,12 @@ class StateStack {
 	}
 }
 
-var state = [[0, 0], false, false, false].map(val => new StateStack(val))
+var state = configuration.getSetup().map(item =>
+	new control[item.type] (
+		document.getElementById(item.id),
+		console.log
+	)
+)
 var activeWriters = []
 
 function encodeState(index) {

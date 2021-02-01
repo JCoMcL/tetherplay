@@ -1,19 +1,23 @@
-const control = {
-	Control: class {
-		constructor(element, updateCallback) {
-			this.element = element
-			this.onUpdate = updateCallback
-		}
-		_set(val) {
-			this.value = val
-			this.onUpdate(this)
-		}
-		onPress() { }
-		onRelease() { }
-		onDrag() { }
-	},
+function capitalizeFirstLetter(s) {
+	return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
-	InstControl: class extends this.Control {
+class _Control{
+	constructor(element, updateCallback) {
+		this.element = element
+		this.onUpdate = updateCallback
+	}
+	_set(val) {
+		this.value = val
+		this.onUpdate(this)
+	}
+	onPress() { }
+	onRelease() { }
+	onDrag() { }
+}
+
+const control = {
+	inst: class InstControl extends _Control {
 		constructor(element, updateCallback) {
 			super(element, updateCallback)
 			this.value = undefined
@@ -24,7 +28,7 @@ const control = {
 		onRelease() { }
 	},
 
-	BoolControl: class extends this.Control {
+	bool: class BoolControl extends _Control {
 		constructor(element, updateCallback) {
 			super(element, updateCallback)
 			this.value = false

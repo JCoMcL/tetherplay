@@ -70,17 +70,6 @@ class StateStack {
 	}
 }
 
-class Control {
-	constructor(type) {
-		this.type = type
-		this.initial = eventTypes.initial(type)
-		this.value = this.initial
-	}
-	onPress() { }
-	onRelease() { }
-	onDrag() { }
-}
-
 var state = [[0, 0], false, false, false].map(val => new StateStack(val))
 var activeWriters = []
 

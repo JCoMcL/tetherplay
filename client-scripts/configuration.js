@@ -1,13 +1,8 @@
 const configuration = {
-	_indexMap: [
-		{id: "gp-ljoy", type: "vec"},
-		{id: "gp-west", type: "bool"},
-		{id: "gp-south", type: "bool"},
-		{id: "gp-select", type: "inst"}
-	],
 
 	setup() {
-		this._setupIdMap()
+		this._indexMap = this._getConf()
+		this._idMap = this._setupIdMap(this._indexMap)
 	},
 
 	byIndex(i) {
@@ -23,11 +18,21 @@ const configuration = {
 		return  this._idMap[id] !== undefined
 	},
 
-	_setupIdMap() {
-		this._idMap = {}
-		this._indexMap.forEach((item, index) => {
-			this._idMap[item.id] = {index: index, type: item.type}
+	_getConf() {
+		conf = '[{"id":"gp-ljoy","type":"vec"},{"id":"gp-west","type":"bool"},{"id":"gp-south","type":"bool"},{"id":"gp-select","type":"inst"}]'
+		return JSON.parse(conf)
+	},
+
+	_setupIndexMap(conf) {
+		return conf.map
+	},
+
+	_setupIdMap(indexMap) {
+		idMap = {}
+		indexMap.forEach((item, index) => {
+			idMap[item.id] = {index: index, type: item.type}
 		})
+		return idMap
 	}
 
 }

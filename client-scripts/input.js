@@ -39,17 +39,17 @@ function getControlByElement(element) {
 	return state[configuration.byId(element.id).index]
 }
 
-function callControlMethod(element, method) {
+function callControlMethod(element, method, ...args) {
 	if (!element)
 		{ return }
-	return getControlByElement(element)[method]()
+	return getControlByElement(element)[method](...args)
 }
 
 function handlePressEvent(evt) {
-	callControlMethod( getEventTarget( evt ), "onPress")
+	callControlMethod( getEventTarget( evt ), "onPress", evt)
 }
 
 function handleReleaseEvent(evt) {
-	callControlMethod( getEventTarget( evt ), "onRelease")
+	callControlMethod( getEventTarget( evt ), "onRelease", evt)
 }
 

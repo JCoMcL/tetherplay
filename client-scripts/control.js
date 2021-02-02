@@ -11,9 +11,9 @@ class _Control{
 		this.value = val
 		this.onUpdate()
 	}
-	onPress() { }
-	onRelease() { }
-	onDrag() { }
+	onPress(pressEvent = undefined) { }
+	onRelease(releaseEvent = undefined) { }
+	onDrag(dragEvent = undefined) { }
 	valueOf() { return this.value }
 }
 
@@ -24,10 +24,10 @@ const control = {
 			super(element, updateCallback)
 			this.value = undefined
 		}
-		onPress() {
+		onPress(pressEvent = undefined) {
+			super.onPress(pressEvent)
 			this.onUpdate()
 		}
-		onRelease() { }
 	},
 
 	bool: class BoolControl extends _Control {
@@ -35,11 +35,29 @@ const control = {
 			super(element, updateCallback)
 			this.value = false
 		}
-		onPress() {
+		onPress(pressEvent = undefined) {
+			super.onPress(pressEvent)
 			this.set(true)
 		}
-		onRelease() {
+		onRelease(releaseEvent = undefined) {
+			super.onRelease(releaseEvent)
 			this.set(false)
+		}
+	},
+
+	dir4: class Dir4Control extends _Control {
+		constructor(element, updateCallback) {
+			super(element, updateCallback)
+			this.value = [0,0]
+		}
+		onPress(pressEvent = undefined) {
+			super.onPress(pressEvent)
+			console.log(pressEvent)
+			this.set(true)
+		}
+		onRelease(releaseEvent = undefined) {
+			super.onRelease(releaseEvent)
+			this.set([0,0])
 		}
 	}
 }

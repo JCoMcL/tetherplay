@@ -20,7 +20,7 @@ const configuration = {
 	},
 
 	_getConf() {
-		conf = '[{"id":"gp-ljoy","type":"bool"},{"id":"gp-west","type":"bool"},{"id":"gp-south","type":"bool"},{"id":"gp-start","type":"inst"}]'
+		conf = '[{"id":"gp-ljoy","type":"dir4"},{"id":"gp-west","type":"bool"},{"id":"gp-south","type":"bool"},{"id":"gp-start","type":"inst"}]'
 		return JSON.parse(conf)
 	},
 

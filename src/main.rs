@@ -20,19 +20,37 @@ fn command_args(){
     let yml = load_yaml!("cli.yml");
     let cla = App::from_yaml(yml).get_matches();
     unsafe {
+        // path or default should be run first
         if let path = cla.value_of("path").unwrap_or(""){
+            // change path to a i8 string use Cstring it helps
+            // needs to be converted before changing open_default to open_path
+            println!("PathGiven");
+            device::open_default();
+        } else {
+            println!("NoPathGiven");
             device::open_default();
         }
-        if let dpad = cla.value_of("dpad").unwrap_or(""){
+        if cla.value_of("dpad").unwrap_or("") == "true"{
             device::setup_dpad_events();
         }
-        if let buttons = cla.value_of("gp-buttons").unwrap_or(""){
-            device::setup_gamepad_events(4);
+        if cla.value_of("gp-west").unwrap_or("") == "true"{
+            device::setup_gamepad_west();
         }
-        if let menupad = cla.value_of("menupad").unwrap_or(""){
+        if cla.value_of("gp-east").unwrap_or("") == "true"{
+            device::setup_gamepad_east();
+        }
+        if cla.value_of("gp-south").unwrap_or("") == "true"{
+            device::setup_gamepad_south();
+        }
+        if cla.value_of("gp-north").unwrap_or("") == "true"{
+            device::setup_gamepad_north();
+        }
+        if cla.value_of("menupad").unwrap_or("") == "true"{
             device::setup_menupad_events();
         }
+        // name must be called last after setting up all controller inputs
         if let name = cla.value_of("name").unwrap_or(""){
+            // change name to a i8 string use Cstring it helps
             device::create_device();
         }
     }
@@ -48,8 +66,12 @@ fn main() {
         let res = serde_json::from_str::<JsonValue>(&mut line.unwrap());
         if res.is_ok(){
             let inp: JsonValue = res.unwrap();
+            // depending on which input is given call a command
 
             unsafe{
+                // use uinput_sys btn commands for c functions
+                // when finsihed use sync events at end
+                // remove thread and time when finished
                 device::press(uinput_sys::BTN_SOUTH);
                 device::sync_events();
                 println!("PRESS");
@@ -63,5 +85,6 @@ fn main() {
             println!("Failed to read Json from stdin");
         }
     }
+    // destroys device at end of stdin
     unsafe { device::destroy_device();}
 }

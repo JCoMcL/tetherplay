@@ -9,7 +9,10 @@ extern "C"{
     pub fn release(code: c_int);
     pub fn click(code: c_int);
     pub fn setup_dpad_events();
-    pub fn setup_gamepad_events(amt: c_int);
+    pub fn setup_gamepad_west();
+    pub fn setup_gamepad_south();
+    pub fn setup_gamepad_north();
+    pub fn setup_gamepad_east();
     pub fn setup_menupad_events();
     pub fn create_device();
     pub fn destroy_device();

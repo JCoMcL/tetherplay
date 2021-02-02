@@ -65,15 +65,17 @@ void setup_dpad_events(){
 
 // enables action pad events when called
 // the amt_btn int is for how many buttons are going to be used 2, 3 or 4
-void setup_gamepad_events(int amt_btn){
+void setup_gamepad_south(){
    ioctl(fd, UI_SET_KEYBIT, BTN_SOUTH);
+}
+void setup_gamepad_east(){
    ioctl(fd, UI_SET_KEYBIT, BTN_EAST);
-   if (amt_btn > 2){
-      ioctl(fd, UI_SET_KEYBIT, BTN_WEST);
-   }
-   if (amt_btn > 3){
-      ioctl(fd, UI_SET_KEYBIT, BTN_NORTH);
-   }
+}
+void setup_gamepad_west(){
+   ioctl(fd, UI_SET_KEYBIT, BTN_WEST);
+}
+void setup_gamepad_north(){ 
+   ioctl(fd, UI_SET_KEYBIT, BTN_NORTH);
 }
 
 // enables the start and select events when called

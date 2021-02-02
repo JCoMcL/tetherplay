@@ -19,11 +19,26 @@ args:
       long: gp-rjoy
       value_name: BOOL
       help: enables right joystick for controller
-  - gp-buttons:
-      short: b
-      long: gp-buttons
-      value_name: INT
-      help: enables 2-4 gamepad buttons (A,B,X,Y)
+  - gp-south:
+      short: S
+      long: gp-south
+      value_name: BOOL
+      help: enables south gamepad button  
+  - gp-west:
+      short: W
+      long: gp-west
+      value_name: BOOL
+      help: enables west gamepad button  
+  - gp-east:
+      short: E
+      long: gp-east
+      value_name: BOOL
+      help: enables east gamepad button  
+  - gp-north:
+      short: N
+      long: gp-north
+      value_name: BOOL
+      help: enables north gamepad button
   - dpad:
       short: d
       long: dpad

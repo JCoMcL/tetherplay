@@ -20,19 +20,19 @@ fn command_args(){
     let yml = load_yaml!("cli.yml");
     let cla = App::from_yaml(yml).get_matches();
     unsafe {
-        if let path = cla.value_of("path").unwrap(){
+        if let path = cla.value_of("path").unwrap_or(""){
             device::open_default();
         }
-        if let dpad = cla.value_of("dpad").unwrap(){
+        if let dpad = cla.value_of("dpad").unwrap_or(""){
             device::setup_dpad_events();
         }
-        if let buttons = cla.value_of("gp-buttons").unwrap(){
+        if let buttons = cla.value_of("gp-buttons").unwrap_or(""){
             device::setup_gamepad_events(4);
         }
-        if let menupad = cla.value_of("menupad").unwrap(){
+        if let menupad = cla.value_of("menupad").unwrap_or(""){
             device::setup_menupad_events();
         }
-        if let name = cla.value_of("name").unwrap(){
+        if let name = cla.value_of("name").unwrap_or(""){
             device::create_device();
         }
     }

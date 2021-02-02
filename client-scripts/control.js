@@ -82,20 +82,42 @@ const control = {
 		constructor(element, updateCallback) {
 			super(element, updateCallback)
 			this.value = [0,0]
-			var children = Array.prototype.slice.call(
-				this.element.getElementsByTagName("button")
+			this.children = this.getChildren("button")
+			this.directions = this.children.map(child =>
+				this.childRelativeCoordinates(child)
 			)
-			console.log(children)
-			console.log(children.map(child =>
+		}
+
+		getChildren(tagname) {
+			return Array.prototype.slice.call(
+				this.element.getElementsByTagName(tagname)
+			)
+		}
+
+		childRelativeCoordinates(child) {
+			return sval2dir4(
 				getRelativeCoordinates(this.element, getElementCenter(child))
-			).map(sval2dir4))
+			)
+		}
+
+		directionOfChild(child) {
+			var i = this.children.indexOf(child)
+			if ( i == -1 ) {
+				throw "this child is not ours"
+			}
+			return this.directions[i]
 		}
 
 		onPress(pressEvent = undefined) {
 			super.onPress(pressEvent)
-			console.log(pressEvent)
-			this.set(true)
+			var targ = pressEvent.target //TODO find target be searching up the tree
+			if (targ == this.element)
+				{ return }
+			try {
+				this.set( this.directionOfChild(targ) )
+			} catch (e) {console.error(e)}
 		}
+
 		onRelease(releaseEvent = undefined) {
 			super.onRelease(releaseEvent)
 			this.set([0,0])

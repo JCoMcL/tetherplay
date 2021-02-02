@@ -100,7 +100,7 @@ void create_device(){
    usetup.id.bustype = BUS_USB;
    usetup.id.vendor = 0x1234;
    usetup.id.product = 0x5678;
-   strcpy(usetup.name, "TEST");
+   strcpy(usetup.name, "Test");
    // links device to use other events
    ioctl(fd, UI_DEV_SETUP, &usetup);
    ioctl(fd, UI_DEV_CREATE);

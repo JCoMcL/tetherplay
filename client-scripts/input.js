@@ -23,18 +23,6 @@ function onStateUpdate(which = null) {
 	showState()
 }
 
-function ival2sval(ival) {
-	return ival * 2 - 1
-}
-
-function getRelativeCoordinates(element, coordinates) {
-	var bounds = element.getBoundingClientRect()
-	return [
-		(coordinates[0] - bounds.x) / bounds.width,
-		(coordinates[1] - bounds.y) / bounds.height
-	].map(ival2sval)
-}
-
 function getControlByElement(element) {
 	return state[configuration.byId(element.id).index]
 }

@@ -33,6 +33,11 @@ function callControlMethod(element, method, ...args) {
 	return getControlByElement(element)[method](...args)
 }
 
+function handleTouchPressEvent(evt) {
+	evt.preventDefault()
+	handlePressEvent(evt)
+}
+
 function handlePressEvent(evt) {
 	callControlMethod( getEventTarget( evt ), "onPress", evt)
 }

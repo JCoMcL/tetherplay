@@ -52,8 +52,8 @@ state = configuration.getSetup().map(item =>
 
 debug = document.getElementById("debug");
 
-document.addEventListener("touchstart", handlePressEvent)
-document.addEventListener("mousedown", handlePressEvent)
+document.addEventListener("touchstart", handlePressEvent, {passive: false})
+document.addEventListener("mousedown", handlePressEvent, {passive: false})
 document.addEventListener("touchend", handleReleaseEvent)
 document.addEventListener("mouseup", handleReleaseEvent)
 showState()

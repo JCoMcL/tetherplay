@@ -17,13 +17,11 @@ fn command_args(){
     // command line arguments
     let yml = load_yaml!("cli.yml");
     let cla = App::from_yaml(yml).get_matches();
+    
     unsafe {
         // path or default should be run first
-        if let path = cla.value_of("path").unwrap_or(""){
-            device::open_default();
-        } else {
-            device::open_default();
-        }
+        let uinput_path = cla.value_of("path").unwrap_or("/dev/uinput");
+        device::open_path(*(CString::new(uinput_path).expect("").as_ptr()));
 
         // name must be called last after setting up all controller inputs
         let name = cla.value_of("name").unwrap();
@@ -39,10 +37,8 @@ fn main() {
         if res.is_ok(){
             let inp: JsonValue = res.unwrap();
             // depending on which input is given call a command
+            println!("{:?}", inp);
 
-            unsafe{
-                println!("{:?}", inp);
-            }
         } else {
             println!("Failed to read Json from stdin");
         }

@@ -6,6 +6,9 @@
     udev
     libudev
 	 pkgconfig
+    bindgen
+    rustfmt
+    #makeheaders not in nix yet
   ];
   multiPkgs = pkgs: (with pkgs; [
     udev

@@ -20,37 +20,14 @@ fn command_args(){
     unsafe {
         // path or default should be run first
         if let path = cla.value_of("path").unwrap_or(""){
-            // change path to a i8 string use Cstring it helps
-            // needs to be converted before changing open_default to open_path
-            println!("PathGiven");
             device::open_default();
         } else {
-            println!("NoPathGiven");
             device::open_default();
         }
-        if cla.value_of("dpad").unwrap_or("") == "true"{
-            device::setup_dpad_events();
-        }
-        if cla.value_of("gp-west").unwrap_or("") == "true"{
-            device::setup_gamepad_west();
-        }
-        if cla.value_of("gp-east").unwrap_or("") == "true"{
-            device::setup_gamepad_east();
-        }
-        if cla.value_of("gp-south").unwrap_or("") == "true"{
-            device::setup_gamepad_south();
-        }
-        if cla.value_of("gp-north").unwrap_or("") == "true"{
-            device::setup_gamepad_north();
-        }
-        if cla.value_of("menupad").unwrap_or("") == "true"{
-            device::setup_menupad_events();
-        }
+
         // name must be called last after setting up all controller inputs
-        if let name = cla.value_of("name").unwrap_or(""){
-            // change name to a i8 string use Cstring it helps
-            device::create_device();
-        }
+        let name = cla.value_of("name").unwrap();
+        device::create_device();
     }
 }
 

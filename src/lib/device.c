@@ -19,7 +19,6 @@ struct input_event create_key_event(int code, int val){
    return ie;
 }
 
-
 //  syncronizes all key events
 void sync_events(){
    struct input_event ie;
@@ -30,7 +29,6 @@ void sync_events(){
    ie.time.tv_usec = 0;
    write(fd, &ie, sizeof(ie));
 }
-
 
 // sets press event
 void press(int code){
@@ -74,7 +72,7 @@ void setup_gamepad_east(){
 void setup_gamepad_west(){
    ioctl(fd, UI_SET_KEYBIT, BTN_WEST);
 }
-void setup_gamepad_north(){ 
+void setup_gamepad_north(){
    ioctl(fd, UI_SET_KEYBIT, BTN_NORTH);
 }
 

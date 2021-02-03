@@ -14,7 +14,6 @@ use clap::{App, load_yaml};
 // device.rs holds all our c code
 mod device;
 
-
 fn command_args(){
     // command line arguments
     let yml = load_yaml!("cli.yml");
@@ -55,8 +54,6 @@ fn command_args(){
         }
     }
 }
-
-
 
 fn main() {
     // command line arguments using clap

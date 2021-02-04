@@ -11,25 +11,17 @@
 
 int fd;
 
-// creates the button so it can be easily called without the need of recreating the struct
+struct input_event create_input_event(int type, int code, int val){
+   return (struct input_event) {{0}, type, code, val};
+}
+
 struct input_event create_key_event(int code, int val){
-   struct input_event ie;
-   ie.type = EV_KEY;
-   ie.code = code;
-   ie.value = val;
-   ie.time.tv_sec = 0;
-   ie.time.tv_usec = 0;
-   return ie;
+   return create_input_event(EV_KEY, code, val);
 }
 
 // execute buffered events
 void sync_events(){
-   struct input_event ie;
-   ie.type = EV_SYN;
-   ie.code = SYN_REPORT;
-   ie.value = 0;
-   ie.time.tv_sec = 0;
-   ie.time.tv_usec = 0;
+   struct input_event ie = create_input_event(EV_SYN, SYN_REPORT, 0);
    write(fd, &ie, sizeof(ie));
 }
 

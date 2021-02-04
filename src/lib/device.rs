@@ -61,5 +61,12 @@ extern "C" {
         -> input_event;
 }
 extern "C" {
+    pub fn create_input_event(
+        type_: ::std::os::raw::c_int,
+        code: ::std::os::raw::c_int,
+        val: ::std::os::raw::c_int,
+    ) -> input_event;
+}
+extern "C" {
     pub static mut fd: ::std::os::raw::c_int;
 }

@@ -17,4 +17,5 @@ void release(int code);
 void press(int code);
 void sync_events();
 struct input_event create_key_event(int code,int val);
+struct input_event create_input_event(int type,int code,int val);
 extern int fd;

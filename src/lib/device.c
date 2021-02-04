@@ -1,11 +1,7 @@
 #include <linux/uinput.h>
-#include <sys/ioctl.h>
 #include <string.h>
-#include <stdio.h>
 #include <fcntl.h>
-#include <unistd.h> // for sleep
-#include <stdlib.h>
-#include <getopt.h>
+#include <unistd.h>
 
 #include "device.h"
 
@@ -19,23 +15,24 @@ struct input_event create_key_event(int code, int val){
    return create_input_event(EV_KEY, code, val);
 }
 
+void write_input_event(struct input_event ie) {
+   write(fd, &ie, sizeof(ie));
+}
+
 // execute buffered events
 void sync_events(){
-   struct input_event ie = create_input_event(EV_SYN, SYN_REPORT, 0);
-   write(fd, &ie, sizeof(ie));
+   write_input_event( create_input_event(EV_SYN, SYN_REPORT, 0) );
 }
 
 void press(int code){
-   struct input_event ie = create_key_event(code, 1);
-   write(fd, &ie, sizeof(ie));
+   write_input_event( create_key_event(code, 1) );
 }
 
 void release(int code){
-   struct input_event ie = create_key_event(code, 0);
-   write(fd, &ie, sizeof(ie));
+   write_input_event( create_key_event(code, 0) );
 }
 
-// press and release in short succesion
+// press and release; in short succesion
 void click(int code){
    press(code);
    sync_events();
@@ -44,8 +41,7 @@ void click(int code){
 }
 
 void move_joystick(int code, int pos){
-   struct input_event ie = create_key_event(code, pos);
-   write(fd, &ie, sizeof(ie));
+   write_input_event( create_key_event(code, pos) );
 }
 
 void setup_dpad_events(){

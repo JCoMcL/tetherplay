@@ -5,8 +5,8 @@
   targetPkgs = pkgs: with pkgs; [ 
     udev
     libudev
-	 pkgconfig
-    bindgen
+    pkgconfig
+    rust-bindgen
     rustfmt
     #makeheaders not in nix yet
   ];
@@ -14,6 +14,7 @@
     udev
     libudev
   ]);
+  profile = '' export SHELL=zsh '';
   extraOutputsToInstall = [ "dev" ];
-  runScript = ''zsh'';
+  runScript = ''$SHELL'';
 }).env

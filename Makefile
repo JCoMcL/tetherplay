@@ -16,9 +16,9 @@ ${EXE}: ${LIB}/device.rs
 	bindgen $< > $@
 
 clean:
-	cargo clean
+	rm ${EXE}
 
 test: ${EXE}
-	$< --name="js0" gp-ljoy:dir4 gp-south:bool gp-west:bool gp-start:inst
+	$< --name="js0" < test.json #gp-ljoy:dir4 gp-south:bool gp-west:bool gp-start:inst
 
 .PHONY: clean test

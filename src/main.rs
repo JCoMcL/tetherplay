@@ -2,7 +2,6 @@ extern crate uinput_sys;
 extern crate serde_json;
 extern crate clap;
 
-
 // for changing rust str into i8 {c string}
 use std::ffi::CString;
 use std::{thread, time, io};
@@ -56,7 +55,6 @@ fn command_args(){
 }
 
 fn main() {
-    // command line arguments using clap
     command_args();
     // loop for takeing stdin until EOF
     for line in io::stdin().lock().lines() {
@@ -66,17 +64,7 @@ fn main() {
             // depending on which input is given call a command
 
             unsafe{
-                // use uinput_sys btn commands for c functions
-                // when finsihed use sync events at end
-                // remove thread and time when finished
-                device::press(uinput_sys::BTN_SOUTH);
-                device::sync_events();
-                println!("PRESS");
-                thread::sleep(time::Duration::from_secs(5));
-                device::release(uinput_sys::BTN_SOUTH);
-                device::sync_events();
-                println!("RELEASE");
-                thread::sleep(time::Duration::from_secs(5));
+                println!("{:?}", inp);
             }
         } else {
             println!("Failed to read Json from stdin");

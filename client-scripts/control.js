@@ -131,6 +131,17 @@ const control = {
 			this.value = [0, 0]
 			this.context = this.element.getContext("2d")
 			this.pressed = false
+			this.resetJoystick()
+		
+		}
+
+		getPosition(){
+			var mouse_x = event.clientX || event.touches[0].clientX
+			var mouse_y = event.clientY || event.touches[0].clientY
+			return [mouse_x, mouse_y]
+		}
+
+		resetJoystick(){
 			this.drawJoystick([this.element.width /2 , this.element.height / 2])
 
 		}
@@ -154,15 +165,16 @@ const control = {
 		onDrag(dragEvent = undefined) {
 			if (!this.pressed) { return }
 			try {
-				this.set(getRelativeCoordinates(this.element, [event.clientX, event.clientY]))
-				this.drawJoystick([event.clientX - this.element.offsetLeft, event.clientY - this.element.offsetTop]);
+				var pos = this.getPosition()
+				this.set(getRelativeCoordinates(this.element, pos))
+				this.drawJoystick([pos[0] - this.element.offsetLeft, pos[1] - this.element.offsetTop]);
 			} catch (e) {console.error(e)} 
 		}
 		onRelease(releaseEvent = undefined){
 			super.onRelease(releaseEvent)
 			this.set([0,0])
 			this.pressed = false
-			this.drawJoystick([this.element.width /2 , this.element.height / 2])
+			this.resetJoystick()
 		}
 	}
 }

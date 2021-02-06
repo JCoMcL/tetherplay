@@ -39,10 +39,13 @@ function handleTouchPressEvent(evt) {
 }
 
 function handlePressEvent(evt) {
+	// checks if event.path is there if not use event composedPath
+	evt.path = evt.path || (evt.composedPath && evt.composedPath());
 	callControlMethod( getEventTarget( evt ), "onPress", evt)
 }
 
 function handleReleaseEvent(evt) {
+	evt.path = evt.path || (evt.composedPath && evt.composedPath());
 	callControlMethod( getEventTarget( evt ), "onRelease", evt)
 }
 

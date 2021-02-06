@@ -56,6 +56,8 @@ document.addEventListener("touchstart", handlePressEvent, {passive: false})
 document.addEventListener("mousedown", handlePressEvent, {passive: false})
 document.addEventListener("touchend", handleReleaseEvent)
 document.addEventListener("mouseup", handleReleaseEvent)
+// stops right click/context menu on webpage
+document.addEventListener('contextmenu', evt => evt.preventDefault());
 showState()
 	</script>
 </body>

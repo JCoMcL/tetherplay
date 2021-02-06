@@ -21,7 +21,7 @@ fn command_args(){
     unsafe {
         // path or default should be run first
         let uinput_path = cla.value_of("path").unwrap_or("/dev/uinput");
-        device::open_path(*(CString::new(uinput_path).expect("").as_ptr()));
+        device::open_default();
 
         // name must be called last after setting up all controller inputs
         let name = cla.value_of("name").unwrap();
@@ -29,15 +29,22 @@ fn command_args(){
     }
 }
 
+unsafe fn event_bool(state: bool, input_id: i32) {
+    (if state { device::release } else {device::press})(input_id);
+}
+unsafe fn event_inst(input_id: i32) {
+    device::click(input_id);
+}
+
 fn main() {
     command_args();
-    // loop for takeing stdin until EOF
+    // loop for taking stdin until EOF
     for line in io::stdin().lock().lines() {
         let res = serde_json::from_str::<JsonValue>(&mut line.unwrap());
         if res.is_ok(){
             let inp: JsonValue = res.unwrap();
             // depending on which input is given call a command
-            println!("{:?}", inp);
+            println!("{:?}", inp.get("i"));
 
         } else {
             println!("Failed to read Json from stdin");

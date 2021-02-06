@@ -77,7 +77,6 @@ const control = {
 			this.set(false)
 		}
 	},
-
 	dir4: class Dir4Control extends _Control {
 		constructor(element, updateCallback) {
 			super(element, updateCallback)
@@ -121,6 +120,49 @@ const control = {
 		onRelease(releaseEvent = undefined) {
 			super.onRelease(releaseEvent)
 			this.set([0,0])
+		}
+	},
+	// this is not fully correct im following your nameing style
+	vec8: class Vec8Control extends _Control {
+		constructor(element, updateCallback){
+			super(element, updateCallback)
+			// value is x and y respectivly needs to change to correct values
+			// using getRelativeCoordinates as values for now
+			this.value = [0, 0]
+			this.context = this.element.getContext("2d")
+			this.pressed = false
+			this.drawJoystick([this.element.width /2 , this.element.height / 2])
+
+		}
+
+		// sets values to be drawn by the canvas
+		drawJoystick(coordinates){
+			this.context.clearRect(0, 0, this.element.width, this.element.height)
+			this.context.beginPath()
+			this.context.arc(coordinates[0], coordinates[1], this.element.width / 3, 0, 2*Math.PI)
+			this.context.fillStyle = "#080808"
+			this.context.fill()
+			this.context.stroke()
+		}
+
+		onPress(pressEvent = undefined){
+			this.pressed = true
+		}
+		//drag event to make joystick follow your cursor
+		// error when dragging outside of canvas
+		// touchscreen drag event bugs out
+		onDrag(dragEvent = undefined) {
+			if (!this.pressed) { return }
+			try {
+				this.set(getRelativeCoordinates(this.element, [event.clientX, event.clientY]))
+				this.drawJoystick([event.clientX - this.element.offsetLeft, event.clientY - this.element.offsetTop]);
+			} catch (e) {console.error(e)} 
+		}
+		onRelease(releaseEvent = undefined){
+			super.onRelease(releaseEvent)
+			this.set([0,0])
+			this.pressed = false
+			this.drawJoystick([this.element.width /2 , this.element.height / 2])
 		}
 	}
 }

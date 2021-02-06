@@ -7,7 +7,7 @@ app.use(express.static('style'));
 app.use(express.static('client-scripts'));
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/test.html');
+    res.sendFile(__dirname + '/joystick-test.html');
 })
 app.get('/client.js', function (req, res) {
     res.sendFile(__dirname + '/client.js');

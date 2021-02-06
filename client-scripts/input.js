@@ -49,3 +49,7 @@ function handleReleaseEvent(evt) {
 	callControlMethod( getEventTarget( evt ), "onRelease", evt)
 }
 
+function handleDragEvent(evt) {
+	evt.path = evt.path || (evt.composedPath && evt.composedPath());
+	callControlMethod( getEventTarget( evt ), "onDrag", evt)
+}

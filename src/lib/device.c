@@ -1,5 +1,5 @@
-#include <libevdev-1.0/libevdev/libevdev.h> // this sucks
-#include <libevdev-1.0/libevdev/libevdev-uinput.h> // this sucks
+#include <libevdev/libevdev.h>
+#include <libevdev/libevdev-uinput.h>
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>

@@ -20,7 +20,10 @@ fn command_args(){
     
     unsafe {
         // path or default should be run first
-        let uinput_path = cla.value_of("path").unwrap_or("/dev/uinput");
+        let mut uinput_path = CString::new(
+            cla.value_of("path").unwrap_or("/dev/uinput")
+        ).expect("/dev/uinput").as_ptr();
+
         device::open_default();
 
         // name must be called last after setting up all controller inputs
@@ -30,10 +33,7 @@ fn command_args(){
 }
 
 unsafe fn event_bool(state: bool, input_id: i32) {
-    (if state { device::release } else {device::press})(input_id);
-}
-unsafe fn event_inst(input_id: i32) {
-    device::click(input_id);
+    (if state { device::release } else { device::press })(input_id);
 }
 
 fn main() {

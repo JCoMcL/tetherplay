@@ -1,4 +1,4 @@
-#include <linux/uinput.h>
+#include <libevdev/libevdev.h>
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -26,42 +26,53 @@ void sync_events(){
 
 void press(int code){
    write_input_event( create_key_event(code, 1) );
+   sync_events();
 }
 
 void release(int code){
    write_input_event( create_key_event(code, 0) );
+   sync_events();
 }
 
-// press and release; in short succesion
 void click(int code){
    press(code);
-   sync_events();
    release(code);
-   sync_events();
 }
 
 void move_joystick(int code, int pos){
    write_input_event( create_key_event(code, pos) );
 }
 
+void enable_event(int file_descriptor, int type, int event_code){
+   ioctl(file_descriptor, type, event_code);
+}
+
+void enable_key_event(int event_code){
+   enable_event(fd, UI_SET_KEYBIT, event_code);
+}
+
+void enable_abs_event(int event_code){
+   enable_event(fd, UI_SET_ABSBIT, event_code);
+}
+
 void setup_dpad_events(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_UP);
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_LEFT);
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_DOWN);
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_RIGHT);
+   enable_key_event(BTN_DPAD_UP);
+   enable_key_event(BTN_DPAD_LEFT);
+   enable_key_event(BTN_DPAD_DOWN);
+   enable_key_event(BTN_DPAD_RIGHT);
 }
 
 void setup_gamepad_south(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_SOUTH);
+   enable_key_event(BTN_SOUTH);
 }
 void setup_gamepad_east(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_EAST);
+   enable_key_event(BTN_EAST);
 }
 void setup_gamepad_west(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_WEST);
+   enable_key_event(BTN_WEST);
 }
 void setup_gamepad_north(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_NORTH);
+   enable_key_event(BTN_NORTH);
 }
 
 // enable start and select buttons
@@ -90,7 +101,6 @@ void create_device(){
 
    ioctl(fd, UI_DEV_SETUP, &usetup);
    ioctl(fd, UI_DEV_CREATE);
-   sleep(1); // returning immediately can cause problems
 }
 
 void destroy_device(){

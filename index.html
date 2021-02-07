@@ -22,15 +22,7 @@ function showState() {
 	<pre id="debug" class="display"> </pre>
 	<div id="input">
 		<div id="left">
-			<table id="gp-ljoy" class="dpad cluster of-4">
-				<tr>
-					<td><button>▲</button></td>
-					<td><button>►</button></td>
-				</tr><tr>
-					<td><button>◄</button></td>
-					<td><button>▼</button></td>
-				</tr>
-			</table>
+			<canvas id="gp-joy" width="200" height="200"></canvas>
 		</div>
 		<div id="right">
 			<table class="cluster of-2">
@@ -57,7 +49,10 @@ document.addEventListener("mousedown", handlePressEvent, {passive: false})
 document.addEventListener("touchend", handleReleaseEvent)
 document.addEventListener("mouseup", handleReleaseEvent)
 // stops right click/context menu on webpage
-document.addEventListener('contextmenu', evt => evt.preventDefault());
+document.addEventListener("contextmenu", evt => evt.preventDefault());
+document.addEventListener("mousemove", handleDragEvent)
+document.addEventListener("touchmove", handleDragEvent)
+document.addEventListener('touchcancel', handleReleaseEvent)
 showState()
 	</script>
 </body>

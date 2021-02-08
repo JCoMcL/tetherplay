@@ -45,7 +45,6 @@ function processEvent(evt) {
 }
 
 function handlePressEvent(evt) {
-	console.log(evt)
 	callControlMethod( getDownEventTarget( evt ), "onPress", evt)
 }
 

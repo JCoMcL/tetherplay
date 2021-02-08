@@ -1,29 +1,21 @@
-#include <linux/uinput.h>
-#include <sys/ioctl.h>
-#include <string.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h> // for sleep
-#include <stdlib.h>
-
-int fd;
-struct input_event create_key_event(int code, int val);
-
-void move_joystick(int code, int pos);
-void sync_events();
-void press(int code);
-void release(int code);
-void click(int code);
-void setup_dpad_events();
-void setup_gamepad_north();
-void setup_gamepad_south();
-void setup_gamepad_east();
-void setup_gamepad_west();
-void setup_menupad_events();
-void setup_joystick_left_events();
-void setup_joystick_right_events();
-void create_device();
+/* This file was automatically generated.  Do not edit! */
 void open_default();
-void open_path(char* str);
+void open_path(char *path);
 void destroy_device();
-
+void create_device();
+void setup_joystick_right_events();
+void setup_joystick_left_events();
+void setup_menupad_events();
+void setup_gamepad_north();
+void setup_gamepad_west();
+void setup_gamepad_east();
+void setup_gamepad_south();
+void setup_dpad_events();
+void move_joystick(int code,int pos);
+void click(int code);
+void release(int code);
+void press(int code);
+void sync_events();
+struct input_event create_key_event(int code,int val);
+struct input_event create_input_event(int type,int code,int val);
+extern int fd;

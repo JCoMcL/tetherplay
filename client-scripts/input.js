@@ -33,23 +33,20 @@ function callControlMethod(element, method, ...args) {
 	return getControlByElement(element)[method](...args)
 }
 
-function handleTouchPressEvent(evt) {
-	evt.preventDefault()
-	handlePressEvent(evt)
-}
-
 function handlePressEvent(evt) {
-	// checks if event.path is there if not use event composedPath
+	evt.preventDefault()
 	evt.path = evt.path || (evt.composedPath && evt.composedPath());
 	callControlMethod( getEventTarget( evt ), "onPress", evt)
 }
 
 function handleReleaseEvent(evt) {
+	evt.preventDefault()
 	evt.path = evt.path || (evt.composedPath && evt.composedPath());
 	callControlMethod( getEventTarget( evt ), "onRelease", evt)
 }
 
 function handleDragEvent(evt) {
+	evt.preventDefault()
 	evt.path = evt.path || (evt.composedPath && evt.composedPath());
 	callControlMethod( getEventTarget( evt ), "onDrag", evt)
 }

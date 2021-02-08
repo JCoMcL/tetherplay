@@ -44,15 +44,19 @@ state = configuration.getSetup().map(item =>
 
 debug = document.getElementById("debug");
 
-document.addEventListener("touchstart", handlePressEvent, {passive: false})
-document.addEventListener("mousedown", handlePressEvent, {passive: false})
-document.addEventListener("touchend", handleReleaseEvent)
-document.addEventListener("mouseup", handleReleaseEvent)
-// stops right click/context menu on webpage
-document.addEventListener("contextmenu", evt => evt.preventDefault());
-document.addEventListener("mousemove", handleDragEvent)
-document.addEventListener("touchmove", handleDragEvent)
-document.addEventListener('touchcancel', handleReleaseEvent)
+var inputArea = document.getElementById("input");
+
+["touchstart", "mousedown"].forEach( evt =>
+	inputArea.addEventListener(evt, handlePressEvent, {passive: false})
+);
+["touchend", "touchcancel", "mouseup"].forEach( evt =>
+	inputArea.addEventListener(evt, handleReleaseEvent, {passive: false})
+);
+["touchmove", "mousemove"].forEach( evt =>
+	inputArea.addEventListener(evt, handleDragEvent, {passive: false})
+);
+inputArea.addEventListener("contextmenu", evt => evt.preventDefault());
+
 showState()
 	</script>
 </body>

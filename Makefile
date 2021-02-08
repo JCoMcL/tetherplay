@@ -1,3 +1,6 @@
+CFLAGS = -I/usr/include/libevdev-1.0
+LDFLAGS = `pkg-config --static --libs libevdev`
+
 PREFIX = /usr
 MANPREFIX = $(PREFIX)/share/man
 
@@ -14,6 +17,9 @@ ${EXE}: ${LIB}/device.rs
 
 %.rs: %.h
 	bindgen $< > $@
+
+%.a: %.c %.h
+	cc $(CFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:
 	rm ${EXE}

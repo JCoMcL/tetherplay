@@ -17,4 +17,5 @@ version = "2.33.3"
 features = ["yaml", "color"]
 
 [build-dependencies]
+pkg-config = "0.3.19"
 cc = "1.0.66"

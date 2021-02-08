@@ -74,7 +74,6 @@ void move_joystick(struct libevdev_uinput *dev, int code, int pos){
 	write_key_event(dev, code, pos);
 }
 
-#ifndef PRIVATE
 int main() {
 	struct libevdev_uinput *dev = create_device("test");
 
@@ -84,4 +83,3 @@ int main() {
 	sleep(1);
 	return 0;
 }
-#endif

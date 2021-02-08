@@ -46,15 +46,12 @@ debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");
 
-["touchstart", "mousedown"].forEach( evt =>
-	inputArea.addEventListener(evt, handlePressEvent, {passive: false})
-);
-["touchend", "touchcancel", "mouseup"].forEach( evt =>
-	inputArea.addEventListener(evt, handleReleaseEvent, {passive: false})
-);
-["touchmove", "mousemove"].forEach( evt =>
-	inputArea.addEventListener(evt, handleDragEvent, {passive: false})
-);
+inputArea.addEventListener("pointerdown", handlePressEvent, {passive: false})
+inputArea.addEventListener("pointermove", handleDragEvent, {passive: false})
+inputArea.addEventListener("pointerup", handleReleaseEvent, {passive: false})
+inputArea.addEventListener("pointercancel", handleReleaseEvent, {passive: false})
+
+inputArea.addEventListener("touchmove", evt => evt.preventDefault());
 inputArea.addEventListener("contextmenu", evt => evt.preventDefault());
 
 showState()

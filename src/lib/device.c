@@ -6,24 +6,22 @@
 
 #include "device.h"
 
-void enable_event(struct libevdev *dev, int type, int event_code){
+static struct libevdev_uinput *uidev;
+
+static void enable_event(struct libevdev *dev, int type, int event_code){
 	libevdev_enable_event_type(dev, type); // only required once per event type
 	libevdev_enable_event_code(dev, type, event_code, NULL);
 }
 
-void enable_key_event(struct libevdev *dev, int event_code){
+static void enable_key_event(struct libevdev *dev, int event_code){
 	enable_event(dev, EV_KEY, event_code);
 }
 
-void enable_abs_event(struct libevdev *dev, int event_code){
+static void enable_abs_event(struct libevdev *dev, int event_code){
 	enable_event(dev, EV_ABS, event_code);
 }
 
-void cleanup(struct libevdev_uinput *dev){
-	libevdev_uinput_destroy(dev);
-}
-
-void hardcode_device(struct libevdev *dev) {
+static void hardcode_device(struct libevdev *dev) {
 	enable_abs_event(dev, ABS_X);
 	enable_abs_event(dev, ABS_Y);
 	enable_key_event(dev, BTN_SOUTH);
@@ -31,7 +29,7 @@ void hardcode_device(struct libevdev *dev) {
 	enable_key_event(dev, BTN_START);
 }
 
-struct libevdev_uinput *create_device(char *name){
+void create_device(char *name){
 	int err;
 
 	struct libevdev *dev;
@@ -40,36 +38,39 @@ struct libevdev_uinput *create_device(char *name){
 	libevdev_set_name(dev, "test device");
 	hardcode_device(dev);
 
-	struct libevdev_uinput *uidev;
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
 	if (err != 0) {}
 
-	return uidev;
 }
 
-void write_key_event(struct libevdev_uinput *dev, int code, int value){
-	libevdev_uinput_write_event(dev, EV_KEY, code, value);
+void write_key_event(int code, int value){
+	libevdev_uinput_write_event(uidev, EV_KEY, code, value);
 }
 
-void sync_events(struct libevdev_uinput *dev){
-	libevdev_uinput_write_event(dev, EV_SYN, SYN_REPORT, 0);
+void sync_events(){
+	libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
 }
 
-void press(struct libevdev_uinput *dev, int code){
-	write_key_event(dev, code, 1);
-	sync_events(dev);
+void press( int code){
+	write_key_event(code, 1);
+	sync_events();
 }
 
-void release(struct libevdev_uinput *dev, int code){
-	write_key_event(dev, code, 0);
-	sync_events(dev);
+void release( int code){
+	write_key_event(code, 0);
+	sync_events();
 }
 
-void click(struct libevdev_uinput *dev, int code){
-	press(dev, code);
-	release(dev, code);
+void click( int code){
+	press(code);
+	release(code);
 }
 
-void move_joystick(struct libevdev_uinput *dev, int code, int pos){
-	write_key_event(dev, code, pos);
+void move_joystick( int code, int pos){
+	write_key_event(code, pos);
 }
+
+void cleanup(){
+	libevdev_uinput_destroy(uidev);
+}
+

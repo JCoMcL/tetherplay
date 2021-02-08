@@ -13,6 +13,7 @@ use clap::{App, load_yaml};
 // device.rs holds all our c code
 mod device;
 
+/*
 fn command_args(){
     // command line arguments
     let yml = load_yaml!("cli.yml");
@@ -30,15 +31,11 @@ fn command_args(){
         let name = cla.value_of("name").unwrap();
         device::create_device();
     }
-}
-
-unsafe fn event_bool(state: bool, input_id: i32) {
-    (if state { device::release } else { device::press })(input_id);
-}
+}*/
 
 fn main() {
-    command_args();
-    // loop for taking stdin until EOF
+    unsafe { let dev = device::create_device(); }
+    //command_args();
     for line in io::stdin().lock().lines() {
         let res = serde_json::from_str::<JsonValue>(&mut line.unwrap());
         if res.is_ok(){
@@ -51,6 +48,6 @@ fn main() {
         }
     }
     // destroys device at end of stdin
-    unsafe { device::destroy_device();}
+    unsafe { device::cleanup(dev);}
 }
 

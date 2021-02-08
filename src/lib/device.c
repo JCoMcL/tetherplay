@@ -1,5 +1,5 @@
-#include <libevdev/libevdev.h>
-#include <libevdev/libevdev-uinput.h>
+#include <libevdev-1.0/libevdev/libevdev.h>
+#include <libevdev-1.0/libevdev/libevdev-uinput.h> //TODO fix these paths for final release
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -72,14 +72,4 @@ void click(struct libevdev_uinput *dev, int code){
 
 void move_joystick(struct libevdev_uinput *dev, int code, int pos){
 	write_key_event(dev, code, pos);
-}
-
-int main() {
-	struct libevdev_uinput *dev = create_device("test");
-
-	press(dev, BTN_SOUTH);
-	sleep(1);
-	release(dev, BTN_SOUTH);
-	sleep(1);
-	return 0;
 }

@@ -10,6 +10,7 @@ EXE = target/debug/${TITLE}
 LIB = src/lib
 
 ${EXE}: ${LIB}/device.rs
+	cp $< src/device.rs
 	cargo build
 
 %.h: %.c

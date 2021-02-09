@@ -134,11 +134,8 @@ const control = {
 			this.resetJoystick()
 		
 		}
-		getPosition(){
-			// gets position of first touch to canvas and tracks that touch
-			var mouse_x = event.clientX || event.touches[0].clientX
-			var mouse_y = event.clientY || event.touches[0].clientY
-			return [mouse_x, mouse_y]
+		getPosition(evt){
+			return [evt.x, evt.y]
 		}
 
 		resetJoystick(){
@@ -156,6 +153,7 @@ const control = {
 		}
 
 		onPress(pressEvent = undefined){
+			super.onPress(pressEvent)
 			this.pressed = true
 		}
 		// drag event to make joystick follow your cursor
@@ -163,7 +161,7 @@ const control = {
 		onDrag(dragEvent = undefined) {
 			if (!this.pressed) { return }
 			try {
-				var pos = this.getPosition()
+				var pos = this.getPosition(dragEvent)
 				this.set(getRelativeCoordinates(this.element, pos))
 				this.drawJoystick([pos[0] - this.element.offsetLeft, pos[1] - this.element.offsetTop]);
 			} catch (e) {console.error(e)} 

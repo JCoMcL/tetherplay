@@ -1,6 +1,3 @@
-CFLAGS = -I/usr/include/libevdev-1.0
-LDFLAGS = `pkg-config --static --libs libevdev`
-
 PREFIX = /usr
 MANPREFIX = $(PREFIX)/share/man
 

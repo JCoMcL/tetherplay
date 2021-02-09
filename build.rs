@@ -1,5 +1,8 @@
 extern crate cc;
 
 fn main(){
-    println!("cargo:rustc-link-search=src/lib/");
+    cc::Build::new()
+        .file("src/lib/device.c")
+        .include("src")
+        .compile("device.a");
 }

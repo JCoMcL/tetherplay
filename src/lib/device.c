@@ -73,4 +73,3 @@ void move_joystick( int code, int pos){
 void cleanup(){
 	libevdev_uinput_destroy(uidev);
 }
-

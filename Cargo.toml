@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Niall Bermingham <niallbermingham4@mail.dcu.ie>", "Jordan Conway-McLaughlin <jordan.conwaymclaughlin24@mail.dcu.ie>" ] 
 edition = "2018"
 build = "build.rs"
+links = "evdev"
 
 [dependencies]
 libc = "0.2.84"
@@ -18,3 +19,4 @@ features = ["yaml", "color"]
 
 [build-dependencies]
 cc = "1.0.66"
+pkg-config = "0.3.19"

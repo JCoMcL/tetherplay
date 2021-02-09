@@ -1,8 +1,7 @@
-PREFIX = /usr
-MANPREFIX = $(PREFIX)/share/man
+CFLAGS = -I/usr/include/libevdev-1.0
+-LDFLAGS = `pkg-config --static --libs libevdev`
 
 TITLE = tpinput
-MANPAGE = ${TITLE}.1.gz
 EXE = target/debug/${TITLE}
 LIB = src/lib
 

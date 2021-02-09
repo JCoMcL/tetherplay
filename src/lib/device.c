@@ -29,7 +29,7 @@ static void hardcode_device(struct libevdev *dev) {
 	enable_key_event(dev, BTN_START);
 }
 
-void create_device(char *name){
+void create_device(){
 	int err;
 
 	struct libevdev *dev;

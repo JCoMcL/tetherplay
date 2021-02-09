@@ -34,7 +34,7 @@ fn command_args(){
 }*/
 
 fn main() {
-    unsafe { let dev = device::create_device(); }
+    unsafe { device::create_device(); }
     //command_args();
     for line in io::stdin().lock().lines() {
         let res = serde_json::from_str::<JsonValue>(&mut line.unwrap());
@@ -48,6 +48,6 @@ fn main() {
         }
     }
     // destroys device at end of stdin
-    unsafe { device::cleanup(dev);}
+    unsafe { device::cleanup();}
 }
 

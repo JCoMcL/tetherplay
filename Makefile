@@ -19,8 +19,11 @@ ${EXE}: ${LIB}/device.rs
 %.rs: %.h
 	bindgen $< > $@
 
-%.a: %.c %.h
-	cc $(CFLAGS) -o $@ $< $(LDFLAGS)
+%.o: %.c %.h
+	cc $(CFLAGS) -c -o $@ $< $(LDFLAGS)
+
+%.a: %.o
+	ar rcs $@ $<
 
 clean:
 	rm ${EXE}

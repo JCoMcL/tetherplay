@@ -22,5 +22,5 @@ extern "C" {
     pub fn write_key_event(code: ::std::os::raw::c_int, value: ::std::os::raw::c_int);
 }
 extern "C" {
-    pub fn create_device(name: *mut ::std::os::raw::c_char);
+    pub fn create_device();
 }

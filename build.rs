@@ -10,12 +10,6 @@ fn main(){
         .expect("8=========D~~~~~~~~~~~~~~~~")
     ).stdout).as_ref().to_owned();
 
-    println!("8=============D~~~~~~~~~~~");
-    println!("{:?}", link_flags);
-    println!("8=============D~~~~~~~~~~~");
-    println!("{:?}", link_flags);
-    println!("8=============D~~~~~~~~~~~");
-
     cc::Build::new()
         .file("src/lib/device.c")
         .include("src")

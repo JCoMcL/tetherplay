@@ -1,7 +1,7 @@
 name: tpinput
 version: "0.1"
 author: Niall B.
-about: creates a virtural controller which takes in json input
+about: creates a virtual controller which takes in json input
 args:
   - name:
       short: n
@@ -9,51 +9,8 @@ args:
       value_name: NAME
       help: Sets controllers name must be called
       required: true
-  - gp-ljoy:
-      short: j
-      long: gp-ljoy
-      value_name: BOOL
-      help: enables left joystick for controller
-  - gp-rjoy:
-      short: r
-      long: gp-rjoy
-      value_name: BOOL
-      help: enables right joystick for controller
-  - gp-south:
-      short: S
-      long: gp-south
-      value_name: BOOL
-      help: enables south gamepad button  
-  - gp-west:
-      short: W
-      long: gp-west
-      value_name: BOOL
-      help: enables west gamepad button  
-  - gp-east:
-      short: E
-      long: gp-east
-      value_name: BOOL
-      help: enables east gamepad button  
-  - gp-north:
-      short: N
-      long: gp-north
-      value_name: BOOL
-      help: enables north gamepad button
-  - dpad:
-      short: d
-      long: dpad
-      value_name: BOOL
-      help: enables dpad
-  - menupad:
-      short: m
-      long: menupad
-      value_name: BOOL
-      help: enables START and SELECT buttons
   - path:
       short: p
       long: path
       value_name: PATH
       help: sets path to uinput if it is not at /dev/uinput
-
-
-

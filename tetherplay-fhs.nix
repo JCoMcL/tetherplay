@@ -5,15 +5,12 @@
   targetPkgs = pkgs: with pkgs; [ 
     udev
     libudev
+    libevdev
     pkgconfig
     rust-bindgen
     rustfmt
     #makeheaders not in nix yet
   ];
-  multiPkgs = pkgs: (with pkgs; [
-    udev
-    libudev
-  ]);
   profile = '' export SHELL=zsh '';
   extraOutputsToInstall = [ "dev" ];
   runScript = ''$SHELL'';

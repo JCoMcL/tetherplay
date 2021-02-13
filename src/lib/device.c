@@ -1,109 +1,75 @@
-#include <linux/uinput.h>
+#include <libevdev-1.0/libevdev/libevdev.h>
+#include <libevdev-1.0/libevdev/libevdev-uinput.h> //TODO fix these paths for final release
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 
 #include "device.h"
 
-int fd;
+static struct libevdev_uinput *uidev;
 
-struct input_event create_input_event(int type, int code, int val){
-   return (struct input_event) {{0}, type, code, val};
-}
-
-struct input_event create_key_event(int code, int val){
-   return create_input_event(EV_KEY, code, val);
+static void enable_event(struct libevdev *dev, int type, int event_code){
+	libevdev_enable_event_type(dev, type); // only required once per event type
+	libevdev_enable_event_code(dev, type, event_code, NULL);
 }
 
-void write_input_event(struct input_event ie) {
-   write(fd, &ie, sizeof(ie));
+static void enable_key_event(struct libevdev *dev, int event_code){
+	enable_event(dev, EV_KEY, event_code);
 }
 
-// execute buffered events
-void sync_events(){
-   write_input_event( create_input_event(EV_SYN, SYN_REPORT, 0) );
+static void enable_abs_event(struct libevdev *dev, int event_code){
+	enable_event(dev, EV_ABS, event_code);
 }
 
-void press(int code){
-   write_input_event( create_key_event(code, 1) );
-}
-
-void release(int code){
-   write_input_event( create_key_event(code, 0) );
-}
-
-// press and release; in short succesion
-void click(int code){
-   press(code);
-   sync_events();
-   release(code);
-   sync_events();
-}
-
-void move_joystick(int code, int pos){
-   write_input_event( create_key_event(code, pos) );
-}
-
-void setup_dpad_events(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_UP);
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_LEFT);
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_DOWN);
-   ioctl(fd, UI_SET_KEYBIT, BTN_DPAD_RIGHT);
-}
-
-void setup_gamepad_south(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_SOUTH);
-}
-void setup_gamepad_east(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_EAST);
-}
-void setup_gamepad_west(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_WEST);
-}
-void setup_gamepad_north(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_NORTH);
-}
-
-// enable start and select buttons
-void setup_menupad_events(){
-   ioctl(fd, UI_SET_KEYBIT, BTN_START);
-   ioctl(fd, UI_SET_KEYBIT, BTN_SELECT);
-}
-
-void setup_joystick_left_events(){
-   ioctl(fd, UI_SET_KEYBIT, ABS_X);
-   ioctl(fd, UI_SET_KEYBIT, ABS_Y);
-}
-
-void setup_joystick_right_events(){
-   ioctl(fd, UI_SET_KEYBIT, ABS_RX);
-   ioctl(fd, UI_SET_KEYBIT, ABS_RY);
+static void hardcode_device(struct libevdev *dev) {
+	enable_abs_event(dev, ABS_X);
+	enable_abs_event(dev, ABS_Y);
+	enable_key_event(dev, BTN_SOUTH);
+	enable_key_event(dev, BTN_WEST);
+	enable_key_event(dev, BTN_START);
 }
 
 void create_device(){
-   struct uinput_setup usetup;
-   memset(&usetup, 0, sizeof(usetup));
-   usetup.id.bustype = BUS_USB;
-   usetup.id.vendor = 0x1234;
-   usetup.id.product = 0x5678;
-   strcpy(usetup.name, "Test");
+	int err;
 
-   ioctl(fd, UI_DEV_SETUP, &usetup);
-   ioctl(fd, UI_DEV_CREATE);
-   sleep(1); // returning immediately can cause problems
+	struct libevdev *dev;
+
+	dev = libevdev_new();
+	libevdev_set_name(dev, "test device");
+	hardcode_device(dev);
+
+	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
+	if (err != 0) {}
+
 }
 
-void destroy_device(){
-   ioctl(fd, UI_DEV_DESTROY);
-   close(fd);
+void write_key_event(int code, int value){
+	libevdev_uinput_write_event(uidev, EV_KEY, code, value);
 }
 
-// open uinput at provided path and set global file-descriptor
-void open_path(char* path){
-   fd = open(path, O_WRONLY | O_NONBLOCK);
-   ioctl(fd, UI_SET_EVBIT, EV_KEY);
+void sync_events(){
+	libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
 }
 
-void open_default(){
-   open_path("/dev/uinput");
+void press( int code){
+	write_key_event(code, 1);
+	sync_events();
+}
+
+void release( int code){
+	write_key_event(code, 0);
+	sync_events();
+}
+
+void click( int code){
+	press(code);
+	release(code);
+}
+
+void move_joystick( int code, int pos){
+	write_key_event(code, pos);
+}
+
+void cleanup(){
+	libevdev_uinput_destroy(uidev);
 }

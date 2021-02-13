@@ -2,29 +2,25 @@ CFLAGS = -I/usr/include/libevdev-1.0
 -LDFLAGS = `pkg-config --static --libs libevdev`
 
 TITLE = tpinput
-EXE = target/debug/${TITLE}
-LIB = src/lib
+SRC = src/tpinput.c src/device.c
+OBJ = ${SRC:.c=.o}
 
-${EXE}: ${LIB}/device.rs
-	cp $< src/device.rs
-	cargo build
+${TITLE}: ${OBJ}
+	cc -o $@ $< ${LDFLAGS}
 
 %.h: %.c
 	makeheaders $<
 
-%.rs: %.h
-	bindgen $< > $@
+%.o: %.c
+	cc -c $(CFLAGS) $< -o $@
 
-%.o: %.c %.h
-	cc $(CFLAGS) -c -o $@ $< $(LDFLAGS)
-
-%.a: %.o
-	ar rcs $@ $<
+setup: ${SRC:.c=.h}
 
 clean:
-	rm ${EXE}
+	-rm ${OBJ}
+	-rm ${TITLE}
 
-test: ${EXE}
-	$< --name="js0" < test.json #gp-ljoy:dir4 gp-south:bool gp-west:bool gp-start:inst
+test: ${title}
+	./$< --name="js0" < test.json #gp-ljoy:dir4 gp-south:bool gp-west:bool gp-start:inst
 
-.PHONY: clean test
+

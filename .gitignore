@@ -1,10 +1,6 @@
 *.out
 *.o
 .ccls-cache
-debug/
-target/
-**/*.rs.bk
-Cargo.lock
-src/lib/*.h
-src/lib/*.rs
+src/*.h
 *.a
+tpinput

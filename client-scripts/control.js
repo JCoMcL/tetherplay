@@ -1,7 +1,3 @@
-function capitalizeFirstLetter(s) {
-	return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
 class _Control{
 	constructor(element, updateCallback) {
 		this.element = element
@@ -11,15 +7,50 @@ class _Control{
 		this.value = val
 		this.onUpdate()
 	}
+	getChildren(tagname) {
+		return Array.prototype.slice.call(
+			this.element.getElementsByTagName(tagname)
+		)
+	}
 	onPress(pressEvent = undefined) { }
 	onRelease(releaseEvent = undefined) { }
 	onDrag(dragEvent = undefined) { }
 	valueOf() { return this.value }
 }
 
-//this should be in a helper lib I think
-function ival2sval(ival) {
-	return ival * 2 - 1
+class VecControl extends _Control {
+	constructor(element, updateCallback) {
+		super(element, updateCallback)
+		this.value = [0,0]
+	}
+
+	// convert raw value to native datatype
+	processVal(val) {
+		return Math.min(Math.max(val*2 -1, -1), 1);
+	}
+	unProcessVal(val) {
+		return (val + 1) / 2
+	}
+
+	processVec(vec) {
+		return vec.map(this.processVal)
+	}
+
+	getEventRelativeCoordinates(evt) {
+		return this.processVec(
+			getRelativeCoordinates(this.element, [evt.x, evt.y])
+		)
+	}
+	childRelativeCoordinates(child) {
+		return this.processVec(
+			getRelativeCoordinates(this.element, getElementCenter(child))
+		)
+	}
+
+	onRelease(releaseEvent = undefined) {
+		super.onRelease(releaseEvent)
+		this.set([0,0])
+	}
 }
 
 function getElementCenter(element) {
@@ -35,19 +66,11 @@ function getRelativeCoordinates(element, coordinates) {
 	return [
 		(coordinates[0] - bounds.x) / bounds.width,
 		(coordinates[1] - bounds.y) / bounds.height
-	].map(ival2sval)
+	]
 }
 
 function taxiCabDist(p1, p2 = [0,0]) {
 	return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1])
-}
-
-function sval2dir4(sval) {
-	for (const vec of [[1,0],[0,1],[-1,0],[0,-1]]) {
-		if (taxiCabDist(sval, vec) < 1)
-			{ return vec }
-	}
-	return [0,0]
 }
 
 const control = {
@@ -77,26 +100,22 @@ const control = {
 			this.set(false)
 		}
 	},
-	dir4: class Dir4Control extends _Control {
+	dir4: class Dir4Control extends VecControl {
 		constructor(element, updateCallback) {
 			super(element, updateCallback)
-			this.value = [0,0]
 			this.children = this.getChildren("button")
 			this.directions = this.children.map(child =>
 				this.childRelativeCoordinates(child)
 			)
 		}
 
-		getChildren(tagname) {
-			return Array.prototype.slice.call(
-				this.element.getElementsByTagName(tagname)
-			)
-		}
-
-		childRelativeCoordinates(child) {
-			return sval2dir4(
-				getRelativeCoordinates(this.element, getElementCenter(child))
-			)
+		processVec(vec) {
+			vec = super.processVec(vec)
+			for (const dir4 of [[1,0],[0,1],[-1,0],[0,-1]]) {
+				if (taxiCabDist(vec, dir4) < 1)
+					{ return dir4 }
+			}
+			return [0,0]
 		}
 
 		directionOfChild(child) {
@@ -116,62 +135,43 @@ const control = {
 				this.set( this.directionOfChild(targ) )
 			} catch (e) {console.error(e)}
 		}
-
-		onRelease(releaseEvent = undefined) {
-			super.onRelease(releaseEvent)
-			this.set([0,0])
-		}
 	},
-	// this is not fully correct im following your nameing style
-	vec8: class Vec8Control extends _Control {
+
+	vec8: class Vec8Control extends VecControl {
 		constructor(element, updateCallback){
 			super(element, updateCallback)
-			// value is x and y respectivly needs to change to correct values
-			// using getRelativeCoordinates as values for now
-			this.value = [0, 0]
 			this.context = this.element.getContext("2d")
-			this.pressed = false
-			this.resetJoystick()
-		
-		}
-		getPosition(evt){
-			return [evt.x, evt.y]
+			this.drawJoystick(this.value)
 		}
 
-		resetJoystick(){
-			this.drawJoystick([this.element.width / 2 , this.element.height / 2])
+		set(val) {
+			super.set(val)
+			this.drawJoystick()
 		}
 
-		// sets values to be drawn by the canvas
-		drawJoystick(coordinates){
-			this.context.clearRect(0, 0, this.element.width, this.element.height)
-			this.context.beginPath()
-			this.context.arc(coordinates[0], coordinates[1], this.element.width / 3, 0, 2*Math.PI)
-			this.context.fillStyle = "#080808"
-			this.context.fill()
-			this.context.stroke()
+		drawJoystick(){
+			var diameter = Math.min(this.element.width, this.element.height)
+			var stickRadius = diameter / 3
+			var coordinates = this.value.map( v => this.unProcessVal(v) * diameter);
+
+			(ctx => {
+			ctx.clearRect(0, 0, diameter, diameter)
+			ctx.beginPath()
+			ctx.arc(coordinates[0], coordinates[1], stickRadius, 0, 2*Math.PI)
+			ctx.fillStyle = "#080808"
+			ctx.fill()
+			ctx.stroke()
+			})(this.context)
 		}
 
 		onPress(pressEvent = undefined){
 			super.onPress(pressEvent)
-			this.pressed = true
-		}
-		// drag event to make joystick follow your cursor
-		// error when dragging outside of canvas
-		onDrag(dragEvent = undefined) {
-			if (!this.pressed) { return }
-			try {
-				var pos = this.getPosition(dragEvent)
-				this.set(getRelativeCoordinates(this.element, pos))
-				this.drawJoystick([pos[0] - this.element.offsetLeft, pos[1] - this.element.offsetTop]);
-			} catch (e) {console.error(e)} 
+			this.onDrag(pressEvent)
 		}
 
-		onRelease(releaseEvent = undefined){
-			super.onRelease(releaseEvent)
-			this.set([0,0])
-			this.pressed = false
-			this.resetJoystick()
+		onDrag(dragEvent = undefined) {
+			super.onDrag(dragEvent)
+			this.set(this.getEventRelativeCoordinates(dragEvent))
 		}
 	}
 }

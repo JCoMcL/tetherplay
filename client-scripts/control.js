@@ -53,6 +53,11 @@ class VecControl extends _Control {
 	}
 }
 
+function getMinorDimension(element) {
+	var bounds = element.getBoundingClientRect()
+	return Math.min(bounds.width, bounds.height)
+}
+
 function getElementCenter(element) {
 	var bounds = element.getBoundingClientRect()
 	return [
@@ -140,7 +145,9 @@ const control = {
 	vec8: class Vec8Control extends VecControl {
 		constructor(element, updateCallback){
 			super(element, updateCallback)
-			this.context = this.element.getContext("2d")
+			this.stick = this.getChildren("button")[0]
+			this.stickSizeFactor = getMinorDimension(this.stick) / getMinorDimension(this.element)
+			console.log(this.stickSizeFactor)
 			this.drawJoystick(this.value)
 		}
 
@@ -150,18 +157,12 @@ const control = {
 		}
 
 		drawJoystick(){
-			var diameter = Math.min(this.element.width, this.element.height)
-			var stickRadius = diameter / 3
-			var coordinates = this.value.map( v => this.unProcessVal(v) * diameter);
-
-			(ctx => {
-			ctx.clearRect(0, 0, diameter, diameter)
-			ctx.beginPath()
-			ctx.arc(coordinates[0], coordinates[1], stickRadius, 0, 2*Math.PI)
-			ctx.fillStyle = "#080808"
-			ctx.fill()
-			ctx.stroke()
-			})(this.context)
+			var coordinates = this.value.map( v =>
+				this.unProcessVal(v) * this.stickSizeFactor * 100 + "%"
+			)
+			console.log(coordinates)
+			this.stick.style.left = coordinates[0]
+			this.stick.style.top = coordinates[1]
 		}
 
 		onPress(pressEvent = undefined){

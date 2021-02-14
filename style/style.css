@@ -116,6 +116,7 @@ button {
 }
 
 .joystick {
+	position: relative;
 	--size: calc(var(--button-diameter) * 3);
 	width: var(--size);
 	height: var(--size);
@@ -123,6 +124,7 @@ button {
 	border-radius: calc(var(--size) / 2);
 }
 .joystick button {
+	position: absolute;
 	--subsize: calc(var(--size) / 2);
 	width: var(--subsize);
 	height: var(--subsize);
@@ -140,11 +142,3 @@ button {
 
 #gp-south { --color: #53ff40; }
 #gp-south::after { content: "A"; }
-
-/* joypad canvas */
-#gp-ljoy {
-	background-color: #404040;
-	border:1px solid #080808; 
-	border-radius:100%;
-}
-

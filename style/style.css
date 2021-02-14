@@ -9,6 +9,7 @@
 	/* colors */
 	--gray: rgba(128, 128, 128, 0.25);
 	--grayer: #888;
+	--border: 3px solid;
 }
 body {
 	padding: 0px;
@@ -24,7 +25,6 @@ body {
 button {
 	color: inherit;
 	--color: var(--gray);
-	--border: 3px solid;
 	background-color: var(--color);
 	border: var(--border);
 	border-radius: 0.3em;
@@ -114,6 +114,20 @@ button {
 	height: 1.5em;
 	border-radius: .75em;
 }
+
+.joystick {
+	--size: calc(var(--button-diameter) * 3);
+	width: var(--size);
+	height: var(--size);
+	border: var(--border);
+	border-radius: calc(var(--size) / 2);
+}
+.joystick button {
+	--subsize: calc(var(--size) / 2);
+	width: var(--subsize);
+	height: var(--subsize);
+	border-radius: calc(var(--subsize) / 2);
+}
 /* xbox layout */
 #gp-east { --color: #ff5640; }
 #gp-east::after { content: "B"; }
@@ -128,7 +142,7 @@ button {
 #gp-south::after { content: "A"; }
 
 /* joypad canvas */
-#gp-joy {
+#gp-ljoy {
 	background-color: #404040;
 	border:1px solid #080808; 
 	border-radius:100%;

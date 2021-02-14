@@ -8,7 +8,9 @@ typedef struct {
 	char *value;
 } instruction;
 
-static instruction decode(char *json_instruction) { }
+static instruction decode(char *json_instruction) {
+	return (instruction) {3, json_instruction};
+}
 
 int read_input(char *buf, int size) {
 	if (fgets(buf, size, stdin))
@@ -29,6 +31,7 @@ int main() {
 		handle_gp_west,
 		handle_gp_start
 	};
+
 	create_device();
 	int size = BUFSIZ;
 	char line[size];
@@ -37,6 +40,8 @@ int main() {
 		if (read_input(line, size))
 			break;
 		printf(line, stdout);
+		instruction ins = decode(line);
+		handlers[ins.recipient_id](ins.value);
 	}
 	cleanup();
 	return 0;

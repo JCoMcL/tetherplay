@@ -29,14 +29,14 @@ static void hardcode_device(struct libevdev *dev) {
 	enable_key_event(dev, BTN_START);
 }
 
-void create_device(){
+void create_device(char *name){
 	int err;
 
 	struct libevdev *dev;
 
 	dev = libevdev_new();
-	libevdev_set_name(dev, "test device");
 	hardcode_device(dev);
+	libevdev_set_name(dev, name);
 
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
 	if (err != 0) {}

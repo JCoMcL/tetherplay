@@ -13,7 +13,7 @@ typedef struct {
 
 static instruction decode(char *json_instruction) {
 	int index;
-	char value[50];
+	char value[100];
 	int has_value = 0;
 	for (int i=0; json_instruction[i] != '\0'; i++){
 		if (json_instruction[i] == '}')
@@ -47,7 +47,14 @@ bool str_to_bool(char *bool_str) {
 }
 
 typedef void (*instruction_handler) (char*);
-void handle_gp_ljoy(char *vec_str) {}
+void handle_gp_ljoy(char *vec_str) {
+	float x_axis, y_axis;
+	if (sscanf(vec_str, "[%f,%f]", x_axis, y_axis) == 0){
+		move_abs_event(ABS_X, x_axis);
+		move_abs_event(ABS_Y, y_axis);
+	}
+	printf("%f" ,x_axis);
+}
 void handle_gp_south(char *bool_str) {
 	if (str_to_bool(bool_str)){
 		press(BTN_SOUTH);
@@ -55,8 +62,16 @@ void handle_gp_south(char *bool_str) {
 		release(BTN_SOUTH);
 	}
 }
-void handle_gp_west(char *bool_str) {}
-void handle_gp_start(char *null_str) {}
+void handle_gp_west(char *bool_str) {
+	if (str_to_bool(bool_str)){
+		press(BTN_WEST);
+	} else {
+		release(BTN_WEST);
+	}
+}
+void handle_gp_start(char *null_str) {
+	click(BTN_START);
+}
 
 int main() {
 	instruction_handler handlers[] = {

@@ -49,11 +49,11 @@ bool str_to_bool(char *bool_str) {
 typedef void (*instruction_handler) (char*);
 void handle_gp_ljoy(char *vec_str) {
 	float x_axis, y_axis;
-	if (sscanf(vec_str, "[%f,%f]", x_axis, y_axis) == 0){
+	if (sscanf(vec_str, "[%f , %f]", &x_axis, &y_axis) == 1){
 		move_abs_event(ABS_X, x_axis);
 		move_abs_event(ABS_Y, y_axis);
 	}
-	printf("%f" ,x_axis);
+	printf("%f : %f\n" ,x_axis, y_axis);
 }
 void handle_gp_south(char *bool_str) {
 	if (str_to_bool(bool_str)){
@@ -88,7 +88,7 @@ int main() {
 	for (;;) {
 		if (read_input(line, size))
 			break;
-		printf(line, stdout);
+	//	printf(line, stdout);
 		// print to stdout
 		instruction ins = decode(line);
 		// decode to index and value

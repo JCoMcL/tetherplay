@@ -47,6 +47,9 @@ void write_key_event(int code, int value){
 	libevdev_uinput_write_event(uidev, EV_KEY, code, value);
 }
 
+void write_abs_event(int code, int value){
+	libevdev_uinput_write_event(uidev, EV_ABS, code, value);
+}
 void sync_events(){
 	libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
 }
@@ -66,8 +69,8 @@ void click( int code){
 	release(code);
 }
 
-void move_joystick( int code, int pos){
-	write_key_event(code, pos);
+void move_abs_event( int code, int pos){
+	write_abs_event(code, pos);
 }
 
 void cleanup(){

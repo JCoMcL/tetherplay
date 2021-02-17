@@ -47,7 +47,7 @@ void write_key_event(int code, int value){
 	libevdev_uinput_write_event(uidev, EV_KEY, code, value);
 }
 
-void write_abs_event(int code, float value){
+void write_abs_event(int code, int value){
 	libevdev_uinput_write_event(uidev, EV_ABS, code, value);
 }
 void sync_events(){
@@ -69,8 +69,9 @@ void click( int code){
 	release(code);
 }
 
-void move_abs_event( int code, float pos){
+void move_abs_event( int code, int pos){
 	write_abs_event(code, pos);
+	sync_events();
 }
 
 void cleanup(){

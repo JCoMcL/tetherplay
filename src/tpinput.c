@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <linux/input.h>
+
 #include "device.h"
 #include "tpinput.h"
 
@@ -31,7 +31,6 @@ static instruction decode(char *json_instruction) {
 		}
 	}
 	strcpy(json_instruction, value);
-	//sscanf( json_instruction, "{\"i\":%d,\"v\":%s}\n", &index, value );
 	return (instruction) {index, json_instruction};
 }
 
@@ -41,10 +40,6 @@ int read_input(char *buf, int size) {
 	return 1;
 }
 
-bool str_to_bool(char *bool_str) {
-	if (!strcmp(bool_str, "true")){return false;}
-	else {return true;}
-}
 
 typedef void (*instruction_handler) (char*);
 void handle_gp_ljoy(char *vec_str) {
@@ -56,14 +51,14 @@ void handle_gp_ljoy(char *vec_str) {
 	printf("%f : %f\n" ,x_axis, y_axis);
 }
 void handle_gp_south(char *bool_str) {
-	if (str_to_bool(bool_str)){
+	if (!strcmp(bool_str, "true")){
 		press(BTN_SOUTH);
 	} else {
 		release(BTN_SOUTH);
 	}
 }
 void handle_gp_west(char *bool_str) {
-	if (str_to_bool(bool_str)){
+	if (!strcmp(bool_str, "true")){
 		press(BTN_WEST);
 	} else {
 		release(BTN_WEST);

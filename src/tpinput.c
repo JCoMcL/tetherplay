@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
+#include <linux/input.h>
 #include "device.h"
 #include "tpinput.h"
 
@@ -12,26 +13,26 @@ typedef struct {
 
 static instruction decode(char *json_instruction) {
 	int index;
-	char value[100];
+	char value[50];
 	int has_value = 0;
-	for (int i=0; i < strlen(json_instruction); i++){
-		if (json_instruction[i] == '}'){
+	for (int i=0; json_instruction[i] != '\0'; i++){
+		if (json_instruction[i] == '}')
 			break;
+		else if(json_instruction[i] == 'i'){
+			index = json_instruction[i+=3] - 48;
 		}
-		else if(json_instruction[i] == 'i' && json_instruction[i] != '\0'){
-			index = json_instruction[i + 2];
-		}
-		else if (json_instruction[i] == 'v' && json_instruction[i] != '\0'){
+		else if (json_instruction[i] == 'v'){
 			has_value = 1;
-			i ++;
+			i += 2;
 		}
-		else if (has_value && json_instruction[i] != '\0'){
-			strncat(value, &json_instruction[i], 1);
+		else if (has_value){
+			if (!(json_instruction[i] == ' '))
+				strncat(value, &json_instruction[i], 1);
 		}
 	}
-	printf("%s", value);
+	strcpy(json_instruction, value);
 	//sscanf( json_instruction, "{\"i\":%d,\"v\":%s}\n", &index, value );
-	return (instruction) {index, value};
+	return (instruction) {index, json_instruction};
 }
 
 int read_input(char *buf, int size) {
@@ -40,19 +41,18 @@ int read_input(char *buf, int size) {
 	return 1;
 }
 
-int bool_to_str(char *bool_str) {
-	if (strcmp(bool_str, "true") == 0){return 1;}
-	else {return 0;}
+bool str_to_bool(char *bool_str) {
+	if (!strcmp(bool_str, "true")){return false;}
+	else {return true;}
 }
 
 typedef void (*instruction_handler) (char*);
 void handle_gp_ljoy(char *vec_str) {}
 void handle_gp_south(char *bool_str) {
-	if (bool_to_str(bool_str)){
-		press(304);
-	}
-	else {
-		release(304);
+	if (str_to_bool(bool_str)){
+		press(BTN_SOUTH);
+	} else {
+		release(BTN_SOUTH);
 	}
 }
 void handle_gp_west(char *bool_str) {}
@@ -77,7 +77,7 @@ int main() {
 		// print to stdout
 		instruction ins = decode(line);
 		// decode to index and value
-		//handlers[ins.recipient_id](ins.value);
+		handlers[ins.recipient_id](ins.value);
 		//call function
 
 	}

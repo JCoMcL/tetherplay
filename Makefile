@@ -20,6 +20,6 @@ clean:
 	-rm -f ${OBJ} ${SRC:.c=.h} ${TITLE}
 
 test: ${TITLE}
-	./$< --name="js0" < test.json #gp-ljoy:dir4 gp-south:bool gp-west:bool gp-start:inst
+	./$< ../node_server/dumpipe
 
 .PHONY: setup clean test

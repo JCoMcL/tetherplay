@@ -8,6 +8,7 @@
 
 static struct libevdev_uinput *uidev;
 
+
 static void enable_event(struct libevdev *dev, int type, int event_code){
 	libevdev_enable_event_type(dev, type); // only required once per event type
 	libevdev_enable_event_code(dev, type, event_code, NULL);
@@ -19,6 +20,10 @@ static void enable_key_event(struct libevdev *dev, int event_code){
 
 static void enable_abs_event(struct libevdev *dev, int event_code){
 	enable_event(dev, EV_ABS, event_code);
+	struct input_absinfo *abs;
+	abs->maximum = 8;
+	abs->minimum = -8;
+	libevdev_set_abs_info(dev, event_code, abs);
 }
 
 static void hardcode_device(struct libevdev *dev) {

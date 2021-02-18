@@ -45,9 +45,10 @@ typedef void (*instruction_handler) (char*);
 void handle_gp_ljoy(char *vec_str) {
 	float x_axis, y_axis;
 	if (sscanf(vec_str, "[%f , %f]", &x_axis, &y_axis) == 1){
-		move_abs_event(ABS_X, (int)(x_axis * 8));
-		move_abs_event(ABS_Y, (int)(y_axis * 8));
+		move_abs_event(ABS_X, (int)x_axis * 512);
+		move_abs_event(ABS_Y, (int)y_axis* 512);
 	}
+	printf("%f\n", x_axis);
 }
 void handle_gp_south(char *bool_str) {
 	if (!strcmp(bool_str, "true")){

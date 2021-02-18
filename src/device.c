@@ -3,6 +3,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "device.h"
 
@@ -19,11 +20,16 @@ static void enable_key_event(struct libevdev *dev, int event_code){
 }
 
 static void enable_abs_event(struct libevdev *dev, int event_code){
-	enable_event(dev, EV_ABS, event_code);
-	struct input_absinfo *abs;
-	abs->maximum = 8;
-	abs->minimum = -8;
-	libevdev_set_abs_info(dev, event_code, abs);
+	libevdev_enable_event_type(dev, EV_ABS);
+	libevdev_enable_event_code(dev, EV_ABS, event_code, NULL);
+	struct input_absinfo abs;
+	abs.value = 512;
+	abs.flat = 0;
+	abs.fuzz = 0;
+	abs.resolution = 0;
+	abs.maximum = 512;
+	abs.minimum = -512;
+	libevdev_set_abs_info(dev, event_code, &abs);
 }
 
 static void hardcode_device(struct libevdev *dev) {

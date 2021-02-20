@@ -41,41 +41,45 @@ int read_input(char *buf, int size) {
 }
 
 
+void handle_abs(char *vec_str, int x_abs, int y_abs){
+	float x_axis, y_axis;
+	if (sscanf(vec_str, "[%f , %f]", &x_axis, &y_axis)){
+		set_abs(x_abs, (int)(x_axis * 512.00));
+		set_abs(y_abs, (int)(y_axis * 512.00));
+	}
+}
+
+void handle_bool(char *bool_str, int button){
+	if (!strcmp(bool_str, "true")){
+		press(button);
+	} else {
+		release(button);
+	}
+}
+
 typedef void (*instruction_handler) (char*);
 void handle_gp_ljoy(char *vec_str) {
 	float x_axis, y_axis;
 	if (sscanf(vec_str, "[%f , %f]", &x_axis, &y_axis)){
-		move_abs_event(ABS_X, (int)(x_axis * 512.00));
-		move_abs_event(ABS_Y, (int)(y_axis * 512.00));
+		set_abs(ABS_X, (int)(x_axis * 512.00));
+		set_abs(ABS_Y, (int)(y_axis * 512.00));
 	}
+	//handle_abs(vec_str, ABS_X, ABS_Y);
+}
+void handle_gp_rjoy(char *vec_str){
+	handle_abs(vec_str, ABS_RX, ABS_RY);
 }
 void handle_gp_south(char *bool_str) {
-	if (!strcmp(bool_str, "true")){
-		press(BTN_SOUTH);
-	} else {
-		release(BTN_SOUTH);
-	}
+	handle_bool(bool_str, BTN_SOUTH);
 }
 void handle_gp_west(char *bool_str) {
-	if (!strcmp(bool_str, "true")){
-		press(BTN_WEST);
-	} else {
-		release(BTN_WEST);
-	}
+	handle_bool(bool_str, BTN_WEST);
 }
 void handle_gp_north(char *bool_str) {
-	if (!strcmp(bool_str, "true")){
-		press(BTN_NORTH);
-	} else {
-		release(BTN_NORTH);
-	}
+	handle_bool(bool_str, BTN_NORTH);
 }
 void handle_gp_east(char *bool_str) {
-	if (!strcmp(bool_str, "true")){
-		press(BTN_EAST);
-	} else {
-		release(BTN_EAST);
-	}
+	handle_bool(bool_str, BTN_EAST);
 }
 void handle_gp_start(char *null_str) {
 	click(BTN_START);
@@ -84,6 +88,7 @@ void handle_gp_start(char *null_str) {
 int main() {
 	instruction_handler handlers[] = {
 		handle_gp_ljoy,
+		//handle_gp_rjoy,
 		handle_gp_north,
 		handle_gp_east,
 		handle_gp_west,
@@ -91,7 +96,7 @@ int main() {
 		handle_gp_start
 	};
 
-	create_device("test");
+	create_device("tp-input-js0");
 	int size = BUFSIZ;
 	char line[size];
 	// until eof

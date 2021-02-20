@@ -12,21 +12,21 @@
 static struct libevdev_uinput *uidev;
 
 
-static void enable_event(struct libevdev *dev, int type, int event_code){
+//static void enable_event(struct libevdev *dev, int type, int event_code){
 	 // only required once per event type
-	libevdev_enable_event_code(dev, type, event_code, NULL);
-}
+	//libevdev_enable_event_code(dev, type, event_code, NULL);
+//}
 
 static void enable_key_event(struct libevdev *dev, int event_code){
-	enable_event(dev, EV_KEY, event_code);
+	libevdev_enable_event_code(dev, EV_KEY, event_code, NULL);
 }
 
-static void enable_abs_event(struct libevdev *dev, int event_code){
+static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
 	libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
 	libevdev_set_abs_minimum(dev, event_code, -512);
 	libevdev_set_abs_maximum(dev, event_code, 512);
-	libevdev_set_abs_flat(dev, event_code, 15);
+	libevdev_set_abs_flat(dev, event_code, flat);
 	libevdev_set_abs_fuzz(dev, event_code, 0);
 	libevdev_set_abs_resolution(dev, event_code, 0);
 }
@@ -34,8 +34,10 @@ static void enable_abs_event(struct libevdev *dev, int event_code){
 static void hardcode_device(struct libevdev *dev) {
 	libevdev_enable_event_type(dev, EV_ABS);
 	libevdev_enable_event_type(dev, EV_KEY);
-	enable_abs_event(dev, ABS_X);
-	enable_abs_event(dev, ABS_Y);
+	enable_abs_event(dev, ABS_X, 15);
+	enable_abs_event(dev, ABS_Y, 15);
+	//enable_abs_event(dev, ABS_RX, 16);
+	//enable_abs_event(dev, ABS_RY, 16);
 	enable_key_event(dev, BTN_SOUTH);
 	enable_key_event(dev, BTN_WEST);
 	enable_key_event(dev, BTN_NORTH);
@@ -55,7 +57,6 @@ void create_device(char *name){
 
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
 	if (err != 0) {}
-
 
 }
 
@@ -87,7 +88,7 @@ void click( int code){
 	sync_events();
 }
 
-void move_abs_event( int code, int pos){
+void set_abs( int code, int pos){
 	libevdev_uinput_write_event(uidev, EV_ABS, code, pos);
 	sync_events();
 }

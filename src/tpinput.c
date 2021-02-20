@@ -48,7 +48,6 @@ void handle_gp_ljoy(char *vec_str) {
 		move_abs_event(ABS_X, (int)(x_axis * 512.00));
 		move_abs_event(ABS_Y, (int)(y_axis * 512.00));
 	}
-	printf("%d\n", (int)(x_axis*512.00));
 }
 void handle_gp_south(char *bool_str) {
 	if (!strcmp(bool_str, "true")){
@@ -64,6 +63,20 @@ void handle_gp_west(char *bool_str) {
 		release(BTN_WEST);
 	}
 }
+void handle_gp_north(char *bool_str) {
+	if (!strcmp(bool_str, "true")){
+		press(BTN_NORTH);
+	} else {
+		release(BTN_NORTH);
+	}
+}
+void handle_gp_east(char *bool_str) {
+	if (!strcmp(bool_str, "true")){
+		press(BTN_EAST);
+	} else {
+		release(BTN_EAST);
+	}
+}
 void handle_gp_start(char *null_str) {
 	click(BTN_START);
 }
@@ -71,8 +84,10 @@ void handle_gp_start(char *null_str) {
 int main() {
 	instruction_handler handlers[] = {
 		handle_gp_ljoy,
-		handle_gp_south,
+		handle_gp_north,
+		handle_gp_east,
 		handle_gp_west,
+		handle_gp_south,
 		handle_gp_start
 	};
 

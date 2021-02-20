@@ -13,7 +13,7 @@ static struct libevdev_uinput *uidev;
 
 
 static void enable_event(struct libevdev *dev, int type, int event_code){
-	libevdev_enable_event_type(dev, type); // only required once per event type
+	 // only required once per event type
 	libevdev_enable_event_code(dev, type, event_code, NULL);
 }
 
@@ -33,10 +33,13 @@ static void enable_abs_event(struct libevdev *dev, int event_code){
 
 static void hardcode_device(struct libevdev *dev) {
 	libevdev_enable_event_type(dev, EV_ABS);
+	libevdev_enable_event_type(dev, EV_KEY);
 	enable_abs_event(dev, ABS_X);
 	enable_abs_event(dev, ABS_Y);
 	enable_key_event(dev, BTN_SOUTH);
 	enable_key_event(dev, BTN_WEST);
+	enable_key_event(dev, BTN_NORTH);
+	enable_key_event(dev, BTN_EAST);
 	enable_key_event(dev, BTN_START);
 }
 
@@ -79,7 +82,9 @@ void release( int code){
 
 void click( int code){
 	press(code);
+	sync_events();
 	release(code);
+	sync_events();
 }
 
 void move_abs_event( int code, int pos){

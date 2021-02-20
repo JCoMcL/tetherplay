@@ -44,7 +44,7 @@ int read_input(char *buf, int size) {
 typedef void (*instruction_handler) (char*);
 void handle_gp_ljoy(char *vec_str) {
 	float x_axis, y_axis;
-	if (sscanf(vec_str, "[%f , %f]", &x_axis, &y_axis) == 1){
+	if (sscanf(vec_str, "[%f , %f]", &x_axis, &y_axis)){
 		move_abs_event(ABS_X, (int)(x_axis * 512.00));
 		move_abs_event(ABS_Y, (int)(y_axis * 512.00));
 	}

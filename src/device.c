@@ -4,7 +4,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <linux/uinput.h>
+#include <stdio.h>
+
 
 #include "device.h"
 
@@ -22,16 +23,16 @@ static void enable_key_event(struct libevdev *dev, int event_code){
 
 static void enable_abs_event(struct libevdev *dev, int event_code){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
-	abs->maximum=512;
-	abs->minimum=-512;
-	abs->flat=15;
 	libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
-	free(abs);
+	libevdev_set_abs_minimum(dev, event_code, -512);
+	libevdev_set_abs_maximum(dev, event_code, 512);
+	libevdev_set_abs_flat(dev, event_code, 15);
+	libevdev_set_abs_fuzz(dev, event_code, 0);
+	libevdev_set_abs_resolution(dev, event_code, 0);
 }
 
 static void hardcode_device(struct libevdev *dev) {
 	libevdev_enable_event_type(dev, EV_ABS);
-
 	enable_abs_event(dev, ABS_X);
 	enable_abs_event(dev, ABS_Y);
 	enable_key_event(dev, BTN_SOUTH);

@@ -155,6 +155,14 @@ const control = {
 			this.drawJoystick()
 		}
 
+		processVal(val) {
+			return Math.floor(super.processVal(val) * 7)
+		}
+
+		unProcessVal(val) {
+			return super.unProcessVal(val / 7)
+		}
+
 		drawJoystick(){
 			var coordinates = this.value.map( v =>
 				this.unProcessVal(v) * this.stickSizeFactor * 100 + "%"

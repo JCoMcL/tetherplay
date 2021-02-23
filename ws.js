@@ -4,6 +4,6 @@ const tpinput = require('./tpinput')
 wss.on('connection', function (ws) {
 	controller = tpinput.open()
 	ws.on('message', function (message) {
-		controller.stdin.write(message)
+		controller.stdin.write(message + '\n')
 	})
 })

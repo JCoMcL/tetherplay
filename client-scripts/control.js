@@ -4,13 +4,23 @@ class _Control{
 		this.onUpdate = () => updateCallback(this)
 	}
 	set(val) {
+		if (this.value == val)
+			return false
 		this.value = val
 		this.onUpdate()
+		return true
 	}
 	getChildren(tagname) {
 		return Array.prototype.slice.call(
 			this.element.getElementsByTagName(tagname)
 		)
+	}
+	getRelativeCoordinates(coordinates) {
+		var bounds = this.element.getBoundingClientRect()
+		return [
+			(coordinates[0] - bounds.x) / bounds.width,
+			(coordinates[1] - bounds.y) / bounds.height
+		]
 	}
 	onPress(pressEvent = undefined) { }
 	onRelease(releaseEvent = undefined) { }
@@ -38,12 +48,12 @@ class VecControl extends _Control {
 
 	getEventRelativeCoordinates(evt) {
 		return this.processVec(
-			getRelativeCoordinates(this.element, [evt.x, evt.y])
+			this.getRelativeCoordinates([evt.x, evt.y])
 		)
 	}
 	childRelativeCoordinates(child) {
 		return this.processVec(
-			getRelativeCoordinates(this.element, getElementCenter(child))
+			this.getRelativeCoordinates(getElementCenter(child))
 		)
 	}
 
@@ -63,14 +73,6 @@ function getElementCenter(element) {
 	return [
 		bounds.left + ((bounds.right - bounds.left) / 2),
 		bounds.top + ((bounds.bottom - bounds.top) / 2)
-	]
-}
-
-function getRelativeCoordinates(element, coordinates) {
-	var bounds = element.getBoundingClientRect()
-	return [
-		(coordinates[0] - bounds.x) / bounds.width,
-		(coordinates[1] - bounds.y) / bounds.height
 	]
 }
 
@@ -151,8 +153,8 @@ const control = {
 		}
 
 		set(val) {
-			super.set(val)
-			this.drawJoystick()
+			if (super.set(val))
+				this.drawJoystick()
 		}
 
 		processVal(val) {
@@ -161,6 +163,18 @@ const control = {
 
 		unProcessVal(val) {
 			return super.unProcessVal(val / 7)
+		}
+
+		getRelativeCoordinates(coordinates) {
+			var bounds = this.element.getBoundingClientRect()
+			bounds.x += this.stickMaxTravel
+			bounds.y += this.stickMaxTravel
+			bounds.width -= this.stickMaxTravel * 2
+			bounds.height -= this.stickMaxTravel * 2
+			return [
+				(coordinates[0] - bounds.x) / bounds.width,
+				(coordinates[1] - bounds.y) / bounds.height
+			]
 		}
 
 		drawJoystick(){

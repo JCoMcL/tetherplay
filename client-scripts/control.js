@@ -146,7 +146,7 @@ const control = {
 		constructor(element, updateCallback){
 			super(element, updateCallback)
 			this.stick = this.getChildren("button")[0]
-			this.stickSizeFactor = getMinorDimension(this.stick) / getMinorDimension(this.element)
+			this.stickMaxTravel = (getMinorDimension(this.element) - getMinorDimension(this.stick)) / 2
 			this.drawJoystick(this.value)
 		}
 
@@ -165,7 +165,7 @@ const control = {
 
 		drawJoystick(){
 			var coordinates = this.value.map( v =>
-				this.unProcessVal(v) * this.stickSizeFactor * 100 + "%"
+				v / 7 *  this.stickMaxTravel + "px"
 			)
 			this.stick.style.left = coordinates[0]
 			this.stick.style.top = coordinates[1]

@@ -116,15 +116,18 @@ button {
 }
 
 .joystick {
-	position: relative;
 	--size: calc(var(--button-diameter) * 3);
 	width: var(--size);
 	height: var(--size);
 	border: var(--border);
 	border-radius: calc(var(--size) / 2);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .joystick button {
-	position: absolute;
+	position: relative;
 	--subsize: calc(var(--size) / 2);
 	width: var(--subsize);
 	height: var(--subsize);

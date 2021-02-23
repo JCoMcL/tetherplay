@@ -36,14 +36,21 @@ class VecControl extends _Control {
 
 	// convert raw value to native datatype
 	processVal(val) {
-		return Math.min(Math.max(val*2 -1, -1), 1);
+		return val * 2 -1
 	}
 	unProcessVal(val) {
 		return (val + 1) / 2
 	}
 
 	processVec(vec) {
-		return vec.map(this.processVal)
+		return this.boundVec( vec.map(this.processVal) )
+	}
+
+	boundVec(vec) {
+		var magSqr = magnitudeSqr(vec)
+		if (magSqr > 1)
+			return vec.map( v => v / Math.sqrt(magSqr) )
+		return vec
 	}
 
 	getEventRelativeCoordinates(evt) {
@@ -78,6 +85,10 @@ function getElementCenter(element) {
 
 function taxiCabDist(p1, p2 = [0,0]) {
 	return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1])
+}
+
+function magnitudeSqr(vec) {
+	return vec.map( a => a*a ).reduce( (a, b) => a + b)
 }
 
 const control = {
@@ -157,12 +168,10 @@ const control = {
 				this.drawJoystick()
 		}
 
-		processVal(val) {
-			return Math.floor(super.processVal(val) * 7)
-		}
-
-		unProcessVal(val) {
-			return super.unProcessVal(val / 7)
+		processVec(vec) {
+			return super.processVec(vec).map( v =>
+				Math.round(v * 7) //TODO use conditional ceil/floor
+			)
 		}
 
 		getRelativeCoordinates(coordinates) {

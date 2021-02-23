@@ -14,6 +14,11 @@ function getDownEventTarget(evt) {
 function getLifetimeEventTarget(evt) {
 	return targetCache[evt.pointerId]
 }
+function getReleaseEventTarget(evt) {
+	var out = targetCache[evt.pointerId]
+	targetCache[evt.pointerId] = undefined
+	return out
+}
 
 function encodeState(index) {
 	return JSON.stringify({i:index, v:state[index].valueOf()})
@@ -49,7 +54,7 @@ function handlePressEvent(evt) {
 }
 
 function handleReleaseEvent(evt) {
-	callControlMethod( getLifetimeEventTarget( evt ), "onRelease", evt)
+	callControlMethod( getReleaseEventTarget( evt ), "onRelease", evt)
 }
 
 function handleDragEvent(evt) {

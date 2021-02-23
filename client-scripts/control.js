@@ -46,10 +46,18 @@ class VecControl extends _Control {
 		return this.boundVec( vec.map(this.processVal) )
 	}
 
-	boundVec(vec) {
+	/*boundVec(vec) {
 		var magSqr = magnitudeSqr(vec)
 		if (magSqr > 1)
 			return vec.map( v => v / Math.sqrt(magSqr) )
+		return vec
+	}*/
+
+	boundVec(vec) {
+		var majorLength = vec.map( v => Math.abs(v) ).reduce( (a,b) => Math.max(a,b)
+		)
+		if (majorLength > 1)
+			return vec.map( v => v / majorLength )
 		return vec
 	}
 

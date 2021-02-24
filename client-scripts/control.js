@@ -46,13 +46,6 @@ class VecControl extends _Control {
 		return this.boundVec( vec.map(this.processVal) )
 	}
 
-	/*boundVec(vec) {
-		var magSqr = magnitudeSqr(vec)
-		if (magSqr > 1)
-			return vec.map( v => v / Math.sqrt(magSqr) )
-		return vec
-	}*/
-
 	boundVec(vec) {
 		var majorLength = vec.map( v => Math.abs(v) ).reduce( (a,b) => Math.max(a,b)
 		)
@@ -104,7 +97,7 @@ function squared(x) {
 }
 const sqrt2 = Math.sqrt(2)
 function unitSquareRadius(angle) {
-	return squared((4 * angle / Math.PI - 1) % 2 - 1) * (sqrt2 - 1) + 1
+	return squared(Math.abs((4 * angle / Math.PI - 1)) % 2 - 1) * (sqrt2 - 1) + 1
 }
 
 function mapCircleToSquare(point) {
@@ -115,6 +108,17 @@ function mapCircleToSquare(point) {
 function mapSquareToCircle(point) {
 	var angle = Math.atan2(point[0], point[1])
 	return point.map( v =>  v / unitSquareRadius(angle) )
+}
+
+function clamp(a, min, max) {
+	return Math.max(Math.min(a, max), min)
+}
+
+function boundVecToCircle(vec) {
+	var magSqr = magnitudeSqr(vec)
+	if (magSqr > 1)
+		return vec.map( v => v / Math.sqrt(magSqr) )
+	return vec
 }
 
 const control = {
@@ -195,14 +199,9 @@ const control = {
 		}
 
 		processVec(vec) {
-			var a =  super.processVec(vec)
-			console.log(a)
-			var b = mapCircleToSquare( a  )
-			console.log(b)
-			return b
-			return mapCircleToSquare( super.processVec(vec) )/*.map( v =>
-				Math.round(v * 7) //TODO use conditional ceil/floor
-			)*/
+			return mapCircleToSquare( super.processVec(vec) ).map( v =>
+				clamp(Math.round(v * 7), -7, 7) //TODO use conditional ceil/floor
+			)
 		}
 
 		getRelativeCoordinates(coordinates) {
@@ -218,8 +217,8 @@ const control = {
 		}
 
 		drawJoystick(){
-			var coordinates = /*mapSquareToCircle(*/this.value.map( v =>
-				v / 1/*7*/ *  this.stickMaxTravel + "px"
+			var coordinates = mapSquareToCircle(this.value).map( v =>
+				v / 7 *  this.stickMaxTravel + "px"
 			)
 			this.stick.style.left = coordinates[0]
 			this.stick.style.top = coordinates[1]

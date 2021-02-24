@@ -121,6 +121,13 @@ function boundVecToCircle(vec) {
 	return vec
 }
 
+function absFloor(a) {
+	return a < 0 ? Math.ceil(a) : Math.floor(a)
+}
+function absCeil(a) {
+	return a < 0 ? Math.floor(a) : Math.ceil(a)
+}
+
 const control = {
 
 	inst: class InstControl extends _Control {
@@ -200,7 +207,7 @@ const control = {
 
 		processVec(vec) {
 			return mapCircleToSquare( super.processVec(vec) ).map( v =>
-				clamp(Math.round(v * 7), -7, 7) //TODO use conditional ceil/floor
+				clamp( absFloor(v * 7), -7, 7)
 			)
 		}
 

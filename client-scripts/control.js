@@ -99,6 +99,24 @@ function magnitudeSqr(vec) {
 	return vec.map( a => a*a ).reduce( (a, b) => a + b)
 }
 
+function squared(x) {
+	return x * x
+}
+const sqrt2 = Math.sqrt(2)
+function unitSquareRadius(angle) {
+	return squared((4 * angle / Math.PI - 1) % 2 - 1) * (sqrt2 - 1) + 1
+}
+
+function mapCircleToSquare(point) {
+	var angle = Math.atan2(point[0], point[1])
+	return point.map( v =>  v * unitSquareRadius(angle) )
+}
+
+function mapSquareToCircle(point) {
+	var angle = Math.atan2(point[0], point[1])
+	return point.map( v =>  v / unitSquareRadius(angle) )
+}
+
 const control = {
 
 	inst: class InstControl extends _Control {
@@ -177,9 +195,14 @@ const control = {
 		}
 
 		processVec(vec) {
-			return super.processVec(vec).map( v =>
+			var a =  super.processVec(vec)
+			console.log(a)
+			var b = mapCircleToSquare( a  )
+			console.log(b)
+			return b
+			return mapCircleToSquare( super.processVec(vec) )/*.map( v =>
 				Math.round(v * 7) //TODO use conditional ceil/floor
-			)
+			)*/
 		}
 
 		getRelativeCoordinates(coordinates) {
@@ -195,8 +218,8 @@ const control = {
 		}
 
 		drawJoystick(){
-			var coordinates = this.value.map( v =>
-				v / 7 *  this.stickMaxTravel + "px"
+			var coordinates = /*mapSquareToCircle(*/this.value.map( v =>
+				v / 1/*7*/ *  this.stickMaxTravel + "px"
 			)
 			this.stick.style.left = coordinates[0]
 			this.stick.style.top = coordinates[1]

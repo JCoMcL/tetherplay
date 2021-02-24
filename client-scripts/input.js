@@ -38,10 +38,11 @@ function getControlByElement(element) {
 	return state[configuration.byId(element.id).index]
 }
 
-function callControlMethod(element, method, ...args) {
+function callControlMethod(element, method, evt) {
 	if (!element)
 		{ return }
-	return getControlByElement(element)[method](...args)
+	console.log(evt)
+	return getControlByElement(element)[method](evt)
 }
 
 function processEvent(evt) {
@@ -50,13 +51,16 @@ function processEvent(evt) {
 }
 
 function handlePressEvent(evt) {
+	processEvent(evt)
 	callControlMethod( getDownEventTarget( evt ), "onPress", evt)
 }
 
 function handleReleaseEvent(evt) {
+	processEvent(evt)
 	callControlMethod( getReleaseEventTarget( evt ), "onRelease", evt)
 }
 
 function handleDragEvent(evt) {
+	processEvent(evt)
 	callControlMethod( getLifetimeEventTarget( evt ), "onDrag", evt)
 }

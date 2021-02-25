@@ -14,7 +14,7 @@ typedef union {
 
 typedef struct {
 	int recipient_id;
-	api_value val;
+	api_value value;
 } api_instruction;
 
 api_instruction decode (char *input);

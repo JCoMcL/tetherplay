@@ -33,14 +33,11 @@ static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 static void hardcode_device(struct libevdev *dev) {
 	libevdev_enable_event_type(dev, EV_ABS);
 	libevdev_enable_event_type(dev, EV_KEY);
+
 	enable_abs_event(dev, ABS_X, 15);
 	enable_abs_event(dev, ABS_Y, 15);
-	//enable_abs_event(dev, ABS_RX, 16);
-	//enable_abs_event(dev, ABS_RY, 16);
-	enable_key_event(dev, BTN_SOUTH);
 	enable_key_event(dev, BTN_WEST);
-	enable_key_event(dev, BTN_NORTH);
-	enable_key_event(dev, BTN_EAST);
+	enable_key_event(dev, BTN_SOUTH);
 	enable_key_event(dev, BTN_START);
 }
 

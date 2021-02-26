@@ -2,7 +2,7 @@ CFLAGS = -I/usr/include/libevdev-1.0
 LDFLAGS = `pkg-config --static --libs libevdev`
 
 TITLE = tpinput
-SRC = src/tpinput.c src/device.c
+SRC = src/tpinput.c src/device.c src/json_api.c
 OBJ = ${SRC:.c=.o}
 
 ${TITLE}: setup ${OBJ}

@@ -28,7 +28,7 @@ static void *decode_inst(char *s) {
 }
 
 bool decode_bool(char *bool_str){
-	return strcmp(bool_str, "true");
+	return (!strcmp(bool_str, "true}"));
 }
 
 static vec decode_vec(char *vec_str){

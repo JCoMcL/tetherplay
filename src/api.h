@@ -6,6 +6,7 @@ typedef struct {
 	int y;
 } vec;
 
+
 typedef union {
 	void *inst;
 	bool b;

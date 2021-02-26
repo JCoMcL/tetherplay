@@ -24,8 +24,8 @@ static void enable_key_event(struct libevdev *dev, int event_code){
 static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
 	libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
-	libevdev_set_abs_minimum(dev, event_code, -512);
-	libevdev_set_abs_maximum(dev, event_code, 512);
+	libevdev_set_abs_minimum(dev, event_code, -8);
+	libevdev_set_abs_maximum(dev, event_code, 8);
 	libevdev_set_abs_flat(dev, event_code, flat);
 	libevdev_set_abs_fuzz(dev, event_code, 0);
 	libevdev_set_abs_resolution(dev, event_code, 0);

@@ -16,23 +16,41 @@ static struct libevdev_uinput *uidev;
 	//libevdev_enable_event_code(dev, type, event_code, NULL);
 //}
 
+static int enable_event_type(struct libevdev *dev, int event_type){
+	if (libevdev_has_event_type(dev, event_type)){
+		fprintf(stderr, "error %d (Event Type already initalized)\n", event_type);
+		return 1;
+	} else {
+		libevdev_enable_event_type(dev, event_type);
+		return 0;
+	}
+}
+
 static void enable_key_event(struct libevdev *dev, int event_code){
-	libevdev_enable_event_code(dev, EV_KEY, event_code, NULL);
+	if (libevdev_has_event_code(dev, EV_KEY, event_code)){
+		fprintf(stderr, "error %d (Key Event Already Enabled)\n", event_code);
+	} else {
+		libevdev_enable_event_code(dev, EV_KEY, event_code, NULL);
+	}
 }
 
 static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
-	libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
-	libevdev_set_abs_minimum(dev, event_code, -8);
-	libevdev_set_abs_maximum(dev, event_code, 8);
-	libevdev_set_abs_flat(dev, event_code, flat);
-	libevdev_set_abs_fuzz(dev, event_code, 0);
-	libevdev_set_abs_resolution(dev, event_code, 0);
+	if (libevdev_has_event_code(dev, EV_ABS, event_code)){
+		fprintf(stderr, "error (ABS Event Already Enabled)\n");
+	} else {
+		libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
+		libevdev_set_abs_minimum(dev, event_code, -8);
+		libevdev_set_abs_maximum(dev, event_code, 8);
+		libevdev_set_abs_flat(dev, event_code, flat);
+		libevdev_set_abs_fuzz(dev, event_code, 0);
+		libevdev_set_abs_resolution(dev, event_code, 0);
+	}
 }
 
 static void hardcode_device(struct libevdev *dev) {
-	libevdev_enable_event_type(dev, EV_ABS);
-	libevdev_enable_event_type(dev, EV_KEY);
+	enable_event_type(dev, EV_ABS);
+	enable_event_type(dev, EV_KEY);
 	enable_abs_event(dev, ABS_X, 15);
 	enable_abs_event(dev, ABS_Y, 15);
 	enable_key_event(dev, BTN_WEST);

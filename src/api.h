@@ -7,6 +7,7 @@ typedef struct {
 } vec;
 
 typedef union {
+	void *inst;
 	bool b;
 	int i;
 	vec v;

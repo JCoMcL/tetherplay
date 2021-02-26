@@ -26,23 +26,23 @@ int float_to_abs(float f) {
 
 typedef api_value (*decoder) (char*);
 
-api_instruction decode_inst(char *s) {
-	return true;
+static void *decode_inst(char *s) {
+	return NULL;
 }
 
 bool decode_bool(char *bool_str){
 	return strcmp(bool_str, "true");
 }
 
-vec decode_vec(char *vec_str){
+static vec decode_vec(char *vec_str){
 	vec out;
 	float x, y;
 	if (sscanf(vec_str, "[%f , %f]", &x, &y))
 		return (vec){ float_to_abs(x), float_to_abs(y) };
-	return NULL;
+	return (vec){0,0};
 }
 
-const decoder decoders[] = {
+static const decoder decoders[] = {
 	(decoder)decode_vec,
 	(decoder)decode_bool,
 	(decoder)decode_bool,

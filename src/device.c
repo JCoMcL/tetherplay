@@ -33,7 +33,6 @@ static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 static void hardcode_device(struct libevdev *dev) {
 	libevdev_enable_event_type(dev, EV_ABS);
 	libevdev_enable_event_type(dev, EV_KEY);
-
 	enable_abs_event(dev, ABS_X, 15);
 	enable_abs_event(dev, ABS_Y, 15);
 	enable_key_event(dev, BTN_WEST);
@@ -51,16 +50,14 @@ void create_device(char *name){
 	libevdev_set_name(dev, name);
 
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
-	if (err != 0) {
-		fprintf(stderr, "error %d (%s)\n");
-	}
+	if (err != 0) {}
 
 }
 
 static void write_key_event(int code, int value){
 	int err = libevdev_uinput_write_event(uidev, EV_KEY, code, value);
 	if (err != 0){
-		fprintf(stderr, "error %d (%s)\n", -err, strerror(-err));
+		fprintf(stderr, "error %d (Write Key Event Error)\n", -err);
 	}
 
 }
@@ -68,13 +65,13 @@ static void write_key_event(int code, int value){
 static void write_abs_event(int code, int value){
 	int err = libevdev_uinput_write_event(uidev, EV_ABS, code, value);
 	if (err != 0){
-		fprintf(stderr, "error %d (%s)\n", -err, strerror(-err));
+		fprintf(stderr, "error %d (Write Abs Event Error)\n", -err);
 	}
 }
 static void sync_events(){
 	int err = libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
 	if (err != 0){
-		fprintf(stderr, "error %d (%s)\n", -err, strerror(-err));
+		fprintf(stderr, "error %d (Sync Events Error)\n", -err);
 	}
 }
 

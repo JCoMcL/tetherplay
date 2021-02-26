@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
 #include "device.h"
 
 static struct libevdev_uinput *uidev;
@@ -44,7 +43,6 @@ static void hardcode_device(struct libevdev *dev) {
 	enable_key_event(dev, BTN_EAST);
 	enable_key_event(dev, BTN_START);
 }
-
 
 void create_device(char *name){
 	int err;

@@ -11,29 +11,17 @@ typedef struct {
 static json_instruction json_decode(char *input) {
 	int index;
 	char value[100];
-	int has_value = 0;
-	for (int i=0; input[i] != '\0'; i++){
-		if (input[i] == '}')
-			break;
-		else if(input[i] == 'i'){
-			index = input[i+=3] - 48;
-		}
-		else if (input[i] == 'v'){
-			has_value = 1;
-			i += 2;
-		}
-		else if (has_value){
-			if (!(input[i] == ' '))
-				strncat(value, &input[i], 1);
-		}
+	if (sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value)){
+		printf("%d", index);
+		printf(": %s", value);
+		return (json_instruction) {index, value};
 	}
-	strcpy(input, value);
-	return (json_instruction) {index, input};
+	return NULL;
 }
 
 // needs a better name
 int float_to_abs(float f) {
-	return (int)f * 512;
+	return (int)f * 8.0;
 }
 
 typedef api_value (*decoder) (char*);
@@ -43,10 +31,7 @@ api_instruction decode_inst(char *s) {
 }
 
 bool decode_bool(char *bool_str){
-	if (!strcmp(bool_str, "true"))
-		return true;
-	else
-		return false;
+	return strcmp(bool_str, "true");
 }
 
 vec decode_vec(char *vec_str){

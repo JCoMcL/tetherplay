@@ -11,10 +11,6 @@
 static struct libevdev_uinput *uidev;
 
 
-//static void enable_event(struct libevdev *dev, int type, int event_code){
-	 // only required once per event type
-	//libevdev_enable_event_code(dev, type, event_code, NULL);
-//}
 
 static int enable_event_type(struct libevdev *dev, int event_type){
 	if (libevdev_has_event_type(dev, event_type)){
@@ -68,7 +64,9 @@ void create_device(char *name){
 	libevdev_set_name(dev, name);
 
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
-	if (err != 0) {}
+	if (err != 0) {
+		fprintf(stderr, "error %d (Could Not Create Device)\n" -err);
+	}
 
 }
 

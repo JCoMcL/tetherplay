@@ -51,19 +51,31 @@ void create_device(char *name){
 	libevdev_set_name(dev, name);
 
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
-	if (err != 0) {}
+	if (err != 0) {
+		fprintf(stderr, "error %d (%s)\n");
+	}
 
 }
 
-void write_key_event(int code, int value){
-	libevdev_uinput_write_event(uidev, EV_KEY, code, value);
+static void write_key_event(int code, int value){
+	int err = libevdev_uinput_write_event(uidev, EV_KEY, code, value);
+	if (err != 0){
+		fprintf(stderr, "error %d (%s)\n", -err, strerror(-err));
+	}
+
 }
 
-void write_abs_event(int code, int value){
-	libevdev_uinput_write_event(uidev, EV_ABS, code, value);
+static void write_abs_event(int code, int value){
+	int err = libevdev_uinput_write_event(uidev, EV_ABS, code, value);
+	if (err != 0){
+		fprintf(stderr, "error %d (%s)\n", -err, strerror(-err));
+	}
 }
-void sync_events(){
-	libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
+static void sync_events(){
+	int err = libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
+	if (err != 0){
+		fprintf(stderr, "error %d (%s)\n", -err, strerror(-err));
+	}
 }
 
 void press( int code){
@@ -84,7 +96,7 @@ void click( int code){
 }
 
 void set_abs( int code, int pos){
-	libevdev_uinput_write_event(uidev, EV_ABS, code, pos);
+	write_abs_event(code, pos);
 	sync_events();
 }
 

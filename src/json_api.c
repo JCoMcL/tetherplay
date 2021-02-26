@@ -15,7 +15,7 @@ static json_instruction json_decode(char *input) {
 	return (json_instruction) {index, value}; //TODO handle error if scanf fails
 }
 
-int int4_to_abs(int4) {
+static int int4_to_abs(int int4) {
 	return int4 * 73; //TODO make more generic version
 }
 
@@ -25,14 +25,14 @@ static void *decode_inst(char *s) {
 	return NULL;
 }
 
-bool decode_bool(char *bool_str){
+static bool decode_bool(char *bool_str){
 	return (!strcmp(bool_str, "true}"));
 }
 
-vec decode_vec(char *vec_str){
+static vec decode_vec(char *vec_str){
 	vec out;
 	int x, y;
-	if (sscanf(vec_str, "[%d , %d]}", &x, &y))
+	if (sscanf(vec_str, "[%d,%d]}", &x, &y))
 		return (vec){ int4_to_abs(x), int4_to_abs(y) };
 	return (vec){0,0};
 }

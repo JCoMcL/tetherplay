@@ -34,8 +34,8 @@ static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
 	if (!libevdev_has_event_code(dev, EV_ABS, event_code)){
 		libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
-		libevdev_set_abs_minimum(dev, event_code, -8);
-		libevdev_set_abs_maximum(dev, event_code, 8);
+		libevdev_set_abs_minimum(dev, event_code, -511);
+		libevdev_set_abs_maximum(dev, event_code, 511);
 		libevdev_set_abs_flat(dev, event_code, flat);
 		libevdev_set_abs_fuzz(dev, event_code, 0);
 		libevdev_set_abs_resolution(dev, event_code, 0);
@@ -68,11 +68,9 @@ void create_device(char *name){
 }
 
 static void write_event(int type, int code, int value){
-	int err = libevdev_uinput_write_event(uidev, type, code, value);
-	if (err != 0){
-		errno = EAGAIN;
-		error(0, "error (Write Event Error)");
-	}
+	errno = -libevdev_uinput_write_event(uidev, EV_ABS, code, value);
+	if (errno)
+		error(0, "Error (Failed To Write Event)");
 }
 
 static void write_key_event(int code, int value){

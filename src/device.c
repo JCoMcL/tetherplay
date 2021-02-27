@@ -14,28 +14,24 @@ static struct libevdev_uinput *uidev;
 
 
 static int enable_event_type(struct libevdev *dev, int event_type){
-	if (libevdev_has_event_type(dev, event_type)){
-		error(0, "error (Event Type already initalized)");
-		return 1;
-	} else {
-		libevdev_enable_event_type(dev, event_type);
+	if (libevdev_has_event_type(dev, event_type))
 		return 0;
+	else { 
+		libevdev_enable_event_type(dev, event_type);
+		return 1;
 	}
 }
 
 static void enable_key_event(struct libevdev *dev, int event_code){
-	if (libevdev_has_event_code(dev, EV_KEY, event_code)){
-		error(0, "error (Key Event Already Enabled)");
-	} else {
+	enable_event_type(dev, EV_KEY);
+	if (!libevdev_has_event_code(dev, EV_KEY, event_code))
 		libevdev_enable_event_code(dev, EV_KEY, event_code, NULL);
-	}
 }
 
 static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
+	enable_event_type(dev, EV_KEY);
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
-	if (libevdev_has_event_code(dev, EV_ABS, event_code)){
-		error(0, "error (ABS Event Already Enabled)");
-	} else {
+	if (!libevdev_has_event_code(dev, EV_ABS, event_code)){
 		libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
 		libevdev_set_abs_minimum(dev, event_code, -8);
 		libevdev_set_abs_maximum(dev, event_code, 8);
@@ -65,35 +61,26 @@ void create_device(char *name){
 	libevdev_set_name(dev, name);
 
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
-	if (err != 0) {
-		errno = err;
-		error(1, "error %d (Could Not Create Device)");
-	}
+	if (err != 0)
+		error(1, "error (Could Not Create Device)");
 
 }
 
 static void write_key_event(int code, int value){
 	int err = libevdev_uinput_write_event(uidev, EV_KEY, code, value);
-	if (err != 0){
-		errno = err;
+	if (err != 0)
 		error(0, "error (Write Key Event Error)");
-	}
-
 }
 
 static void write_abs_event(int code, int value){
 	int err = libevdev_uinput_write_event(uidev, EV_ABS, code, value);
-	if (err != 0){
-		errno = err;
+	if (err != 0)
 		error(0, "error (Write Abs Event Error)");
-	}
 }
 static void sync_events(){
 	int err = libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
-	if (err != 0){
-		errno = err;
+	if (err != 0)
 		error(0, "error (Sync Events Error)");
-	}
 }
 
 void press( int code){

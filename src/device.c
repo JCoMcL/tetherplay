@@ -14,8 +14,7 @@ static struct libevdev_uinput *uidev;
 
 
 static int enable_event_type(struct libevdev *dev, int event_type){
-	//RETURN_IF_ERROR(libevdev_has_event_type(dev, event_type), ENOPROTOOPT); // haha funny guy over here
-	RETURN_IF_ERROR(libevdev_has_event_type(dev, event_type), EOWNERDEAD);
+	RETURN_IF_ERROR(libevdev_has_event_type(dev, event_type), ENOPROTOOPT);
 	libevdev_enable_event_type(dev, event_type);
 	return 0;
 	
@@ -68,7 +67,7 @@ void create_device(char *name){
 }
 
 static void write_event(int type, int code, int value){
-	errno = -libevdev_uinput_write_event(uidev, EV_ABS, code, value);
+	errno = -libevdev_uinput_write_event(uidev, type, code, value);
 	if (errno)
 		error(0, "Error (Failed To Write Event)");
 }

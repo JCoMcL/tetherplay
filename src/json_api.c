@@ -11,7 +11,8 @@ typedef struct {
 static json_instruction json_decode(char *input) {
 	int index;
 	char value[100];
-	if (sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value)) {}
+	if (sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value)) {	
+	}
 	return (json_instruction) {index, value}; //TODO handle error if scanf fails
 }
 

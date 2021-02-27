@@ -15,7 +15,7 @@ static struct libevdev_uinput *uidev;
 
 static int enable_event_type(struct libevdev *dev, int event_type){
 	if (libevdev_has_event_type(dev, event_type)){
-		error(1, "error (Event Type already initalized)");
+		error(0, "error (Event Type already initalized)");
 		return 1;
 	} else {
 		libevdev_enable_event_type(dev, event_type);
@@ -66,7 +66,8 @@ void create_device(char *name){
 
 	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
 	if (err != 0) {
-		error(-err, "error %d (Could Not Create Device)");
+		errno = err;
+		error(1, "error %d (Could Not Create Device)");
 	}
 
 }
@@ -74,7 +75,8 @@ void create_device(char *name){
 static void write_key_event(int code, int value){
 	int err = libevdev_uinput_write_event(uidev, EV_KEY, code, value);
 	if (err != 0){
-		error(-err, "error (Write Key Event Error)");
+		errno = err;
+		error(0, "error (Write Key Event Error)");
 	}
 
 }
@@ -82,13 +84,15 @@ static void write_key_event(int code, int value){
 static void write_abs_event(int code, int value){
 	int err = libevdev_uinput_write_event(uidev, EV_ABS, code, value);
 	if (err != 0){
-		error(-err, "error (Write Abs Event Error)");
+		errno = err;
+		error(0, "error (Write Abs Event Error)");
 	}
 }
 static void sync_events(){
 	int err = libevdev_uinput_write_event(uidev, EV_SYN, SYN_REPORT, 0);
 	if (err != 0){
-		error(-err, "error (Sync Events Error)");
+		errno = err;
+		error(0, "error (Sync Events Error)");
 	}
 }
 

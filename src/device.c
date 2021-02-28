@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "errutil.h"
 #include "device.h"
@@ -20,46 +21,67 @@ static int enable_key_event(struct libevdev *dev, int code){
 	return enable_event(dev, EV_KEY, code, NULL);
 }
 
-static int enable_abs_event(struct libevdev *dev, int code, int flat){
+static int enable_abs_event(struct libevdev *dev, int code){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
 	if ((errno = -enable_event(dev, EV_ABS, code, &abs)) < 0) {
 		free(abs);
 		return  -errno;
 	}
-	libevdev_set_abs_minimum(dev, code, -511);
-	libevdev_set_abs_maximum(dev, code, 511);
+	libevdev_set_abs_minimum(dev, code, -0b111111111);
+	libevdev_set_abs_maximum(dev, code, 0b111111111);
 	libevdev_set_abs_flat(dev, code, 0);
 	libevdev_set_abs_fuzz(dev, code, 0);
 	libevdev_set_abs_resolution(dev, code, 0);
 	return 0;
 }
 
-static void hardcode_device(struct libevdev *dev) {
-	enable_abs_event(dev, ABS_X, 15);
-	enable_abs_event(dev, ABS_Y, 15);
-	enable_key_event(dev, BTN_WEST);
-	enable_key_event(dev, BTN_SOUTH);
-	enable_key_event(dev, BTN_START);
+static int enable_event_fails(
+		int (*function) (struct libevdev *dev, int type),
+		struct libevdev *dev,
+		int event_code,
+		char *event_code_name) {
+
+	//NOTE that ABS and REP event types always succeed
+	if ((errno = -function(dev, event_code)) == 0)
+		return 0;
+	fprinte(0, "failed to enable %s",  event_code_name);
+	if (errno == EEXIST)
+		return 0;
+	return 1;
 }
 
-void create_device(char *name){
-	int err;
+#define HANDLE_ENABLE_EVENT(function, code) enable_event_fails(function, dev, code, #code)
+static int hardcode_device(struct libevdev *dev) {
+	int errors = 0;
+	errors += HANDLE_ENABLE_EVENT(enable_abs_event, ABS_X);
+	errors += HANDLE_ENABLE_EVENT(enable_abs_event, ABS_Y);
+	errors += HANDLE_ENABLE_EVENT(enable_key_event, BTN_WEST);
+	errors += HANDLE_ENABLE_EVENT(enable_key_event, BTN_SOUTH);
+	errors += HANDLE_ENABLE_EVENT(enable_key_event, BTN_START);
+	return -errors;
+}
 
-	struct libevdev *dev;
-	memset(&dev, 0, sizeof(dev));
-	dev = libevdev_new();
-	hardcode_device(dev);
+int create_device(char *name){
+	struct libevdev *dev = libevdev_new();
+
+	int errors;
+	if ((errors = hardcode_device(dev)) < 0)
+		fprinte(1, "Critical: %d events failed to initialize", -errors);
+
 	libevdev_set_name(dev, name);
 
-	errno = -libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
-	if (errno != 0)
-		error(1, "failed to create device");
+	RETURN_IF_ERRNO(libevdev_uinput_create_from_device(
+				dev,
+				LIBEVDEV_UINPUT_OPEN_MANAGED,
+				&uidev
+	));
+	return 0;
 }
 
 static void write_event(int type, int code, int value){
 	errno = -libevdev_uinput_write_event(uidev, type, code, value);
 	if (errno)
-		error(0, "failed to write event");
+		printe(0, "failed to write event");
 }
 
 static void write_key_event(int code, int value){

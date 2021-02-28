@@ -20,23 +20,26 @@ function showState() {
 </head>
 <body>
 	<pre id="debug" class="display"> </pre>
-	<button onClick="toggleFullScreen();">Toggle fullscreen</button>
 
 
-	<div id="input">
-		<div id="left">
+	<div id="input" class="flex-container">
+		<div>
 			<div id="gp-ljoy" class="joystick">
 				<button> </button>
 			</div>
 		</div>
-		<div id="right">
+		<div>
+			<button id="gp-start" class="small">start</button>
+			<img src="icons/fullscreen.svg" onClick="toggleFullScreen();"/>
+			<button id="gp-start" class="small">select</button>
+		</div>
+		<div>
 			<table class="cluster of-2">
 				<tr>
 					<td><button id="gp-west"></button></td>
 					<td><button id="gp-south"></button></td>
 				</tr>
 			</table>
-			<button id="gp-start" class="small" >start</button>
 		</div>
 	</div>
 	<script>

@@ -1,11 +1,9 @@
 const spawn = require("child_process").spawn;
 
 function open() {
-	controller = spawn("./stddump");
-	[controller.stdout, controller.stderr].forEach(stream => {
-		stream.setEncoding('utf8')
-		stream.on('data', (chunk) => process.stdout.write(chunk))
-	});
+	controller = spawn("../tetherplay-input/tpinput");
+	controller.stderr.setEncoding('ascii')
+	controller.stderr.on('data', (data) => process.stdout.write(data))
 
 	return controller
 }

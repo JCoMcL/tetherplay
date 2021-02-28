@@ -1,9 +1,11 @@
 const wss = new (require('ws').Server)({port: 40510})
 const tpinput = require('./tpinput')
 
-wss.on('connection', function (ws) {
+wss.on('connection', (ws, req) => {
+	console.log(`new connection: ${req.socket.remoteAddress}`)
 	controller = tpinput.open()
-	ws.on('message', function (message) {
+	controller.on('close', (code, sig) => ws.close(1011) )
+	ws.on('message', message => {
 		controller.stdin.write(message + '\n')
 	})
 })

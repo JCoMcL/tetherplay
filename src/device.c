@@ -65,23 +65,6 @@ static int hardcode_device(struct libevdev *dev) {
 }
 #undef enable_event_fails
 
-int create_device(char *name){
-	struct libevdev *dev = libevdev_new();
-
-	int errors;
-	if ((errors = hardcode_device(dev)) < 0)
-		fprinte(1, "Critical: %d events failed to initialize", -errors);
-
-	libevdev_set_name(dev, name);
-
-	RETURN_IF_ERRNO(libevdev_uinput_create_from_device(
-				dev,
-				LIBEVDEV_UINPUT_OPEN_MANAGED,
-				&uidev
-	));
-	return 0;
-}
-
 static void write_event(int type, int code, int value){
 	errno = -libevdev_uinput_write_event(uidev, type, code, value);
 	if (errno)
@@ -97,6 +80,24 @@ static void write_abs_event(int code, int value){
 }
 static void sync_events(){
 	write_event(EV_SYN, SYN_REPORT, 0);
+}
+
+int create_device(char *name){
+	struct libevdev *dev = libevdev_new();
+
+	int errors;
+	if ((errors = hardcode_device(dev)) < 0)
+		fprinte(1, "Critical: %d events failed to initialize", -errors);
+
+	libevdev_set_name(dev, name);
+
+	RETURN_IF_ERRNO(libevdev_uinput_create_from_device(
+				dev,
+				LIBEVDEV_UINPUT_OPEN_MANAGED,
+				&uidev
+	));
+	sync_events();
+	return 0;
 }
 
 void press( int code){

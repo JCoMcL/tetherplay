@@ -14,22 +14,21 @@ static struct libevdev_uinput *uidev;
 
 
 static int enable_event_type(struct libevdev *dev, int event_type){
-	RETURN_IF_ERRNO(libevdev_has_event_type(dev, event_type));
-	libevdev_enable_event_type(dev, event_type);
+	RETURN_IF_TRUE(libevdev_has_event_type(dev, event_type), EINPROGRESS);
+	RETURN_IF_ERROR(libevdev_enable_event_type(dev, event_type), EKEYREJECTED);
 	return 0;
-	
 }
 
 static void enable_key_event(struct libevdev *dev, int event_code){
 	if (enable_event_type(dev, EV_KEY) != 0)
-		error(0, "Enable Type Error");
+		error(0, "failed to enable event type: EV_KEY");
 	if (!libevdev_has_event_code(dev, EV_KEY, event_code))
 		libevdev_enable_event_code(dev, EV_KEY, event_code, NULL);
 }
 
 static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 	if (enable_event_type(dev, EV_ABS) != 0)
-		error(0, "Enable Type Error");
+		error(0, "failed to enable event type: EV_ABS");
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
 	if (!libevdev_has_event_code(dev, EV_ABS, event_code)){
 		libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
@@ -42,8 +41,6 @@ static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
 }
 
 static void hardcode_device(struct libevdev *dev) {
-	enable_event_type(dev, EV_ABS);
-	enable_event_type(dev, EV_KEY);
 	enable_abs_event(dev, ABS_X, 15);
 	enable_abs_event(dev, ABS_Y, 15);
 	enable_key_event(dev, BTN_WEST);
@@ -60,16 +57,15 @@ void create_device(char *name){
 	hardcode_device(dev);
 	libevdev_set_name(dev, name);
 
-	err = libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
-	if (err != 0)
-		error(1, "Error (Cannot Create Device)");
-
+	errno = -libevdev_uinput_create_from_device( dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &uidev);
+	if (errno != 0)
+		error(1, "failed to create device");
 }
 
 static void write_event(int type, int code, int value){
 	errno = -libevdev_uinput_write_event(uidev, type, code, value);
 	if (errno)
-		error(0, "Error (Failed To Write Event)");
+		error(0, "failed to write event");
 }
 
 static void write_key_event(int code, int value){
@@ -95,9 +91,8 @@ void release( int code){
 
 void click( int code){
 	press(code);
-	sync_events();
+	usleep(20000);
 	release(code);
-	sync_events();
 }
 
 void set_abs( int code, int pos){

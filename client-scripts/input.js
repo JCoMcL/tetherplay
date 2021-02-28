@@ -41,7 +41,6 @@ function getControlByElement(element) {
 function callControlMethod(element, method, evt) {
 	if (!element)
 		{ return }
-	console.log(evt)
 	return getControlByElement(element)[method](evt)
 }
 

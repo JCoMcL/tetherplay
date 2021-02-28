@@ -50,16 +50,17 @@ static int enable_event_fails(
 	return 1;
 }
 
-#define HANDLE_ENABLE_EVENT(function, code) enable_event_fails(function, dev, code, #code)
+#define enable_event_fails(function, code) enable_event_fails(function, dev, code, #code)
 static int hardcode_device(struct libevdev *dev) {
-	int errors = 0;
-	errors += HANDLE_ENABLE_EVENT(enable_abs_event, ABS_X);
-	errors += HANDLE_ENABLE_EVENT(enable_abs_event, ABS_Y);
-	errors += HANDLE_ENABLE_EVENT(enable_key_event, BTN_WEST);
-	errors += HANDLE_ENABLE_EVENT(enable_key_event, BTN_SOUTH);
-	errors += HANDLE_ENABLE_EVENT(enable_key_event, BTN_START);
+	int errors =
+		enable_event_fails(enable_abs_event, ABS_X) +
+		enable_event_fails(enable_abs_event, ABS_Y) +
+		enable_event_fails(enable_key_event, BTN_WEST) +
+		enable_event_fails(enable_key_event, BTN_SOUTH) +
+		enable_event_fails(enable_key_event, BTN_START);
 	return -errors;
 }
+#undef enable_event_fails
 
 int create_device(char *name){
 	struct libevdev *dev = libevdev_new();

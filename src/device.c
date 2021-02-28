@@ -14,7 +14,7 @@ static struct libevdev_uinput *uidev;
 
 
 static int enable_event_type(struct libevdev *dev, int event_type){
-	RETURN_IF_ERROR(libevdev_has_event_type(dev, event_type), ENOPROTOOPT);
+	RETURN_IF_ERRNO(libevdev_has_event_type(dev, event_type));
 	libevdev_enable_event_type(dev, event_type);
 	return 0;
 	

@@ -13,7 +13,7 @@
 static struct libevdev_uinput *uidev;
 
 static int enable_event(struct libevdev *dev, int type, int code, void *data) {
-	RETURN_IF_TRUE(libevdev_has_event_code(dev, EV_KEY, code), EEXIST);
+	RETURN_IF_TRUE(libevdev_has_event_code(dev, type, code), EEXIST);
 	RETURN_IF_ERROR(libevdev_enable_event_code(dev, type, code, data), EKEYREJECTED);
 	return 0;
 }
@@ -23,10 +23,13 @@ static int enable_key_event(struct libevdev *dev, int code){
 
 static int enable_abs_event(struct libevdev *dev, int code){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
-	if ((errno = -enable_event(dev, EV_ABS, code, &abs)) < 0) {
+
+	errno = -enable_event(dev, EV_ABS, code, &abs);
+	if (errno) {
 		free(abs);
-		return  -errno;
+		return -errno;
 	}
+
 	libevdev_set_abs_minimum(dev, code, -0b111111111);
 	libevdev_set_abs_maximum(dev, code, 0b111111111);
 	libevdev_set_abs_flat(dev, code, 0);
@@ -41,8 +44,8 @@ static int enable_event_fails(
 		int event_code,
 		char *event_code_name) {
 
-	//NOTE that ABS and REP event types always succeed
-	if ((errno = -function(dev, event_code)) == 0)
+	errno = -function(dev, event_code);
+	if (errno == 0)
 		return 0;
 	fprinte(0, "failed to enable %s",  event_code_name);
 	if (errno == EEXIST)

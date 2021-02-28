@@ -11,33 +11,27 @@
 
 static struct libevdev_uinput *uidev;
 
-
-
-static int enable_event_type(struct libevdev *dev, int event_type){
-	RETURN_IF_TRUE(libevdev_has_event_type(dev, event_type), EINPROGRESS);
-	RETURN_IF_ERROR(libevdev_enable_event_type(dev, event_type), EKEYREJECTED);
+static int enable_event(struct libevdev *dev, int type, int code, void *data) {
+	RETURN_IF_TRUE(libevdev_has_event_code(dev, EV_KEY, code), EEXIST);
+	RETURN_IF_ERROR(libevdev_enable_event_code(dev, type, code, data), EKEYREJECTED);
 	return 0;
 }
-
-static void enable_key_event(struct libevdev *dev, int event_code){
-	if (enable_event_type(dev, EV_KEY) != 0)
-		error(0, "failed to enable event type: EV_KEY");
-	if (!libevdev_has_event_code(dev, EV_KEY, event_code))
-		libevdev_enable_event_code(dev, EV_KEY, event_code, NULL);
+static int enable_key_event(struct libevdev *dev, int code){
+	return enable_event(dev, EV_KEY, code, NULL);
 }
 
-static void enable_abs_event(struct libevdev *dev, int event_code, int flat){
-	if (enable_event_type(dev, EV_ABS) != 0)
-		error(0, "failed to enable event type: EV_ABS");
+static int enable_abs_event(struct libevdev *dev, int code, int flat){
 	struct input_absinfo *abs = malloc(sizeof(struct input_absinfo));
-	if (!libevdev_has_event_code(dev, EV_ABS, event_code)){
-		libevdev_enable_event_code(dev, EV_ABS, event_code, &abs);
-		libevdev_set_abs_minimum(dev, event_code, -511);
-		libevdev_set_abs_maximum(dev, event_code, 511);
-		libevdev_set_abs_flat(dev, event_code, flat);
-		libevdev_set_abs_fuzz(dev, event_code, 0);
-		libevdev_set_abs_resolution(dev, event_code, 0);
+	if ((errno = -enable_event(dev, EV_ABS, code, &abs)) < 0) {
+		free(abs);
+		return  -errno;
 	}
+	libevdev_set_abs_minimum(dev, code, -511);
+	libevdev_set_abs_maximum(dev, code, 511);
+	libevdev_set_abs_flat(dev, code, 0);
+	libevdev_set_abs_fuzz(dev, code, 0);
+	libevdev_set_abs_resolution(dev, code, 0);
+	return 0;
 }
 
 static void hardcode_device(struct libevdev *dev) {

@@ -5,7 +5,8 @@
 
 #define RED(s) "\e[91m" s "\e[39m"
 
-#define error(status, msg) error(status, errno, RED(msg))
+#define fprinte(status, msg, ...) error(status, errno, RED(msg), __VA_ARGS__)
+#define printe(status, msg) error(status, errno, RED(msg))
 
 #define RETURN_IF_TRUE(expr, error_num) if(expr) {errno = error_num; return -error_num;}
 

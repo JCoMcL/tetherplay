@@ -1,5 +1,6 @@
 const express = require('express')
 require('./ws')
+require('./style/style.js')
 
 var app = express()
 

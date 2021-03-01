@@ -38,10 +38,27 @@ button {
 
 
 .flex-container{
-	display: "flex";
+	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
+
+.settings-menu{
+	display:block;
+} #nav-options button{
+	display: inline-block;
+	color: inherit;
+	text-align: center;
+	margin:0 0 0 0;
+	width:auto;
+	background-color: var(--color);
+	border-radius:0;
+} #options{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
 .small {
 	font-size:  calc(var(--button-diameter) / 3);
 	margin: 0.8em;

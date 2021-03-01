@@ -5,12 +5,10 @@ var app = express()
 
 app.use(express.static('style'));
 app.use(express.static('client-scripts'));
+app.use(express.static('icons'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
-})
-app.get('/client.js', function (req, res) {
-    res.sendFile(__dirname + '/client.js');
 })
 
 app.listen(3000, function () {

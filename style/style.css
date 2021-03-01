@@ -99,6 +99,20 @@ button {
 } #right {
 	flex-direction: row-reverse;
 }
+#mode {
+	--size: calc(var(--button-diameter) * 1.5);
+	width: var(--size);
+	height: var(--size);
+	border: var(--border);
+	border-radius: calc(var(--size) / 2);
+} #mode img {
+	display: block;
+	image-rendering: pixelated;
+	--subsize: calc(var(--size) * 0.6);
+	width: var(--subsize);
+	height: var(--subsize);
+	margin: auto;
+}
 
 .cluster {
 	--rotation: 45deg;

@@ -20,9 +20,9 @@ function showState() {
 	</script>
 </head>
 <body>
-	<pre id="debug" class="display"> </pre>
+	<pre id="debug" class="display hidden"> </pre>
 
-	<div class="settings-menu" id="settings">
+	<div class="settings-menu hidden" id="settings">
 		<div id="nav-options">
 			<button onClick="toggleIDVisability('debug');">ToggleDebug</button>
 			<button onClick="toggleIDVisability('settings-options');">Settings</button>
@@ -33,10 +33,12 @@ function showState() {
 				<button onClick="buttonSize();">Update Button Size</button>
 				<input type="range" min="1" max="10" value="4" class="slider" id="button-slider">
 			</div>
-			<div>
-				<button>Reach</button>
+		<div class="option">
+			<button onClick="reachSize();">Update Reach</button>
+			<input type="range" min="1" max="10" value="6" class="slider" id="reach-slider">
 			</div>
 			<div>
+				<h4>Themes<h4>
 				<button>Theme</button>
 			</div>
 		</div>
@@ -44,20 +46,20 @@ function showState() {
 
 	<div id="input" class="flex-container">
 		<div>
-			<div id="gp-ljoy" class="joystick moveable-object">
+			<div id="gp-ljoy" class="joystick">
 				<button> </button>
 			</div>
 		</div>
-		<div>
-			<button id="gp-start" class="small moveable-object">start</button>
-			<button id="mode" class="moveable-object" onClick="toggleFullScreen(); toggleIDVisability('mode');">
+		<div class="flex-col">
+			<button id="gp-start" class="small">start</button>
+			<button id="fullscreen" class="moveable-object" onClick="toggleFullScreen(); toggleIDVisability('mode'); toggleIDVisability('fullscreen')">
 				<img src="fullscreen.svg">
 			</button>
-			<button id="mode" onClick="toggleIDVisability('settings');">TP</button>
-			<button id="gp-start" class="small moveable-object">select</button>
+			<button id="mode" onClick="toggleIDVisability('settings');" class="hidden">TP</button>
+			
 		</div>
 		<div>
-			<table class="cluster of-2 moveable-object">
+			<table class="cluster of-2">
 				<tr>
 					<td><button id="gp-west"></button></td>
 					<td><button id="gp-south"></button></td>

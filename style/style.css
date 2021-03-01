@@ -59,8 +59,12 @@ button {
 
 #settings-options{
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	flex-wrap: wrap;
+}
+div #settings-option{
+	display: flex;
+	flex-direction: column;
 }
 .slider{
 	-webkit-appearance: none; 
@@ -68,7 +72,11 @@ button {
 	border: 1px black;
 	outline: none;
 	opacity: 0.7;
+}
 
+.hidden{
+	display:none;
+	visibility: hidden;
 }
 .small {
 	font-size:  calc(var(--button-diameter) / 3);

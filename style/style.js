@@ -1,11 +1,13 @@
-function toggleIDVisability(id) {
+function toggleIDVisability(id){
     var obj = document.getElementById(id);
-    if (obj.style.display === 'none'){
-        obj.style.display = 'inherit';
+    var classes = obj.classList;
+    if (classes.contains('hidden')){
+        classes.remove('hidden');
     } else {
-        obj.style.display = "none";
+        classes.add('hidden');
     }
 }
+
 function buttonSize(){
     var slider = document.getElementById('button-slider');
     document.documentElement.style.setProperty('--button-diameter', `${slider.value}em`);

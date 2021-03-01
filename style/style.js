@@ -6,5 +6,7 @@ function toggleIDVisability(id) {
         obj.style.display = "none";
     }
 }
-
-
+function buttonSize(){
+    var slider = document.getElementById('button-slider');
+    document.documentElement.style.setProperty('--button-diameter', `${slider.value}em`);
+}

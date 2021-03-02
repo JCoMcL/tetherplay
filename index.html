@@ -26,22 +26,22 @@ function showState() {
 	<div class="settings-menu">
 		<div class="option-row">
 			<button onClick="toggleIDVisability('debug');">ToggleDebug</button>
-			<button onClick="toggleIDVisability('settings'); toggleIDVisability('settings-nav');">Settings</button>
+			<button onClick="toggleClassVisibility('option'); toggleIDVisability('bottom-nav');">Settings</button>
 			<button onClick="toggleAdjustUI();">AdjustUI</button>
 		</div>
-		<div class="option">
+		<div class="option hidden" id="option">
 			<ul>
 				<li><button onClick="buttonSize();">Update Button Size</button></li>
 				<li><input type="range" min="1" max="10" value="4" class="slider" id="button-slider"></li>
 			</ul>
 		</div>
-		<div class="option">
+		<div class="option hidden" id="option">
 			<ul>
 				<li><button onClick="reachSize();">Update Reach</button></li>
 				<li><input type="range" min="1" max="25" value="25" class="slider" id="reach-slider"></li>
 			</ul>
 		</div>
-		<div class="option">
+		<div class="option hidden" id="option">
 			<ul>
 				<li><h4>Themes</h4></li>
 				<li><label>Light/Dark Mode</label></li>
@@ -56,7 +56,7 @@ function showState() {
 			</label>
 			</ul>
 		</div>
-		<div class="option">
+		<div class="option hidden">
 			<label>Choose Gampad buttons</label>
 			<ul>
 				<li><button onClick="twoGBbuttons();">2 Buttons</button></li>
@@ -64,14 +64,7 @@ function showState() {
 				<li><button onClick="fourGBbuttons();">4 Buttons</button></li>
 			</ul>
 		</div>
-		<div class="option">
-			<ul>
-				<li><h4>Toggle Gamepad Buttons</h4></li>
-				<li><label id="btn-amt">Current Amount: 2</label></li>
-				<li><button onClick="toggleGBbuttons();">Toggle Button Amount</button></li>
-			</ul>
-		</div>
-		<div class="option">
+		<div class="option hidden">
 			<ul>
 				<li><h4>Toggle Fullscreen</h4></li>
 				<li><button onClick="toggleFullScreen();"><img src="fullscreen.svg"></button></li>
@@ -79,9 +72,9 @@ function showState() {
 		</div>
 	</div>
 </div>
-		<div class="bottom-nav hidden" id="settings-nav">
+		<div class="bottom-nav hidden" id="bottom-nav">
 			<ul>
-				<li><button onClick="toggleIDVisability('settings'); toggleIDVisability('settings-nav');">Back</button></li>
+				<li><button onClick="toggleIDVisability('settings'); toggleIDVisability('bottom-nav'); toggleClassVisibility('option')">Back</button></li>
 				<li><button>Save</button></li>
 				<li><button>Export</button></li>
 				<li><button>Import</button></li>
@@ -89,7 +82,7 @@ function showState() {
 		</div>
 
 	<div id="input" class="flex-container">
-		<div>
+		<div id="left">
 			<div id="gp-ljoy" class="joystick">
 				<button> </button>
 			</div>
@@ -99,10 +92,10 @@ function showState() {
 				<img src="fullscreen.svg">
 			</button>
 			<button id="gp-start" class="small">start</button>
-			<button id="mode" onClick="toggleIDVisability('settings'); toggleIDVisability('settings-nav');" class="hidden">TP</button>
+			<button id="mode" onClick="toggleIDVisability('settings');" class="hidden">TP</button>
 			
 		</div>
-		<div>
+		<div id="right">
 			<table class="cluster of-2" id="gamepad">
 				<tr>
 					<td><button id="gp-north" class="hidden"></button></td>

@@ -25,3 +25,49 @@ function toggleGPMode(){
     var elem = document.body;
     elem.classList.toggle("ps");
 }
+
+function twoGBbuttons(){
+    var north = document.getElementById('gp-north').classList;
+    var east = document.getElementById('gp-east').classList;
+    var gamepad = document.getElementById('gamepad').classList;
+    if (!north.contains('hidden')){
+        north.add('hidden');
+    }
+    if (!east.contains('hidden')){
+        east.add('hidden');
+    }
+    if (gamepad.contains('of-3') || gamepad.contains('of-4')){
+        gamepad.remove('of-3') || gamepad.remove('of-4');
+        gamepad.add('of-2');
+    }
+}
+function threeGBbuttons(){
+    var north = document.getElementById('gp-north').classList;
+    var east = document.getElementById('gp-east').classList;
+    var gamepad = document.getElementById('gamepad').classList;
+    if (!north.contains('hidden')){
+        north.add('hidden');
+    }
+    if (east.contains('hidden')){
+        east.remove('hidden');
+    }
+    if (gamepad.contains('of-2') || gamepad.contains('of-4')){
+        gamepad.remove('of-2') || gamepad.remove('of-4');
+        gamepad.add('of-3');
+    }
+}
+function fourGBbuttons(){
+    var north = document.getElementById('gp-north').classList;
+    var east = document.getElementById('gp-east').classList;
+    var gamepad = document.getElementById('gamepad').classList;
+    if (north.contains('hidden')){
+        north.remove('hidden');
+    }
+    if (east.contains('hidden')){
+        east.remove('hidden');
+    }
+    if (gamepad.contains('of-3') || gamepad.contains('of-2')){
+        gamepad.remove('of-3') || gamepad.remove('of-2');
+        gamepad.add('of-4');
+    }
+}

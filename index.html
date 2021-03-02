@@ -57,9 +57,11 @@ function showState() {
 			</ul>
 		</div>
 		<div class="option">
+			<label>Toggle Gampad buttons</label>
 			<ul>
-				<li><button onClick="reachSize();">Update Reach</button></li>
-				<li><input type="range" min="1" max="10" value="6" class="slider" id="reach-slider"></li>
+				<li><button onClick="twoGBbuttons();">2 Buttons</button></li>
+				<li><button onClick="threeGBbuttons();">3 Buttons</button></li>
+				<li><button onClick="fourGBbuttons();">4 Buttons</button></li>
 			</ul>
 		</div>
 		<div class="option">
@@ -94,8 +96,11 @@ function showState() {
 			
 		</div>
 		<div>
-			<table class="cluster of-2">
+			<table class="cluster of-2" id="gamepad">
 				<tr>
+					<td><button id="gp-north" class="hidden"></button></td>
+					<td><button id="gp-east" class="hidden"></button></td>
+					<tr></tr>
 					<td><button id="gp-west"></button></td>
 					<td><button id="gp-south"></button></td>
 				</tr>

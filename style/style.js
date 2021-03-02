@@ -7,7 +7,16 @@ function toggleIDVisability(id){
         classes.add('hidden');
     }
 }
-
+function toggleClassVisibility(classname){
+    var elem = document.getElementsByClassName(classname);
+    for (i=0;i<elem.length; i++ ){
+        if (elem[i].classList.contains('hidden')){
+            elem[i].classList.remove('hidden');
+        } else {
+            elem[i].classList.add('hidden');
+        }
+    }
+}
 function buttonSize(){
     var slider = document.getElementById('button-slider');
     document.documentElement.style.setProperty('--button-diameter', `${slider.value}em`);

@@ -11,11 +11,13 @@
 	--gray: rgba(128, 128, 128, 0.25);
 	--grayer: #888;
 	--border: 3px solid;
+	--background: white;
 }
 
 .dark-mode {
 	color: white;
 	background-color: black;
+	--background: black;
 }
 
 .dark-mode button {
@@ -50,46 +52,91 @@ button {
 	filter: brightness(200%);
 	border: var(--border);
 }
+@keyframes fadeIn {
+  0%   {opacity: 0; top:1000px;}
+  100%  {opacity: 1; top:0px;}
+}
 
 
+.block{
+	display: block;
+	position: absolute;
+	width: 100%;
+	height:100%;
+	z-index: 1;
+	background-color: var(--background);
+}
 .flex-container{
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
+	flex-wrap: wrap; 
 } .flex-col {
 	display: flex;
 	flex-direction: column;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
+}.bottom-nav ul{
+	position: fixed;
+	bottom:0;
+	z-index:2;
+	list-style-type:none;
+	padding:5px;
+	border: 4px solid var(--border);
+	width: 100%;
+	background-color: var(--color);
+}.bottom-nav li{
+	position: relative;
+	display: inline;
+	bottom:0;
+	margin-right: 20%;
+	animation: 0.5s fadeIn;
+}
+.bottom-nav button{
+	border-radius: 10%;
 }
 
 .settings-menu{
-	display:block;
-	height: 50%;
-	width: 100%;
-	position: absolute;
-	background-color: grey;
-	opacity: 0.5;
-	border: 3px solid black;
-} #nav-options button{
-	display: inline-block;
-	color: inherit;
-	text-align: center;
-	width:32%;
-	background-color: var(--color);
-	border-radius:0;
-} #settings-options{
-	display: flex;
-	flex-direction: row;
+	display:flex;
 	flex-wrap: wrap;
-} div #settings-option{
-	display: flex;
-	flex-direction: column;
+} .option {
+	width: 20%;
+	margin:auto;
+}.option ul{
+	list-style-type: none;	
+}.option button, input{
+	margin:auto;
+} .option-row{
+	flex-wrap:nowrap;
+	height: 20%;
+	width: 100%;
+}.option-row button{
+	width:32%;
+	padding:10px;
+} .option button{
+	height: var(--button-diameter);
+	width: calc(var(--button-diameter)*2);
+
 }
+
 .slider{
 	-webkit-appearance: none; 
-	background:none;
-	border: 1px black;
-	opacity: 0.7;
+	background:#d3d3d3;
+	width: 100%;
+	outline: none;
+	appearance: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: calc(var(--button-diameter)/2.5);
+  height: calc(var(--button-diameter)/2.5);
+  background: #4CAF50;
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: calc(var(--button-diameter)/2.5);
+  height: calc(var(--button-diameter)/2.5);
+  background: #4CAF50;
+  cursor: pointer;
 }
 .hidden{
 	display:none;

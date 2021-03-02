@@ -22,36 +22,50 @@ function showState() {
 <body>
 	<pre id="debug" class="display hidden"> </pre>
 
-	<div class="settings-menu hidden" id="settings">
-		<div id="nav-options">
+<div class="block hidden" id="settings">
+	<div class="settings-menu">
+		<div class="option-row">
 			<button onClick="toggleIDVisability('debug');">ToggleDebug</button>
-			<button onClick="toggleIDVisability('settings-options');">Settings</button>
+			<button onClick="toggleIDVisability('settings'); toggleIDVisability('settings-nav');">Settings</button>
 			<button onClick="toggleAdjustUI();">AdjustUI</button>
 		</div>
-		<div id="settings-options">
-			<div class="option">
-				<button onClick="buttonSize();">Update Button Size</button>
-				<input type="range" min="1" max="10" value="4" class="slider" id="button-slider">
-			</div>
 		<div class="option">
-			<button onClick="reachSize();">Update Reach</button>
-			<input type="range" min="1" max="10" value="6" class="slider" id="reach-slider">
-			</div>
-			<div>
-				<h4>Themes</h4>
-				<p>Light/Dark Mode</p>
-				<label class="switch">
-					<input type="checkbox" id="light-dark-mode"/>
-					<span class="toggle-slider" onClick="toggleDarkMode();"></span>
-				</label>
-				<p>Xbox/Playstation Buttons</p>
-				<label class="switch">
-					<input type="checkbox" id="change-gp-style"/>
-					<span class="toggle-slider" onClick="toggleGPMode();"></span>
-				</label>
-			</div>
+			<ul>
+				<li><button onClick="buttonSize();">Update Button Size</button></li>
+				<li><input type="range" min="1" max="10" value="4" class="slider" id="button-slider"></li>
+			</ul>
+		</div>
+		<div class="option">
+			<ul>
+				<li><button onClick="reachSize();">Update Reach</button></li>
+				<li><input type="range" min="1" max="10" value="6" class="slider" id="reach-slider"></li>
+			</ul>
+		</div>
+		<div class="option">
+			<ul>
+				<li><h4>Themes</h4></li>
+				<li><p>Light/Dark Mode</p></li>
+			<label class="switch">
+				<input type="checkbox" id="light-dark-mode"/>
+				<span class="toggle-slider" onClick="toggleDarkMode();"></span>
+			</label>
+			<li><p>Xbox/Playstation Buttons</p></li>
+			<label class="switch">
+				<input type="checkbox" id="change-gp-style"/>
+				<span class="toggle-slider" onClick="toggleGPMode();"></span>
+			</label>
+			</ul>
 		</div>
 	</div>
+</div>
+		<div class="bottom-nav hidden" id="settings-nav">
+			<ul>
+				<li><button onClick="toggleIDVisability('settings'); toggleIDVisability('settings-nav');">Back</button></li>
+				<li><button>Save</button></li>
+				<li><button>Export</button></li>
+				<li><button>Import</button></li>
+			</ul>
+		</div>
 
 	<div id="input" class="flex-container">
 		<div>
@@ -60,11 +74,11 @@ function showState() {
 			</div>
 		</div>
 		<div class="flex-col">
-			<button id="gp-start" class="small">start</button>
 			<button id="fullscreen" class="moveable-object" onClick="toggleFullScreen(); toggleIDVisability('mode'); toggleIDVisability('fullscreen')">
 				<img src="fullscreen.svg">
 			</button>
-			<button id="mode" onClick="toggleIDVisability('settings');" class="hidden">TP</button>
+			<button id="gp-start" class="small">start</button>
+			<button id="mode" onClick="toggleIDVisability('settings'); toggleIDVisability('settings-nav');" class="hidden">TP</button>
 			
 		</div>
 		<div>

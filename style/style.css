@@ -1,6 +1,6 @@
 :root {
 	--button-diameter: 4rem;
-	--reach: calc(var(--button-diameter)*6);
+	--reach: 25;
 	--padding: 0px;
 	--slider-diameter: calc(var(--button-diameter)/2);
 
@@ -315,8 +315,10 @@ input:checked + .toggle-slider:before {
 #gp-south { --color: #53ff40; }
 #gp-south::after { content: "A"; }
 
+
 .ps #gp-east { --color: #ff6a45; }
-.ps #gp-east::after { content: "○"; }
+.ps #gp-east::after { content: "○"; 
+}
 
 .ps #gp-north { --color: #2ee885; }
 .ps #gp-north::after { content: "△"; }

@@ -26,6 +26,30 @@ function toggleGPMode(){
     elem.classList.toggle("ps");
 }
 
+function toggleGBbuttons(){
+    var north = document.getElementById('gp-north').classList;
+    var east = document.getElementById('gp-east').classList;
+    var gamepad = document.getElementById('gamepad').classList;
+    var output = document.getElementById('btn-amt');
+    if (gamepad.contains('of-2')){
+        east.remove('hidden');
+        gamepad.remove('of-2');
+        gamepad.add('of-3');
+        output.innerHTML = "Current Amount: 3";
+    } else if(gamepad.contains('of-3')){
+        north.remove('hidden');
+        gamepad.remove('of-3');
+        gamepad.add('of-4');
+        output.innerHTML = "Current Amount: 4";
+    } else {
+        east.add('hidden');
+        north.add('hidden');
+        gamepad.remove('of-4');
+        gamepad.add('of-2');
+        output.innerHTML = "Current Amount: 2";
+    }
+}
+
 function twoGBbuttons(){
     var north = document.getElementById('gp-north').classList;
     var east = document.getElementById('gp-east').classList;

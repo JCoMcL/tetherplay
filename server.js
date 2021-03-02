@@ -19,6 +19,10 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 })
 
+app.get('/favicon.png', function (req, res) {
+    res.sendFile(__dirname + '/img/tetherplay.png');
+})
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 })

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+	<title>Tetherplay</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="style/style.css">
+</head>
+<div class="block">
+	<div class="settings-menu" id="settings">
+		<div class="option-row">
+			<button onClick="toggleIDVisability('debug');">ToggleDebug</button>
+			<button onClick="toggleIDVisability('settings');">Settings</button>
+			<button onClick="toggleAdjustUI();">AdjustUI</button>
+		</div>
+		<div class="option">
+			<ul>
+				<li><button onClick="buttonSize();">Update Button Size</button></li>
+				<li><input type="range" min="1" max="10" value="4" class="slider" id="button-slider"></li>
+			</ul>
+		</div>
+		<div class="option">
+			<ul>
+				<li><button onClick="reachSize();">Update Reach</button></li>
+				<li><input type="range" min="1" max="10" value="6" class="slider" id="reach-slider"></li>
+			</ul>
+		</div>
+		<div class="option">
+			<ul>
+				<li><h4>Themes</h4></li>
+				<li><p>Light/Dark Mode</p></li>
+			<label class="switch">
+				<input type="checkbox" id="light-dark-mode"/>
+				<span class="toggle-slider" onClick="toggleDarkMode();"></span>
+			</label>
+			<li><p>Xbox/Playstation Buttons</p></li>
+			<label class="switch">
+				<input type="checkbox" id="change-gp-style"/>
+				<span class="toggle-slider" onClick="toggleGPMode();"></span>
+			</label>
+			</ul>
+		</div>
+	</div>
+</div>
+		<div class="bottom-nav">
+			<ul>
+				<li><button>Back</button></li>
+				<li><button>Save</button></li>
+				<li><button>Export</button></li>
+				<li><button>Import</button></li>
+			</ul>
+		</div>
+

@@ -1,6 +1,6 @@
 :root {
 	--button-diameter: 4rem;
-	--reach: calc(var(--button-diameter) * 6);
+	--reach: 25;
 	--padding: 0px;
 	--slider-diameter: calc(var(--button-diameter)/2);
 
@@ -25,9 +25,6 @@
 	--color: var(--grayer);
 	color: var(--color);
 	border-color: var(--color);
-}
-.dark-mode svg{
-	fill: white;
 }
 
 body {
@@ -135,7 +132,7 @@ button {
   appearance: none;
   width: calc(var(--button-diameter)/2.5);
   height: calc(var(--button-diameter)/2.5);
-  background: #4CAF50;
+  background: #2196F3;
   cursor: pointer;
 }
 .slider::-moz-range-thumb {
@@ -226,10 +223,9 @@ input:checked + .toggle-slider:before {
 	-moz-user-select: -moz-none;
 	-ms-user-select: none;
 	-select: none;
-
 	flex: 1;
 	box-sizing: border-box;
-	width: 100%;
+	max-width: var(--reach);
 	height: auto;
 	padding: 0px 20px 20px 20px;
 
@@ -244,7 +240,7 @@ input:checked + .toggle-slider:before {
 	max-width: var(--reach);
 	box-sizing: border-box;
 	height: min(100%, var(--reach));
-
+	margin: auto;
 	display: flex;
 	align-items: flex-end;
 	align-content: stretch;

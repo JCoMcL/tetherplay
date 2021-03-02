@@ -87,25 +87,26 @@ button {
 	position: relative;
 	display: inline;
 	bottom:0;
-	margin-right: 20%;
+	margin-right: 10%;
 	animation: 0.5s fadeIn;
 }
 .bottom-nav button{
 	border-radius: 10%;
+	width: auto;
+	height: calc(var(--button-diameter)/2)
 }
 
 .settings-menu{
 	display:flex;
 	flex-wrap: wrap;
 } .option {
-	width: 20%;
+	width: 33%;
 	margin:auto;
 }.option ul{
 	list-style-type: none;	
 }.option button, input{
 	margin:auto;
 } .option-row{
-	flex-wrap:nowrap;
 	height: 20%;
 	width: 100%;
 }.option-row button{

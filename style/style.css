@@ -65,6 +65,8 @@ button {
 	height:100%;
 	z-index: 1;
 	background-color: var(--background);
+	animation: 0.5s fadeIn;
+	overflow: auto;
 }
 .flex-container{
 	display: flex;

@@ -44,12 +44,12 @@ function showState() {
 		<div class="option">
 			<ul>
 				<li><h4>Themes</h4></li>
-				<li><p>Light/Dark Mode</p></li>
+				<li><label>Light/Dark Mode</label></li>
 			<label class="switch">
 				<input type="checkbox" id="light-dark-mode"/>
 				<span class="toggle-slider" onClick="toggleDarkMode();"></span>
 			</label>
-			<li><p>Xbox/Playstation Buttons</p></li>
+			<li><label>Xbox/Playstation Buttons</label></li>
 			<label class="switch">
 				<input type="checkbox" id="change-gp-style"/>
 				<span class="toggle-slider" onClick="toggleGPMode();"></span>
@@ -57,7 +57,7 @@ function showState() {
 			</ul>
 		</div>
 		<div class="option">
-			<label>Toggle Gampad buttons</label>
+			<label>Choose Gampad buttons</label>
 			<ul>
 				<li><button onClick="twoGBbuttons();">2 Buttons</button></li>
 				<li><button onClick="threeGBbuttons();">3 Buttons</button></li>
@@ -66,8 +66,15 @@ function showState() {
 		</div>
 		<div class="option">
 			<ul>
-				<li><button onClick="reachSize();">Update Reach</button></li>
-				<li><input type="range" min="1" max="10" value="6" class="slider" id="reach-slider"></li>
+				<li><h4>Toggle Gamepad Buttons</h4></li>
+				<li><label id="btn-amt">Current Amount: 2</label></li>
+				<li><button onClick="toggleGBbuttons();">Toggle Button Amount</button></li>
+			</ul>
+		</div>
+		<div class="option">
+			<ul>
+				<li><h4>Toggle Fullscreen</h4></li>
+				<li><button onClick="toggleFullScreen();"><img src="fullscreen.svg"></button></li>
 			</ul>
 		</div>
 	</div>

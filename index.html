@@ -90,6 +90,7 @@ function showState() {
 		</div>
 		<div class="flex-col">
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<button id="fullscreen" class="moveable-object" onClick="toggleFullScreen(); toggleIDVisability('mode'); toggleIDVisability('fullscreen')">
 				<img src="fullscreen.png">
 =======
@@ -102,6 +103,10 @@ function showState() {
 			<button id="mode" onClick="toggleIDVisability('settings'); toggleIDVisability('settings-nav');" class="hidden"><img src="tetherplay.png"></button>
 =======
 			<button id="mode" onClick="toggleIDVisability('settings');" class="hidden"><img src="tetherplay.svg"></button>
+=======
+			<button id="gp-start" class="small">start</button>
+			<button id="mode" onClick="toggleIDVisability('settings'); setFullScreen();"><img id="mode-img" src="fullscreen.svg"></button>
+>>>>>>> 4112f81 (logo changes to fullscreen button if not in fullscreen)
 			
 >>>>>>> a34cddb (added svg version of logo)
 		</div>
@@ -124,7 +129,7 @@ state = configuration.getSetup().map(item =>
 		onStateUpdate
 	)
 )
-function toggleFullScreen() {
+function setFullScreen() {
   var doc = window.document;
   var docEl = doc.documentElement;
 
@@ -134,10 +139,15 @@ function toggleFullScreen() {
   if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
     requestFullScreen.call(docEl);
   }
-  else {
-    cancelFullScreen.call(doc);
-  }
 }
+
+document.addEventListener('fullscreenchange', (event) =>{
+			if (document.fullscreenElement){
+						document.getElementById('mode-img').src = 'tetherplay.svg';
+			} else {
+						document.getElementById('mode-img').src = 'fullscreen.svg';
+					}
+		})
 debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");

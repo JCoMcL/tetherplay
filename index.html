@@ -5,8 +5,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href="style.css">
-	<!--<link rel="stylesheet" href="dark.css">-->
-	<!--<link rel="stylesheet" href="playstation.css">-->
 	<script src="configuration.js"></script>
 	<script src="control.js"></script>
 	<script src="checks.js"></script>
@@ -26,8 +24,8 @@ function showState() {
 <div class="block hidden" id="settings">
 	<div class="settings-menu">
 		<div class="option-row">
-			<button onClick="toggleIDVisability('debug');">ToggleDebug</button>
-			<button onClick="toggleClassVisibility('option'); toggleIDVisability('bottom-nav');">Settings</button>
+			<button onClick="toggleIDVisibility('debug');">ToggleDebug</button>
+			<button onClick="toggleClassVisibility('option'); toggleIDVisibility('bottom-nav');">Settings</button>
 			<button onClick="toggleAdjustUI();">AdjustUI</button>
 		</div>
 		<div class="option hidden" id="option">
@@ -60,6 +58,7 @@ function showState() {
 		<div class="option hidden">
 			<label>Choose Gampad buttons</label>
 			<ul>
+<<<<<<< HEAD
 				<li><button onClick="twoGBbuttons();">2 Buttons</button></li>
 				<li><button onClick="threeGBbuttons();">3 Buttons</button></li>
 				<li><button onClick="fourGBbuttons();">4 Buttons</button></li>
@@ -69,6 +68,11 @@ function showState() {
 			<ul>
 				<li><h4>Toggle Fullscreen</h4></li>
 				<li><button onClick="toggleFullScreen();"><img src="fullscreen.png"></button></li>
+=======
+				<li><button onClick="gamePadbuttons('of-2');">2 Buttons</button></li>
+				<li><button onClick="gamePadbuttons('of-3');">3 Buttons</button></li>
+				<li><button onClick="gamePadbuttons('of-4');">4 Buttons</button></li>
+>>>>>>> 33a2a63 (left, right now used instead of flex-container)
 			</ul>
 		</div>
 	</div>
@@ -82,8 +86,8 @@ function showState() {
 			</ul>
 		</div>
 
-	<div id="input" class="flex-container">
-		<div>
+	<div id="input" class="">
+		<div id="left">
 			<div id="gp-ljoy" class="joystick">
 				<button> </button>
 			</div>
@@ -105,12 +109,16 @@ function showState() {
 			<button id="mode" onClick="toggleIDVisability('settings');" class="hidden"><img src="tetherplay.svg"></button>
 =======
 			<button id="gp-start" class="small">start</button>
+<<<<<<< HEAD
 			<button id="mode" onClick="toggleIDVisability('settings'); setFullScreen();"><img id="mode-img" src="fullscreen.svg"></button>
 >>>>>>> 4112f81 (logo changes to fullscreen button if not in fullscreen)
+=======
+			<button id="mode" onClick="toggleIDVisibility('settings'); setFullScreen();"><img id="mode-img" src="fullscreen.svg"></button>
+>>>>>>> 33a2a63 (left, right now used instead of flex-container)
 			
 >>>>>>> a34cddb (added svg version of logo)
 		</div>
-		<div>
+		<div id="right">
 			<table class="cluster of-2" id="gamepad">
 				<tr>
 					<td><button id="gp-north" class="hidden"></button></td>
@@ -142,12 +150,12 @@ function setFullScreen() {
 }
 
 document.addEventListener('fullscreenchange', (event) =>{
-			if (document.fullscreenElement){
-						document.getElementById('mode-img').src = 'tetherplay.svg';
-			} else {
-						document.getElementById('mode-img').src = 'fullscreen.svg';
-					}
-		})
+	if (document.fullscreenElement){
+			document.getElementById('mode-img').src = 'tetherplay.svg';
+	} else {
+			document.getElementById('mode-img').src = 'fullscreen.svg';
+	}
+})
 debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");

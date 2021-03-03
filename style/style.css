@@ -237,7 +237,6 @@ input:checked + .toggle-slider:before {
 	max-width: var(--reach);
 	box-sizing: border-box;
 	height: min(100%, var(--reach));
-	margin: auto;
 	display: flex;
 	align-items: flex-end;
 	align-content: stretch;

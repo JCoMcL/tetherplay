@@ -37,6 +37,10 @@ app.listen(3000, function () {
 =======
 app.listen(port, function () {
   console.log('Example app listening on port 3000!');
+<<<<<<< HEAD
   qrcode.generate(`https://${ip.address()}:${port}`);
 >>>>>>> 3b07659 (add qrcode, rebased multi-user, change config for 4 gp buttons)
+=======
+  qrcode.generate(`http://${ip.address()}:${port}`);
+>>>>>>> 31fa8a6 (change https to http for qr code)
 })

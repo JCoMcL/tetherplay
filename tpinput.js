@@ -1,7 +1,8 @@
 const spawn = require("child_process").spawn;
 
-function open() {
-	controller = spawn("../tetherplay-input/tpinput");
+function open(config) {
+	var executable = config.sink ? config.sink : 'tpinput'
+	controller = spawn(executable);
 	controller.stderr.setEncoding('ascii')
 	controller.stderr.on('data', (data) => process.stdout.write(data))
 

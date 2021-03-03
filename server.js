@@ -1,6 +1,14 @@
 const express = require('express')
-require('./ws')
+const getopts = require('getopts')
+const ws = require('./ws')
 
+const config = getopts(process.argv.slice(2), {
+  alias: {
+    sink: 's'
+  },
+})
+
+ws.start(config)
 var app = express()
 
 app.use(express.static('style'));

@@ -13,7 +13,7 @@ var app = express()
 
 app.use(express.static('style'));
 app.use(express.static('client-scripts'));
-app.use(express.static('icons'));
+app.use(express.static('img'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');

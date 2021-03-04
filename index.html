@@ -40,7 +40,7 @@ function showState() {
 			</button>
 			<button id="gp-start" class="small">start</button>
 
-			<button id="mode" onClick=" toggleIDVisibility('top-bar'); fullscreen();">
+			<button id="mode" onClick="mode();">
 				<img id="mode-img" src="fullscreen.png">
 			</button>
 
@@ -65,16 +65,10 @@ state = configuration.getSetup().map(item =>
 		onStateUpdate
 	)
 )
-function fullscreen() {
-  var doc = window.document;
-  var docEl = doc.documentElement;
-
-  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-    requestFullScreen.call(docEl);
-  }
+function fullscreen(doc, docEl) {
+	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+	requestFullScreen.call(docEl);
 }
 
 document.addEventListener('fullscreenchange', (event) =>{
@@ -84,6 +78,16 @@ document.addEventListener('fullscreenchange', (event) =>{
 			document.getElementById('mode-img').src = 'fullscreen.png';
 	}
 })
+
+function mode(){
+	var doc = window.document;
+	var docEl = doc.documentElement;
+	if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+		fullscreen(doc, docEl);
+	} else{
+		toggleIDVisibility('top-bar');
+	}
+}
 debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");

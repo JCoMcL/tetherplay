@@ -52,13 +52,22 @@ button {
   100%  {opacity: 1; top:0px;}
 }
 
-#middle {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-}.hidden{
-	display:none;
+#top-bar {
+	width: 100%;
+	display:inline-block;
+} #top-bar button{
+	height: calc(var(--button-diameter)/2);
+	width: 33%;
+	margin: auto;
+}
+.hidden{
+	display: none;
 	visibility: hidden;
+	width:0;
+	height:0;
+}.moveable{
+	position: absolute;
+	margin: 2px solid red;
 }
 .small {
 	font-size:  calc(var(--button-diameter) / 3);
@@ -72,6 +81,10 @@ button {
 	border-top-right-radius: 1em;
 	border-bottom-right-radius: 1em;
 	padding-right: 0.5em;
+} #middle {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
 }
 
 .display {

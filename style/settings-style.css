@@ -18,9 +18,6 @@
 	border-radius: 10%;
 	width: auto;
 	height: var(--button-diameter);
-}.hidden{
-	display:none;
-	visibility: hidden;
 }
 
 .settings-menu{

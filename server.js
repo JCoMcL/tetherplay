@@ -22,6 +22,9 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 })
 
+app.get('/settings', function (req, res) {
+    res.sendFile(__dirname + '/settings.html');
+})
 app.get('/favicon.png', function (req, res) {
     res.sendFile(__dirname + '/img/tetherplay.png');
 })

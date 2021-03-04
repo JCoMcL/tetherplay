@@ -47,10 +47,6 @@ button {
 	filter: brightness(200%);
 	border: var(--border);
 }
-@keyframes fadeIn {
-  0%   {opacity: 0; top:1000px;}
-  100%  {opacity: 1; top:0px;}
-}
 
 #top-bar {
 	width: 100%;
@@ -110,7 +106,7 @@ button {
 	flex-direction: row;
 	align-items: flex-end;
 	align-content: stretch;
-	justify-content: space-between;
+	justify-content: space-between;	
 }
 #left, #right {
 	flex: 1;

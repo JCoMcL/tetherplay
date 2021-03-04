@@ -103,7 +103,8 @@ button {
 	flex-direction: row;
 	align-items: flex-end;
 	align-content: stretch;
-	justify-content: space-between;	
+	justify-content: space-between;
+	bottom:0;
 }
 #left, #right {
 	flex: 1;

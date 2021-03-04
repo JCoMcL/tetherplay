@@ -57,7 +57,7 @@ button {
 	display:inline-block;
 } #top-bar button{
 	height: calc(var(--button-diameter)/2);
-	width: 33%;
+	width: calc(100% / 3.1);
 	margin: auto;
 }
 .hidden{

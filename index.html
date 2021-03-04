@@ -39,7 +39,11 @@ function showState() {
 		<div id="middle">
 			</button>
 			<button id="gp-start" class="small">start</button>
-			<button id="mode" onClick=" toggleIDVisibility('top-bar'); fullscreen();"><img id="mode-img" src="fullscreen.svg"></button>
+
+			<button id="mode" onClick=" toggleIDVisibility('top-bar'); fullscreen();">
+				<img id="mode-img" src="fullscreen.png">
+			</button>
+
 		</div>
 		<div id="right">
 
@@ -75,9 +79,9 @@ function fullscreen() {
 
 document.addEventListener('fullscreenchange', (event) =>{
 	if (document.fullscreenElement || document.webkitCurrentFullscreenElement || document.mozFullScreenElement){
-			document.getElementById('mode-img').src = 'tetherplay.svg';
+			document.getElementById('mode-img').src = 'tetherplay.png';
 	} else {
-			document.getElementById('mode-img').src = 'fullscreen.svg';
+			document.getElementById('mode-img').src = 'fullscreen.png';
 	}
 })
 debug = document.getElementById("debug");

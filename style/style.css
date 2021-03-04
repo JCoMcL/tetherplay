@@ -129,7 +129,7 @@ button {
 	height: var(--size);
 	border: var(--border);
 	border-radius: calc(var(--size) / 2);
-} #mode img, #fullscreen img {
+} #mode img {
 	display: block;
 	image-rendering: pixelated;
 	--subsize: calc(var(--size) * 0.6);

@@ -61,9 +61,6 @@ button {
 	visibility: hidden;
 	width:0;
 	height:0;
-}.moveable{
-	position: absolute;
-	margin: 2px solid red;
 }
 .small {
 	font-size:  calc(var(--button-diameter) / 3);

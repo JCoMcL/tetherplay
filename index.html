@@ -71,14 +71,13 @@ function fullscreen(doc, docEl) {
 	requestFullScreen.call(docEl);
 }
 
-document.addEventListener('fullscreenchange', (event) =>{
+function changeMode(){
 	if (document.fullscreenElement || document.webkitCurrentFullscreenElement || document.mozFullScreenElement){
 			document.getElementById('mode-img').src = 'tetherplay.png';
 	} else {
 			document.getElementById('mode-img').src = 'fullscreen.png';
 	}
-})
-
+}
 function mode(){
 	var doc = window.document;
 	var docEl = doc.documentElement;
@@ -88,6 +87,10 @@ function mode(){
 		toggleIDVisibility('top-bar');
 	}
 }
+
+document.addEventListener('mozfullscreenchange',(event)=>changeMode());
+document.addEventListener('fullscreenchange', (event)=>changeMode());
+document.addEventListener('webkitfullscreenchange', (event)=>changeMode());
 debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");

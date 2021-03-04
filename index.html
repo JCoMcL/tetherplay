@@ -13,6 +13,7 @@
 	<script src="websocket.js"></script>
 	<script src="input.js"></script>
 	<script src="visibility.js"></script>
+	<script src="mode.js"></script>
 	<script>
 var debug;
 function showState() {
@@ -49,11 +50,11 @@ function showState() {
 
 			<table class="cluster of-2" id="gamepad">
 				<tr>
-					<td><button id="gp-north" class="hidden"></button></td>
-					<td><button id="gp-east" class="hidden"></button></td>
+					<td><button id="gp-north" class="hidden" onClick="vibrateButton(100);"></button></td>
+					<td><button id="gp-east" class="hidden" onClick="vibrateButton(100);"></button></td>
 					<tr></tr>
-					<td><button id="gp-west"></button></td>
-					<td><button id="gp-south"></button></td>
+					<td><button id="gp-west" onClick="vibrateButton(100);"></button></td>
+					<td><button id="gp-south" onClick="vibrateButton(100);"></button></td>
 				</tr>
 			</table>
 		</div>

@@ -10,3 +10,7 @@
 	color: var(--color);
 	border-color: var(--color);
 }
+
+.dark-mode img {
+	filter: invert();
+}

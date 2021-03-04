@@ -4,13 +4,16 @@
 	<link rel="icon" type="image/png" href="favicon.png">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="style.css">	
+	<link rel="stylesheet" href="dark.css">
+	<link rel="stylesheet" href="playstation.css">
 	<script src="configuration.js"></script>
 	<script src="control.js"></script>
 	<script src="checks.js"></script>
 	<script src="websocket.js"></script>
 	<script src="input.js"></script>
 	<script src="visibility.js"></script>
+	<script src="adjustUI.js"></script>
 	<script>
 var debug;
 function showState() {
@@ -23,7 +26,7 @@ function showState() {
 	<div class="headder hidden">
 		<button onClick="toggleIDVisibility('debug');">ToggleDebug</button>
 		<button onClick="toggleIDVisibility('settings-page');">Settings</button>
-		<button onClick="toggleAdjustUI();">AdjustUI</button>
+		<button onClick="">AdjustUI</button>
 	</div>
 	<div id="settings-page" class="hidden">
 		<iframe src="/settings" frameBorder="0"></iframe>
@@ -34,7 +37,7 @@ function showState() {
 				<button> </button>
 			</div>
 		</div>
-		<div class="flex-col">
+		<div id="middle">
 			</button>
 			<button id="gp-start" class="small">start</button>
 			<button id="mode" onClick=" toggleClassVisibility('headder'); fullscreen();"><img id="mode-img" src="fullscreen.svg"></button>
@@ -80,7 +83,6 @@ document.addEventListener('fullscreenchange', (event) =>{
 debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");
-
 inputArea.addEventListener("pointerdown", handlePressEvent, {passive: false})
 inputArea.addEventListener("pointermove", handleDragEvent, {passive: false})
 inputArea.addEventListener("pointerup", handleReleaseEvent, {passive: false})

@@ -1,9 +1,10 @@
-:root {
+.dark-mode {
 	color: white;
 	background-color: black;
+	--background: black;
 }
 
-button {
+.dark-mode button {
 	background: transparent;
 	--color: var(--grayer);
 	color: var(--color);

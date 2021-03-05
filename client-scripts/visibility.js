@@ -4,6 +4,18 @@ function toggleIDVisibility(id){
     classes.toggle('hidden');
     
 }
+function showIDVisibility(id){
+    var obj = document.getElementById(id);
+    var classes = obj.classList;
+    classes.add('hidden');
+    
+}
+function hideIDVisibility(id){
+    var obj = document.getElementById(id);
+    var classes = obj.classList;
+    classes.remove('hidden');
+    
+}
 function toggleClassVisibility(classname){
     var elem = document.getElementsByClassName(classname),
         clsslst = elem.classList;

@@ -1,7 +1,7 @@
 function buttonSize(){
     var slider = document.getElementById('button-slider');
-    parent.document.documentElement.style.setProperty('--button-diameter', `${slider.value}em`);
-    document.documentElement.style.setProperty('--button-diameter', `${slider.value}em`);
+    parent.document.documentElement.style.setProperty('--button-diameter', `${slider.value/3}em`);
+    document.documentElement.style.setProperty('--button-diameter', `${slider.value/3}em`);
 }
 function reachSize(){
     var slider = document.getElementById('reach-slider');

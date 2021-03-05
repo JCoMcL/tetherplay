@@ -22,7 +22,9 @@ class _Control{
 			(coordinates[1] - bounds.y) / bounds.height
 		]
 	}
-	onPress(pressEvent = undefined) { }
+	onPress(pressEvent = undefined) { 
+		window.navigator.vibrate(100);
+	}
 	onRelease(releaseEvent = undefined) { }
 	onDrag(dragEvent = undefined) { }
 	valueOf() { return this.value }

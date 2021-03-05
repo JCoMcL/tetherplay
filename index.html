@@ -50,11 +50,11 @@ function showState() {
 
 			<table class="cluster of-2" id="gamepad">
 				<tr>
-					<td><button id="gp-north" class="hidden" onClick="vibrateButton(100);"></button></td>
-					<td><button id="gp-east" class="hidden" onClick="vibrateButton(100);"></button></td>
+					<td><button id="gp-north" class="hidden"></button></td>
+					<td><button id="gp-east" class="hidden"></button></td>
 					<tr></tr>
-					<td><button id="gp-west" onClick="vibrateButton(100);"></button></td>
-					<td><button id="gp-south" onClick="vibrateButton(100);"></button></td>
+					<td><button id="gp-west"></button></td>
+					<td><button id="gp-south"></button></td>
 				</tr>
 			</table>
 		</div>
@@ -66,32 +66,11 @@ state = configuration.getSetup().map(item =>
 		onStateUpdate
 	)
 )
-function fullscreen(doc, docEl) {
-	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-	requestFullScreen.call(docEl);
-}
 
-function changeMode(){
-	if (document.fullscreenElement || document.webkitCurrentFullscreenElement || document.mozFullScreenElement){
-			document.getElementById('mode-img').src = 'tetherplay.png';
-	} else {
-			document.getElementById('mode-img').src = 'fullscreen.png';
-	}
-}
-function mode(){
-	var doc = window.document;
-	var docEl = doc.documentElement;
-	if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-		fullscreen(doc, docEl);
-	} else{
-		toggleIDVisibility('top-bar');
-	}
-}
-
-document.addEventListener('mozfullscreenchange',(event)=>changeMode());
-document.addEventListener('fullscreenchange', (event)=>changeMode());
-document.addEventListener('webkitfullscreenchange', (event)=>changeMode());
+var modeStack = setModeStack();
+document.addEventListener('mozfullscreenchange',(event) => changeMode(modeStack));
+document.addEventListener('fullscreenchange', (event)=>changeMode(modeStack));
+document.addEventListener('webkitfullscreenchange', (event)=>changeMode(modeStack));
 debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");

@@ -1,11 +1,8 @@
 #include <libevdev-1.0/libevdev/libevdev.h>
 #include <libevdev-1.0/libevdev/libevdev-uinput.h> //TODO fix these paths for final release
-#include <string.h>
-#include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
+#include <time.h>
 
 #include "errutil.h"
 #include "device.h"
@@ -82,6 +79,11 @@ static void sync_events(){
 	write_event(EV_SYN, SYN_REPORT, 0);
 }
 
+static struct {
+	int code;
+	clock_t time;
+} last_press;
+
 int create_device(char *name){
 	struct libevdev *dev = libevdev_new();
 
@@ -96,22 +98,31 @@ int create_device(char *name){
 				LIBEVDEV_UINPUT_OPEN_MANAGED,
 				&uidev
 	));
+	last_press.time = clock();
 	return 0;
 }
-
 void press( int code){
 	write_key_event(code, 1);
 	sync_events();
+	last_press.time = clock();
+	last_press.code = code;
 }
 
+static const int CLOCKS_PER_USEC = CLOCKS_PER_SEC / 1000000;
+static const clock_t MIN_PRESS_CLOCKS = 20000 * CLOCKS_PER_USEC;
+
 void release( int code){
+	if (last_press.code == code) {
+		clock_t t = clock() - last_press.time;
+		if (t < MIN_PRESS_CLOCKS)
+			usleep(t / CLOCKS_PER_USEC);
+	}
 	write_key_event(code, 0);
 	sync_events();
 }
 
 void click( int code){
 	press(code);
-	usleep(20000);
 	release(code);
 }
 

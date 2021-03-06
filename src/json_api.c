@@ -32,9 +32,9 @@ static bool decode_bool(char *bool_str){
 
 static vec decode_vec(char *vec_str){
 	int x, y;
-	if (sscanf(vec_str, "[%d,%d]}", &x, &y))
-		return (vec){ int4_to_abs(x), int4_to_abs(y) };
-	return (vec){0,0};
+	x = y = 0;
+	sscanf(vec_str, "[%d,%d]}", &x, &y);
+	return (vec){ int4_to_abs(x), int4_to_abs(y) };
 }
 
 static const decoder decoders[] = {

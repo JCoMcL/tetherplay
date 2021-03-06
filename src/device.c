@@ -56,11 +56,11 @@ static int enable_event_fails(
 #define enable_event_fails(function, code) enable_event_fails(function, dev, code, #code)
 static int hardcode_device(struct libevdev *dev) {
 	int errors =
-		enable_event_fails(enable_abs_event, ABS_X) +
-		enable_event_fails(enable_abs_event, ABS_Y) +
-		enable_event_fails(enable_key_event, BTN_WEST) +
 		enable_event_fails(enable_key_event, BTN_SOUTH) +
-		enable_event_fails(enable_key_event, BTN_START);
+		enable_event_fails(enable_key_event, BTN_WEST) +
+		enable_event_fails(enable_key_event, BTN_START) +
+		enable_event_fails(enable_abs_event, ABS_X) +
+		enable_event_fails(enable_abs_event, ABS_Y);
 	return -errors;
 }
 #undef enable_event_fails
@@ -85,8 +85,8 @@ static void sync_events(){
 int create_device(char *name){
 	struct libevdev *dev = libevdev_new();
 
-	int errors;
-	if ((errors = hardcode_device(dev)) < 0)
+	int errors = hardcode_device(dev);
+	if (errors < 0)
 		fprinte(1, "Critical: %d events failed to initialize", -errors);
 
 	libevdev_set_name(dev, name);
@@ -96,7 +96,6 @@ int create_device(char *name){
 				LIBEVDEV_UINPUT_OPEN_MANAGED,
 				&uidev
 	));
-	sync_events();
 	return 0;
 }
 

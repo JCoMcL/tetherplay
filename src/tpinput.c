@@ -31,33 +31,24 @@ typedef void (*instruction_handler) (api_value);
 void handle_gp_ljoy(api_value val) {
 	handle_vec(val.v, ABS_X, ABS_Y);
 }
-void handle_gp_rjoy(api_value val){
-	handle_vec(val.v, ABS_RX, ABS_RY);
-}
 void handle_gp_south(api_value val) {
 	handle_bool(val.b, BTN_SOUTH);
 }
 void handle_gp_west(api_value val) {
 	handle_bool(val.b, BTN_WEST);
 }
-void handle_gp_north(api_value val) {
-	handle_bool(val.b, BTN_NORTH);
-}
-void handle_gp_east(api_value val) {
-	handle_bool(val.b, BTN_EAST);
-}
 void handle_gp_start(api_value val) {
 	click(BTN_START);
 }
 
-int main() {
-	instruction_handler handlers[] = {
-		handle_gp_ljoy,
-		handle_gp_west,
-		handle_gp_south,
-		handle_gp_start
-	};
+static const instruction_handler handlers[] = {
+	handle_gp_ljoy,
+	handle_gp_west,
+	handle_gp_south,
+	handle_gp_start
+};
 
+int main() {
 	create_device("tp-input-js0");
 	int size = BUFSIZ;
 	char line[size];

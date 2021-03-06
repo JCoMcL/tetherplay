@@ -23,7 +23,7 @@ class _Control{
 		]
 	}
 	onPress(pressEvent = undefined) { 
-		window.navigator.vibrate(100);
+		window.navigator.vibrate(32);
 	}
 	onRelease(releaseEvent = undefined) { }
 	onDrag(dragEvent = undefined) { }

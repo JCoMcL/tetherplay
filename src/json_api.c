@@ -51,7 +51,7 @@ api_instruction decode (char *input) {
 	memset (&out, 0, sizeof(out));
 	out.recipient_id = ji.recipient_id;
 
-	if (out.recipient_id >= decoder_count)
+	if (out.recipient_id >= decoder_count || out.recipient_id < 0)
 		return (api_instruction){-EFAULT, NULL};
 	out.value = decoders[ji.recipient_id]( ji.value ); //TODO what if this fails?
 	return out;

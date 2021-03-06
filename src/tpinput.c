@@ -7,6 +7,7 @@
 #include "api.h"
 #include "json_api.h"
 #include "tpinput.h"
+#include "errutil.h"
 
 int read_input(char *buf, int size) {
 	if (fgets(buf, size, stdin))
@@ -55,8 +56,11 @@ int main() {
 	for (;;) {
 		if (read_input(line, size))
 			break;
-		api_instruction ins = decode(line);
-		handlers[ins.recipient_id](ins.value);
+		const api_instruction ins = decode(line);
+		if (ins.recipient_id < 0)
+			fprinte(0, "failed to decode instruction: %s", line);
+		else
+			handlers[ins.recipient_id](ins.value);
 	}
 	cleanup();
 	return 0;

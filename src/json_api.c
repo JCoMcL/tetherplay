@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "api.h"
 #include "json_api.h"
+#include "errutil.h"
 
 typedef struct {
 	int recipient_id;
@@ -11,8 +12,7 @@ typedef struct {
 static json_instruction json_decode(char *input) {
 	int index;
 	char value[100];
-	if (sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value)) {	
-	}
+	sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value);
 	return (json_instruction) {index, value}; //TODO handle error if scanf fails
 }
 
@@ -43,12 +43,16 @@ static const decoder decoders[] = {
 	(decoder)decode_bool,
 	(decoder)decode_inst
 };
+static const int decoder_count = 4;
 
 api_instruction decode (char *input) {
 	json_instruction ji = json_decode(input);
 	api_instruction out;
 	memset (&out, 0, sizeof(out));
 	out.recipient_id = ji.recipient_id;
-	out.value = decoders[ji.recipient_id]( ji.value );
+
+	if (out.recipient_id >= decoder_count)
+		return (api_instruction){-EFAULT, NULL};
+	out.value = decoders[ji.recipient_id]( ji.value ); //TODO what if this fails?
 	return out;
 }

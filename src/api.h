@@ -21,6 +21,6 @@ typedef struct {
 
 /**
  * @param input An api_instuction encoded as a string
- * @return on success; decoded input, on faliure; an api_instruction whose "recipeint_id" field is a negative errno
+ * @return On success; decoded input, on faliure; an api_instruction whose "recipeint_id" field is a negative errno
  */
 api_instruction decode (char *input);

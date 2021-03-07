@@ -1,4 +1,5 @@
 CFLAGS = -I/usr/include/libevdev-1.0
+#CFLAGS+= -g -Wall
 LDFLAGS = `pkg-config --static --libs libevdev`
 
 TITLE = tpinput

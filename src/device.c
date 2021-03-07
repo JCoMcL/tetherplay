@@ -108,14 +108,13 @@ void press( int code){
 	last_press.code = code;
 }
 
-static const int CLOCKS_PER_USEC = CLOCKS_PER_SEC / 1000000;
-static const clock_t MIN_PRESS_CLOCKS = 20000 * CLOCKS_PER_USEC;
+static const clock_t MIN_PRESS_USECS = 20000;
 
 void release( int code){
 	if (last_press.code == code) {
 		clock_t t = clock() - last_press.time;
-		if (t < MIN_PRESS_CLOCKS)
-			usleep(t / CLOCKS_PER_USEC);
+		if (t < MIN_PRESS_USECS)
+			usleep(MIN_PRESS_USECS - t);
 	}
 	write_key_event(code, 0);
 	sync_events();

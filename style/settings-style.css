@@ -7,7 +7,7 @@
 	padding:5px;
 	border: 4px solid var(--border);
 	width: 100%;
-	background-color: var(--background);
+	background-color: inherit
 }.bottom-nav li{
 	position: relative;
 	display: inline;

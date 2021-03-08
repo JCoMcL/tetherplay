@@ -1,26 +1,17 @@
 :root {
 	--button-diameter: 4rem;
-	--reach: 25;
-	--padding: 0px;
+	--reach: calc(var(--button-diameter)*6);
 	--slider-diameter: calc(var(--button-diameter)/2);
 
-	color: rgba(0, 0, 0, 0.8);
-	background-color: white;
+	--border: 3px solid;
 
 	/* colors */
-	--gray: rgba(128, 128, 128, 0.25);
-	--grayer: #888;
-	--border: 3px solid;
-	--background: white;
-}
+	--light: #fff;
+	--base: #cfd6d6;
+	--dark: #2e2b35;
 
-
-#settings-page iframe{
-	position: absolute;
-	top:0;
-	width: 100%;
-	height: 100%;
-	z-index: 1;
+	background-color: var(--light);
+	color: var(--dark);
 }
 
 body {
@@ -35,19 +26,27 @@ body {
 	flex-flow: column nowrap;
 }
 button {
-	--light: var(--gray);
-	--base: var(--gray);
-	--dark: var(--gray);
-	color: --base;
+	--color: var(--dark);
+	color: var(--color);
+	border-color: var(--color);
 	background-color: var(--base);
-	border: var(--dark);
+	border: var(--border);
 	border-radius: 0.3em;
 	margin: 0.15em;
 } button:focus {
 	outline: none;
 } button.active {
-	filter: brightness(200%);
+	--color: var(--base);
+	background-color: var(--light);
 	border: var(--border);
+}
+
+#settings-page iframe{
+	position: absolute;
+	top:0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
 }
 
 #top-bar {
@@ -85,7 +84,7 @@ button {
 .display {
 	display: block;
 	font-size: 20px;
-	background-color:	var(--gray); 
+	background-color:	var(--base); 
 	margin: 0px;
 	padding: 0.3em;
 	text-align: center;
@@ -96,11 +95,11 @@ button {
 	-moz-user-select: -moz-none;
 	-ms-user-select: none;
 	-select: none;
+
 	flex: 1;
 	box-sizing: border-box;
 	height: auto;
 	padding: 0px 20px 20px 20px;
-	max-width: var(--reach);
 	display: flex;
 	flex-direction: row;
 	align-items: flex-end;
@@ -108,6 +107,7 @@ button {
 	justify-content: space-between;
 	bottom:0;
 }
+
 #left, #right {
 	flex: 1;
 	max-width: var(--reach);
@@ -177,17 +177,33 @@ button {
 	height: var(--subsize);
 	border-radius: calc(var(--subsize) / 2);
 }
+
 /* xbox layout */
-#gp-east { --color: #ff5640; }
-#gp-east::after { content: "B"; }
-
-#gp-north { --color: #f9ff3d; }
-#gp-north::after { content: "Y"; }
-
-#gp-west { --color: #3da1ff; }
-#gp-west::after { content: "X"; }
-
-#gp-south { --color: #53ff40; }
+#gp-south {
+	--base: #53ff40;
+	--light: #cbff49;
+	--dark: #0d4428;
+}
 #gp-south::after { content: "A"; }
 
+#gp-east {
+	--base: #ff5640;
+	--light: #ff9e4c;
+	--dark: #551220;
+}
+#gp-east::after { content: "B"; }
+
+#gp-north {
+	--base: #f9ff3d;
+	--light: #fff8ba;
+	--dark: #834b00;
+}
+#gp-north::after { content: "Y"; }
+
+#gp-west {
+	--base: #3da1ff;
+	--light: #69ecff;
+	--dark: #213259;
+}
+#gp-west::after { content: "X"; }
 

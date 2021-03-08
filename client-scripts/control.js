@@ -22,10 +22,13 @@ class _Control{
 			(coordinates[1] - bounds.y) / bounds.height
 		]
 	}
-	onPress(pressEvent = undefined) { 
+	onPress(pressEvent = undefined) {
 		window.navigator.vibrate(32);
+		this.element.classList.add("active")
 	}
-	onRelease(releaseEvent = undefined) { }
+	onRelease(releaseEvent = undefined) {
+		this.element.classList.remove("active")
+	}
 	onDrag(dragEvent = undefined) { }
 	valueOf() { return this.value }
 }

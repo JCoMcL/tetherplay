@@ -43,7 +43,7 @@ button {
 	margin: 0.15em;
 } button:focus {
 	outline: none;
-} button:active {
+} button.active {
 	filter: brightness(200%);
 	border: var(--border);
 }
@@ -66,7 +66,7 @@ button {
 	font-size:  calc(var(--button-diameter) / 3);
 	margin: 0.8em;
 	align-self: flex-start;
-} #left .small { /* TODO left and right is unused */
+} #left .small {
 	border-top-left-radius: 1em;
 	border-bottom-left-radius: 1em;
 	padding-left: 0.5em;

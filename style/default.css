@@ -19,6 +19,8 @@
 }
 
 body {
+	font-size: 1em;
+	font-family: sans;
 	padding: 0px;
 	margin: 0px;
 	box-sizing: border-box;
@@ -40,6 +42,36 @@ button {
 	background-color: var(--light);
 	border: var(--border);
 }
+
+img {
+	image-rendering: pixelated;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+}
+
+input[type="range"]{
+	-webkit-appearance: none;
+	background: #d3d3d3;
+	width: 100%;
+	outline: none;
+	appearance: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: calc(var(--button-diameter)/2.5);
+  height: calc(var(--button-diameter)/2.5);
+  background: #2196F3;
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: calc(var(--button-diameter)/2.5);
+  height: calc(var(--button-diameter)/2.5);
+  background:  #2196F3;
+  cursor: pointer;
+}
+
 .hidden{
 	display: none;
 	visibility: hidden;
@@ -135,11 +167,6 @@ button {
 #mode {
 	--size: calc(var(--button-diameter) * 1.3);
 	padding: calc(var(--size) / 6);
-} #mode img {
-	image-rendering: pixelated;
-	width: 100%;
-	height: 100%;
-	margin: auto;
 }
 
 .cluster {
@@ -183,6 +210,28 @@ button {
 	border-radius: 50%;
 }
 
+#bottom-nav {
+	position: fixed;
+	bottom: 0;
+	z-index: 2;
+	margin: 0;
+	width: 100%;
+	background: #d4d6df;
+} #bottom-nav button{
+	font-size: 1em;
+	border-radius: 1em;
+	padding: 0.2em 0.4em;
+}
+#settings-menu{
+	display: flex;
+	flex-wrap: wrap;
+	overflow: auto;
+}
+#settings-menu label{
+	background: #d4d6df;
+	margin: 3px;
+}
+
 /* xbox layout */
 #gp-south {
 	--base: #53ff40;
@@ -211,4 +260,3 @@ button {
 	--dark: #213259;
 }
 #gp-west::after { content: "X"; }
-

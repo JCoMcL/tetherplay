@@ -75,11 +75,11 @@ function mode(){
 		document.getElementById('mode-img').src = 'tetherplay.png';
 		modeStack.push(1);
 	} else if (state == 1) {
-		hideIDVisibility('top-bar');
+		hideIDVisibility('quick-settings');
 		document.getElementById('mode-img').src = 'cancel.png';
 		modeStack.push(2);
 	} else {
-		showIDVisibility('top-bar');
+		showIDVisibility('quick-settings');
 		document.getElementById('mode-img').src = 'tetherplay.png';
 		modeStack.push(1);
 	}

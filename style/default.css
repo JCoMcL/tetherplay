@@ -77,11 +77,11 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .hidden{
-	display: none;
-	visibility: hidden;
-	width: 0px;
-	height: 0px;
-	padding: 0px;
+	display: none !important;
+	visibility: hidden !important;
+	width: 0px !important;
+	height: 0px !important;
+	padding: 0px !important;
 }
 .control .small {
 	font-size: calc(var(--button-diameter) / 3);
@@ -107,13 +107,23 @@ input[type="range"]::-moz-range-thumb {
 	z-index: 1;
 }
 
-#top-bar {
+#quick-settings {
 	width: 100%;
+}
+
+.options {
 	display: flex;
 	justify-content: center;
 	flex-wrap: nowrap;
+	padding: 0px;
+} .options button {
+	font-size: 1.3em;
+	width: auto;
+	flex-grow: 1;
+	margin: 0px;
+} .options button:not(:first-child) {
+	border-left: none;
 }
-
 #input {
 	-webkit-user-select: none;
 	-moz-user-select: -moz-none;

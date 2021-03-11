@@ -25,15 +25,18 @@ function showState() {
 </head>
 <body>
 	<pre id="debug" class="display hidden"> </pre>
+
 	<div class="hidden" id="top-bar">
 		<button onClick="toggleIDVisibility('debug');">ToggleDebug</button>
 		<button onClick="toggleIDVisibility('settings-page');">Settings</button>
 		<button disabled>AdjustUI</button>
 	</div>
+
 	<div id="settings-page" class="hidden">
 		<iframe src="/settings" frameBorder="0"></iframe>
 	</div>
-	<div id="input">
+
+	<div id="input" class="control">
 		<div id="left">
 			<div id="gp-ljoy" class="joystick">
 				<button> </button>
@@ -62,6 +65,7 @@ function showState() {
 			</table>
 		</div>
 	</div>
+
 	<script>
 state = configuration.getSetup().map(item =>
 	new control[item.type] (

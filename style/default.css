@@ -26,9 +26,7 @@ body {
 	flex-flow: column nowrap;
 }
 button {
-	--color: var(--dark);
-	color: var(--color);
-	border-color: var(--color);
+	color: var(--dark);
 	background-color: var(--base);
 	border: var(--border);
 	margin: 0.15em;
@@ -104,14 +102,15 @@ button {
 	justify-content: space-between;
 	bottom: 0;
 }
-.control button{
+.control {
+	--push-length: 6px;
+} .control button{
 	--size: var(--button-diameter);
 	width: var(--size);
 	height: var(--size);
 	border-radius: 50%;
-	--push-length: 6px;
 
-	box-shadow: 0 var(--push-length) var(--color);
+	box-shadow: 0 var(--push-length);
 	--translateY: calc(var(--push-length) * -1);
 	transform: translateY( var(--translateY) );
 } .control button.active{
@@ -176,6 +175,7 @@ button {
 	justify-content: center;
 	align-items: center;
 }
+
 .joystick button {
 	position: relative;
 	--subsize: calc(var(--size) / 2);

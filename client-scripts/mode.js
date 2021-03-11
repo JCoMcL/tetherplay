@@ -36,7 +36,6 @@ function fullscreen() {
 	}
 }
 function checkFullScreen(){
-		return false;
 	if (document.fullscreenEnabled){
 		return true;
 	} else {

@@ -35,7 +35,6 @@ button {
 } button:focus {
 	outline: none;
 } button.active {
-	--color: var(--base);
 	background-color: var(--light);
 	border: var(--border);
 }
@@ -110,6 +109,13 @@ button {
 	width: var(--size);
 	height: var(--size);
 	border-radius: 50%;
+	--push-length: 6px;
+
+	box-shadow: 0 var(--push-length) var(--color);
+	--translateY: calc(var(--push-length) * -1);
+	transform: translateY( var(--translateY) );
+} .control button.active{
+	--push-length: 3px;
 }
 
 #left, #right {
@@ -152,7 +158,7 @@ button {
 } #right .cluster.of-4 {
 	margin-right: calc( var(--button-diameter) / 4);
 }.cluster button {
-	transform: rotate(calc( 0deg - var(--rotation) ));
+	transform: rotate(calc( 0deg - var(--rotation) )) translateY(var(--translateY));
 	font-size:  calc(var(--button-diameter) / 1.5);
 	width: 1.5em;
 	height: 1.5em;

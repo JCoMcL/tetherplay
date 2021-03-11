@@ -36,6 +36,11 @@ button {
 	background-color: var(--base);
 	border: var(--border);
 	margin: 0.15em;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
 } button:focus {
 	outline: none;
 } button.active {
@@ -45,7 +50,6 @@ button {
 
 img {
 	image-rendering: pixelated;
-	width: 100%;
 	height: 100%;
 	margin: auto;
 }
@@ -217,17 +221,20 @@ input[type="range"]::-moz-range-thumb {
 	margin: 0;
 	width: 100%;
 	background: #d4d6df;
+
+	display: flex;
+	justify-content: space-between;
 } #bottom-nav button{
 	font-size: 1em;
 	border-radius: 1em;
 	padding: 0.2em 0.4em;
 }
-#settings-menu{
+#settings-panel{
 	display: flex;
 	flex-wrap: wrap;
 	overflow: auto;
 }
-#settings-menu label{
+#settings-panel label{
 	background: #d4d6df;
 	margin: 3px;
 }

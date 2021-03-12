@@ -22,6 +22,8 @@
 	--tone4: #212731;
 	--tone5: #0a1114;
 
+	--accent: #2e96ff;
+
 	background-color: #fff;
 	color: var(--tone4);
 }
@@ -64,33 +66,10 @@ button {
 	background-color: var(--light);
 	border: var(--border);
 }
-
 img {
 	image-rendering: pixelated;
 	height: 100%;
 	margin: auto;
-}
-
-input[type="range"]{
-	-webkit-appearance: none;
-	background: #d3d3d3;
-	width: 100%;
-	outline: none;
-	appearance: none;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: calc(var(--button-diameter)/2.5);
-  height: calc(var(--button-diameter)/2.5);
-  background: #2196F3;
-  cursor: pointer;
-}
-input[type="range"]::-moz-range-thumb {
-  width: calc(var(--button-diameter)/2.5);
-  height: calc(var(--button-diameter)/2.5);
-  background:  #2196F3;
-  cursor: pointer;
 }
 
 .hidden{
@@ -223,7 +202,7 @@ input[type="range"]::-moz-range-thumb {
 	margin-right: calc( var(--button-diameter) / 4);
 }.cluster button {
 	transform: rotate(calc( 0deg - var(--rotation) )) translateY(var(--translateY));
-	font-size:  calc(var(--button-diameter) / 1.5);
+	font-size:	calc(var(--button-diameter) / 1.5);
 	width: 1.5em;
 	height: 1.5em;
 	border-radius: .75em;
@@ -258,7 +237,7 @@ input[type="range"]::-moz-range-thumb {
 	z-index: 2;
 	margin: 0;
 	width: 100%;
-	background: #d4d6df;
+	background: var(--tone2);
 
 	display: flex;
 	justify-content: space-between;
@@ -272,8 +251,11 @@ input[type="range"]::-moz-range-thumb {
 	overflow: auto;
 }
 #settings-panel label{
-	background: #d4d6df;
+	background: var(--tone0);
 	margin: 3px;
+	padding: 0.3em;
+} #settings-panel label input{
+	display: block;
 }
 
 /* xbox layout */

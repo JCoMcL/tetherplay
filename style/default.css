@@ -9,17 +9,25 @@
 
 	--border: 3px solid;
 
-	/* colors */
-	--light: #fff;
-	--base: #cfd6d6;
-	--dark: #2e2b35;
+	--shadow-col: rgba(0,0,0,0.4);
+	--drop-shadow: 0px 0.1em 0.15em var(--shadow-col);
+	--inner-shadow: inset 0 0 0.3em var(--shadow-col);
 
-	background-color: var(--light);
-	color: var(--dark);
+	/* colors */
+
+	--tone0: #e8eaea;
+	--tone1: #d9dbde;
+	--tone2: #c6cccd;
+	--tone3: #6c7683;
+	--tone4: #212731;
+	--tone5: #0a1114;
+
+	background-color: #fff;
+	color: var(--tone4);
 }
 
 body {
-	font-size: 1em;
+	font-size: 1.3em;
 	font-family: sans;
 	padding: 0px;
 	margin: 0px;
@@ -32,10 +40,16 @@ body {
 	flex-flow: column nowrap;
 }
 button {
+	--light: var(--tone0);
+	--base: var(--tone1);
+	--dark: var(--tone4);
+
+	font-size: inherit;
 	color: var(--dark);
 	background-color: var(--base);
 	border: var(--border);
 	margin: 0.15em;
+
 
 	display: flex;
 	justify-content: center;
@@ -43,6 +57,9 @@ button {
 	text-align: center;
 } button:focus {
 	outline: none;
+} button:hover {
+	--base: var(--tone2);
+	box-shadow: var(--inner-shadow);
 } button.active {
 	background-color: var(--light);
 	border: var(--border);
@@ -90,10 +107,16 @@ input[type="range"]::-moz-range-thumb {
 	--push-length: 5px;
 	margin: 0.8em;
 }
+#debug {
+	z-index: 3;
+	box-shadow: var(--drop-shadow);
+
+}
 .display {
+	font-size: 1em;
 	display: block;
-	font-size: 20px;
-	background-color: var(--base);
+	background-color: var(--tone0);
+	color: var(--tone5);
 	margin: 0px;
 	padding: 0.3em;
 	text-align: center;
@@ -104,11 +127,14 @@ input[type="range"]::-moz-range-thumb {
 	top: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
+	z-index: 9;
 }
 
 #quick-settings {
 	width: 100%;
+} #quick-settings button{
+	width: 100%;
+	border-top: none;
 }
 
 .options {
@@ -117,7 +143,6 @@ input[type="range"]::-moz-range-thumb {
 	flex-wrap: nowrap;
 	padding: 0px;
 } .options button {
-	font-size: 1.3em;
 	width: auto;
 	flex-grow: 1;
 	margin: 0px;
@@ -142,18 +167,18 @@ input[type="range"]::-moz-range-thumb {
 	bottom: 0;
 }
 .control {
-	--push-length: 6px;
+	--push-length: calc(var(--button-diameter) / 12);
 } .control button{
 	--size: var(--button-diameter);
 	width: var(--size);
 	height: var(--size);
 	border-radius: 50%;
 
-	box-shadow: 0 var(--push-length);
+	box-shadow: 0 var(--push-length) 1px;
 	--translateY: calc(var(--push-length) * -1);
 	transform: translateY( var(--translateY) );
 } .control button.active{
-	--push-length: 3px;
+	--push-length: calc(var(--button-diameter) / 24);
 }
 
 #left, #right {
@@ -211,6 +236,9 @@ input[type="range"]::-moz-range-thumb {
 	border: var(--border);
 	border-radius: 50%;
 
+	background-color: var(--tone3);
+	box-shadow: var(--inner-shadow);
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -235,7 +263,6 @@ input[type="range"]::-moz-range-thumb {
 	display: flex;
 	justify-content: space-between;
 } #bottom-nav button{
-	font-size: 1em;
 	border-radius: 1em;
 	padding: 0.2em 0.4em;
 }

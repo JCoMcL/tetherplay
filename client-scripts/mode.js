@@ -36,13 +36,6 @@ class ModeSwitch {
 	}
 }
 
-class ElementSwitch extends ModeSwitch {
-	constructor( elemID, subModeSwitches=[]) {
-		super( subModeSwitches)
-		this.element = document.getElementById(elemID)
-	}
-}
-
 class InverseSwitch extends ModeSwitch {
 	enable() {
 		super.disable()
@@ -53,6 +46,23 @@ class InverseSwitch extends ModeSwitch {
 		this.enabled = false
 	}
 
+}
+
+class TriggerSwitch extends ModeSwitch {
+	enable() {
+		try {
+			super.enable()
+		} catch(e) {
+			this.enabled = false
+		}
+	}
+	disable() {
+		try {
+			super.disable()
+		} catch(e) {
+			this.enabled = true
+		}
+	}
 }
 
 class CallbackSwitch extends ModeSwitch {
@@ -70,9 +80,10 @@ class CallbackSwitch extends ModeSwitch {
 	}
 }
 
-class VisibilitySwitch extends ElementSwitch {
+class VisibilitySwitch extends ModeSwitch {
 	constructor( elemID, subModeSwitches=[]) {
-		super( elemID, subModeSwitches)
+		super(subModeSwitches)
+		this.element = document.getElementById(elemID)
 	}
 	enable() {
 		super.enable()
@@ -84,9 +95,10 @@ class VisibilitySwitch extends ElementSwitch {
 	}
 }
 
-class OnClickSwitch extends ElementSwitch {
+class OnClickSwitch extends TriggerSwitch {
 	constructor( elemID, subModeSwitches=[]) {
-		super( elemID, subModeSwitches)
+		super(subModeSwitches)
+		this.element = document.getElementById(elemID)
 		this.boundHandler = this.disable.bind(this)
 	}
 	enable() {
@@ -99,9 +111,10 @@ class OnClickSwitch extends ElementSwitch {
 	}
 }
 
-class OnClickToggleSwitch extends ElementSwitch {
+class OnClickToggleSwitch extends TriggerSwitch {
 	constructor( elemID, subModeSwitches=[]) {
-		super( elemID, subModeSwitches)
+		super(subModeSwitches)
+		this.element = document.getElementById(elemID)
 		this.boundHandler = this.toggle.bind(this)
 		this.element.addEventListener("click", this.boundHandler)
 	}
@@ -114,33 +127,72 @@ class DualSwitch extends ModeSwitch {
 		this.disabledMode.disable()
 	}
 	enable() {
+		if (this.suppressed)
+			throw new Error("target is  suppressed")
 		super.enable()
 		this.disabledMode.disable()
 	}
 	disable() {
+		if (this.suppressed)
+			throw new Error("target is  suppressed")
 		super.disable()
 		this.disabledMode.enable()
 	}
 	suppress() {
+		this.suppressed = true
 		this.unsuppressState = this.enabled
 		super.disable()
 		this.disabledMode.disable()
 	}
 	unsuppress() {
+		if (!this.suppressed)
+			return
+		this.suppressed = false
 		this.apply(this.unsuppressState)
 	}
 }
 
-var test = new OnClickToggleSwitch("mode", [
-	new DualSwitch([
-		new VisibilitySwitch("mode-logo"),
-	],[
-		new VisibilitySwitch("mode-cancel"),
-		new VisibilitySwitch("quick-settings")
-	])
+class SuppressorSwitch extends ModeSwitch {
+	constructor( subDualSwitches ) {
+		super(subDualSwitches)
+	}
+	enable() {
+		if (this.enabled)
+			return
+		this.enabled = true
+		this.callChildren("unsuppress")
+	}
+	disable() {
+		if (this.enabled == false)
+			return
+		this.enabled = false
+		this.callChildren("suppress")
+	}
+}
+
+class FullscreenSwitch extends ModeSwitch {
+	enable()
+}
+
+const modeQuickSettings = new DualSwitch([
+	new VisibilitySwitch("mode-logo"),
+],[
+	new VisibilitySwitch("mode-cancel"),
+	new VisibilitySwitch("quick-settings")
 ])
-console.log("finna apply")
-test.apply()
+modeQuickSettings.apply()
+new OnClickToggleSwitch("mode", [modeQuickSettings]).apply()
+
+const modeButton = new DualSwitch([
+	new VisibilitySwitch("mode-fullscreen")
+],[
+	new SuppressorSwitch([modeQuickSettings])
+])
+modeButton.apply()
+new OnClickSwitch("mode", [modeButton]).apply()
+
+
+
 /*
 class Stack {
 	constructor(){

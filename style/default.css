@@ -241,11 +241,14 @@ img {
 
 	display: flex;
 	justify-content: space-between;
+
+	font-size: calc(1em * var(--button-diameter-scale));
 } #bottom-nav button{
 	border-radius: 1em;
 	padding: 0.2em 0.4em;
 }
 #settings-panel{
+	font-size: calc(1em * var(--button-diameter-scale));
 	display: flex;
 	flex-wrap: wrap;
 	overflow: auto;

@@ -1,10 +1,16 @@
-class _ModeSwitch {
-	constructor( subModeSwitches=[], enabled=true ) {
-		this.enabled = enabled
+class ModeSwitch {
+	constructor( subModeSwitches=[]) {
 		this.children = subModeSwitches
 	}
-	apply() {
-		if (this.enabled)
+	apply(state=undefined) {
+		if (state == undefined) {
+			if (this.enabled == undefined)
+				state = true
+			else
+				state = this.enabled
+		}
+
+		if (state)
 			this.enable()
 		else
 			this.disable()
@@ -14,27 +20,30 @@ class _ModeSwitch {
 			return this.children.map(child => child[funcname]())
 	}
 	enable() {
+		if (this.enabled)
+			return
 		this.enabled = true
 		this.callChildren("enable")
 	}
 	disable() {
+		if (this.enabled == false)
+			return
 		this.enabled = false
 		this.callChildren("disable")
 	}
 	toggle() {
-		this.enabled = !this.enabled
-		this.apply()
+		this.apply(!this.enabled)
 	}
 }
 
-class _ElementSwitch extends _ModeSwitch {
-	constructor( elemID, subModeSwitches=[], enabled=true ) {
-		super( subModeSwitches, enabled )
+class ElementSwitch extends ModeSwitch {
+	constructor( elemID, subModeSwitches=[]) {
+		super( subModeSwitches)
 		this.element = document.getElementById(elemID)
 	}
 }
 
-class InverseSwitch extends _ModeSwitch {
+class InverseSwitch extends ModeSwitch {
 	enable() {
 		super.disable()
 		this.enabled = true
@@ -46,9 +55,9 @@ class InverseSwitch extends _ModeSwitch {
 
 }
 
-class CallbackSwitch extends _ModeSwitch {
-	constructor( switchCallback, subModeSwitches=[], enabled=true ) {
-		super( subModeSwitches, enabled )
+class CallbackSwitch extends ModeSwitch {
+	constructor( switchCallback, subModeSwitches=[]) {
+		super( subModeSwitches)
 		this.onSwitch = () => switchCallback(this)
 	}
 	enable() {
@@ -61,9 +70,9 @@ class CallbackSwitch extends _ModeSwitch {
 	}
 }
 
-class VisibilitySwitch extends _ElementSwitch {
-	constructor( elemID, subModeSwitches=[], enabled=true ) {
-		super( elemID, subModeSwitches, enabled )
+class VisibilitySwitch extends ElementSwitch {
+	constructor( elemID, subModeSwitches=[]) {
+		super( elemID, subModeSwitches)
 	}
 	enable() {
 		super.enable()
@@ -75,9 +84,9 @@ class VisibilitySwitch extends _ElementSwitch {
 	}
 }
 
-class OnClickSwitch extends _ElementSwitch {
-	constructor( elemID, subModeSwitches=[], enabled=true ) {
-		super( elemID, subModeSwitches, enabled )
+class OnClickSwitch extends ElementSwitch {
+	constructor( elemID, subModeSwitches=[]) {
+		super( elemID, subModeSwitches)
 		this.boundHandler = this.disable.bind(this)
 	}
 	enable() {
@@ -90,19 +99,47 @@ class OnClickSwitch extends _ElementSwitch {
 	}
 }
 
-class OnClickToggleSwitch extends _ElementSwitch {
-	constructor( elemID, subModeSwitches=[], enabled=true ) {
-		super( elemID, subModeSwitches, enabled )
+class OnClickToggleSwitch extends ElementSwitch {
+	constructor( elemID, subModeSwitches=[]) {
+		super( elemID, subModeSwitches)
 		this.boundHandler = this.toggle.bind(this)
 		this.element.addEventListener("click", this.boundHandler)
 	}
 }
 
+class DualSwitch extends ModeSwitch {
+	constructor( activeSwitches=[], inactiveSwitches=[]) {
+		super(activeSwitches)
+		this.disabledMode = new ModeSwitch(inactiveSwitches)
+		this.disabledMode.disable()
+	}
+	enable() {
+		super.enable()
+		this.disabledMode.disable()
+	}
+	disable() {
+		super.disable()
+		this.disabledMode.enable()
+	}
+	suppress() {
+		this.unsuppressState = this.enabled
+		super.disable()
+		this.disabledMode.disable()
+	}
+	unsuppress() {
+		this.apply(this.unsuppressState)
+	}
+}
+
 var test = new OnClickToggleSwitch("mode", [
-	new VisibilitySwitch("mode-logo"),
-	new InverseSwitch([new VisibilitySwitch("mode-cancel")]),
-	new InverseSwitch([new VisibilitySwitch("quick-settings")])
+	new DualSwitch([
+		new VisibilitySwitch("mode-logo"),
+	],[
+		new VisibilitySwitch("mode-cancel"),
+		new VisibilitySwitch("quick-settings")
+	])
 ])
+console.log("finna apply")
 test.apply()
 /*
 class Stack {

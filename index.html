@@ -45,8 +45,9 @@ function showState() {
 			</button>
 			<button id="gp-start" class="small">start</button>
 
-			<button id="mode" onClick="mode();">
-				<img id="mode-img" src="fullscreen.png">
+			<button id="mode">
+				<img id="mode-logo" src="tetherplay.png">
+				<img id="mode-cancel" src="cancel.png">
 			</button>
 
 		</div>
@@ -70,7 +71,7 @@ state = configuration.getSetup().map(item =>
 	)
 )
 
-var modeStack = setModeStack();
+//var modeStack = setModeStack();
 document.addEventListener('mozfullscreenchange',(event) => changeMode(modeStack));
 document.addEventListener('fullscreenchange', (event)=>changeMode(modeStack));
 document.addEventListener('webkitfullscreenchange', (event)=>changeMode(modeStack));

@@ -1,6 +1,7 @@
-class ModeSwitch {
-	constructor( enabled=true ) {
+class _ModeSwitch {
+	constructor( subModeSwitches=[], enabled=true ) {
 		this.enabled = enabled
+		this.children = subModeSwitches
 	}
 	apply() {
 		if (this.enabled)
@@ -8,23 +9,61 @@ class ModeSwitch {
 		else
 			this.disable()
 	}
+	callChildren(funcname) {
+		if (this.children)
+			return this.children.map(child => child[funcname]())
+	}
 	enable() {
 		this.enabled = true
+		this.callChildren("enable")
 	}
 	disable() {
 		this.enabled = false
+		this.callChildren("disable")
 	}
 	toggle() {
 		this.enabled = !this.enabled
-		apply()
+		this.apply()
 	}
 }
 
-class VisibilitySwitch extends ModeSwitch {
-	constructor( enabled=true, elemID ) {
-		super( enabled )
+class _ElementSwitch extends _ModeSwitch {
+	constructor( elemID, subModeSwitches=[], enabled=true ) {
+		super( subModeSwitches, enabled )
 		this.element = document.getElementById(elemID)
-		this.apply()
+	}
+}
+
+class InverseSwitch extends _ModeSwitch {
+	enable() {
+		super.disable()
+		this.enabled = true
+	}
+	disable() {
+		super.enable()
+		this.enabled = false
+	}
+
+}
+
+class CallbackSwitch extends _ModeSwitch {
+	constructor( switchCallback, subModeSwitches=[], enabled=true ) {
+		super( subModeSwitches, enabled )
+		this.onSwitch = () => switchCallback(this)
+	}
+	enable() {
+		super.enable()
+		this.onSwitch()
+	}
+	disable() {
+		super.disable()
+		this.onSwitch()
+	}
+}
+
+class VisibilitySwitch extends _ElementSwitch {
+	constructor( elemID, subModeSwitches=[], enabled=true ) {
+		super( elemID, subModeSwitches, enabled )
 	}
 	enable() {
 		super.enable()
@@ -36,8 +75,36 @@ class VisibilitySwitch extends ModeSwitch {
 	}
 }
 
-var test = new VisibilitySwitch(false, "gp-west")
+class OnClickSwitch extends _ElementSwitch {
+	constructor( elemID, subModeSwitches=[], enabled=true ) {
+		super( elemID, subModeSwitches, enabled )
+		this.boundHandler = this.disable.bind(this)
+	}
+	enable() {
+		super.enable()
+		this.element.addEventListener("click", this.boundHandler)
+	}
+	disable() {
+		super.disable()
+		this.element.removeEventListener("click", this.boundHandler)
+	}
+}
 
+class OnClickToggleSwitch extends _ElementSwitch {
+	constructor( elemID, subModeSwitches=[], enabled=true ) {
+		super( elemID, subModeSwitches, enabled )
+		this.boundHandler = this.toggle.bind(this)
+		this.element.addEventListener("click", this.boundHandler)
+	}
+}
+
+var test = new OnClickToggleSwitch("mode", [
+	new VisibilitySwitch("mode-logo"),
+	new InverseSwitch([new VisibilitySwitch("mode-cancel")]),
+	new InverseSwitch([new VisibilitySwitch("quick-settings")])
+])
+test.apply()
+/*
 class Stack {
 	constructor(){
 		this.items=[];
@@ -84,7 +151,6 @@ function setModeStack(){
 	if (checkFullScreen()){
 		mStack.push(1);
 		mStack.push(0);
-		console.log("allowsFullscreen");
 	} else {
 		mStack.push(1);
 		document.getElementById('mode-img').src = 'tetherplay.png';
@@ -105,7 +171,6 @@ function changeMode(stk){
 	}
 }
 function mode(){
-	console.log(modeStack.items);
 	var state = modeStack.pop();
 	if (state == 0){
 		fullscreen();
@@ -121,4 +186,4 @@ function mode(){
 		modeStack.push(1);
 	}
 }
-
+*/

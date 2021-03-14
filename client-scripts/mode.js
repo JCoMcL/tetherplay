@@ -1,6 +1,43 @@
-function vibrateButton(secs){
-	window.navigator.vibrate(secs);
+class ModeSwitch {
+	constructor( enabled=true ) {
+		this.enabled = enabled
+	}
+	apply() {
+		if (this.enabled)
+			this.enable()
+		else
+			this.disable()
+	}
+	enable() {
+		this.enabled = true
+	}
+	disable() {
+		this.enabled = false
+	}
+	toggle() {
+		this.enabled = !this.enabled
+		apply()
+	}
 }
+
+class VisibilitySwitch extends ModeSwitch {
+	constructor( enabled=true, elemID ) {
+		super( enabled )
+		this.element = document.getElementById(elemID)
+		this.apply()
+	}
+	enable() {
+		super.enable()
+		this.element.classList.toggle('hidden', false)
+	}
+	disable() {
+		super.disable()
+		this.element.classList.toggle('hidden', true)
+	}
+}
+
+var test = new VisibilitySwitch(false, "gp-west")
+
 class Stack {
 	constructor(){
 		this.items=[];

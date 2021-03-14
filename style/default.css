@@ -79,13 +79,7 @@ img {
 	height: 0px !important;
 	padding: 0px !important;
 }
-.control .small {
-	font-size: calc(var(--button-diameter) / 3);
-	height: auto;
-	border-radius: 1em;
-	--push-length: 5px;
-	margin: 0.8em;
-}
+
 #debug {
 	z-index: 3;
 	box-shadow: var(--drop-shadow);
@@ -158,6 +152,12 @@ img {
 	transform: translateY( var(--translateY) );
 } .control button.active{
 	--push-length: calc(var(--button-diameter) / 24);
+} .control .small {
+	font-size: calc(var(--button-diameter) / 3);
+	height: auto;
+	border-radius: 1em;
+	--push-length: 5px;
+	margin: 0.8em;
 }
 
 #left, #right {
@@ -237,7 +237,7 @@ img {
 	z-index: 2;
 	margin: 0;
 	width: 100%;
-	background: var(--tone2);
+	background-color: var(--tone2);
 
 	display: flex;
 	justify-content: space-between;
@@ -251,7 +251,7 @@ img {
 	overflow: auto;
 }
 #settings-panel label{
-	background: var(--tone0);
+	background-color: var(--tone0);
 	margin: 3px;
 	padding: 0.3em;
 } #settings-panel label input{

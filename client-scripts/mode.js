@@ -134,36 +134,34 @@ class FullscreenSwitch extends ModeSwitch {
 	constructor( subModeSwitches=[]) {
 		super(subModeSwitches)
 
-		var de = window.document.documentElement
-		var handler = this.handleFullscreenEvent.bind(this)
-		if (de.requestFullscreen) {
-			this.requestFullscreen = de.requestFullscreen
-			document.addEventListener('fullscreenchange', handler)
-			this.isFullscreen = () => {return window.document.fullscreenElement}
-		} else if (de.mozRequestFullScreen) {
-			this.requestFullscreen = de.mozRequestFullscreen
-			document.addEventListener('mozfullscreenchange', handler);
-			this.isFullscreen = () => {return window.document.mozFullscreenElement}
-		} else if (de.webkitRequestFullScreen) {
-			document.addEventListener('webkitfullscreenchange', handler);
-			this.requestFullscreen = de.webkitRequestFullscreen
-			this.isFullscreen = () => {return window.document.webkitCurrentFullscreenElement}
-		} else {
-			this.requestFullScreen = () => {}
-			this.isFullscreen = () => {return false}
-		}
+		document.addEventListener('fullscreenchange', this.handleFullscreenEvent.bind(this))
+		this.isFullscreen = () => {}
+
+		console.log(document.documentElement.requestFullScreen)
 		console.log(this.requestFullScreen)
-		console.log(this.isFullscreen)
 	}
 
 	enable() {
 		super.enable()
 		console.log("finna request fullscreen")
-		console.log(this.requestFullScreen)
-		this.requestFullScreen()
+		var de = window.document.documentElement;
+
+		var requestFullScreen = de.requestFullscreen ||
+			de.mozRequestFullScreen ||
+			de.webkitRequestFullScreen ||
+			de.msRequestFullscreen;
+		console.log(requestFullScreen)
+
+		if (!isFullscreen())
+			requestFullScreen.call(de);
+	}
+
+	isFullscreen() {
+		return isFullscreen()
 	}
 
 	handleFullscreenEvent() {
+		console.log("handling event")
 		if (this.isFullscreen())
 			this.enable()
 		else
@@ -245,7 +243,7 @@ const modeButton = new DualSwitch([
 			new VisibilitySwitch("mode-cancel"),
 			new VisibilitySwitch("quick-settings")
 		])
-	]), new FullscreenSwitch()
+	]), new FullscreenSwitch([]),
 ])
 modeButton.apply()
 

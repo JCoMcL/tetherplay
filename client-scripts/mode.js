@@ -1,6 +1,8 @@
-class ModeSwitch {
+class MonodirectionalModeSwitch {
 	constructor( subModeSwitches=[]) {
 		this.children = subModeSwitches
+		this.enableCallbacks = []
+		this.disableCallbacks = []
 	}
 	apply(state=undefined) {
 		if (state == undefined) {
@@ -20,23 +22,44 @@ class ModeSwitch {
 			return this.children.map(child => child[funcname]())
 	}
 	enable() {
+		console.log("enabling")
+		console.log(this)
 		if (this.enabled)
 			return
 		this.enabled = true
-		this.callChildren("enable")
+		this.children.forEach(child => child.enable())
+		this.enableCallbacks.forEach(f => f())
+		console.log(this)
+		console.log("enabled")
 	}
 	disable() {
+		console.log("disabling")
+		console.log(this)
 		if (this.enabled == false)
 			return
 		this.enabled = false
-		this.callChildren("disable")
+		this.children.forEach(child => child.disable())
+		this.disableCallbacks.forEach(f => f())
+		console.log(this)
+		console.log("disabled")
 	}
 	toggle() {
 		this.apply(!this.enabled)
 	}
+	addListener(modeSwitch) {
+		this.enableCallbacks.push(modeSwitch.enable.bind(modeSwitch))
+		this.disableCallbacks.push(modeSwitch.disable.bind(modeSwitch))
+	}
 }
 
-class InverseSwitch extends ModeSwitch {
+class ModeSwitch extends MonodirectionalModeSwitch{
+	constructor(subModeSwitches=[]) {
+		super(subModeSwitches)
+		subModeSwitches.forEach(child => child.addListener(this))
+	}
+}
+
+class InverseSwitch extends ModeSwitch{
 	enable() {
 		super.disable()
 		this.enabled = true
@@ -46,38 +69,6 @@ class InverseSwitch extends ModeSwitch {
 		this.enabled = false
 	}
 
-}
-
-class TriggerSwitch extends ModeSwitch {
-	enable() {
-		try {
-			super.enable()
-		} catch(e) {
-			this.enabled = false
-		}
-	}
-	disable() {
-		try {
-			super.disable()
-		} catch(e) {
-			this.enabled = true
-		}
-	}
-}
-
-class CallbackSwitch extends ModeSwitch {
-	constructor( switchCallback, subModeSwitches=[]) {
-		super( subModeSwitches)
-		this.onSwitch = () => switchCallback(this)
-	}
-	enable() {
-		super.enable()
-		this.onSwitch()
-	}
-	disable() {
-		super.disable()
-		this.onSwitch()
-	}
 }
 
 class VisibilitySwitch extends ModeSwitch {
@@ -95,7 +86,7 @@ class VisibilitySwitch extends ModeSwitch {
 	}
 }
 
-class OnClickSwitch extends TriggerSwitch {
+class OnClickSwitch extends ModeSwitch {
 	constructor( elemID, subModeSwitches=[]) {
 		super(subModeSwitches)
 		this.element = document.getElementById(elemID)
@@ -111,7 +102,7 @@ class OnClickSwitch extends TriggerSwitch {
 	}
 }
 
-class OnClickToggleSwitch extends TriggerSwitch {
+class OnClickToggleSwitch extends OnClickSwitch {
 	constructor( elemID, subModeSwitches=[]) {
 		super(subModeSwitches)
 		this.element = document.getElementById(elemID)
@@ -120,78 +111,87 @@ class OnClickToggleSwitch extends TriggerSwitch {
 	}
 }
 
-class DualSwitch extends ModeSwitch {
+class DualSwitch extends MonodirectionalModeSwitch {
 	constructor( activeSwitches=[], inactiveSwitches=[]) {
 		super(activeSwitches)
-		this.disabledMode = new ModeSwitch(inactiveSwitches)
+		this.disabledMode = new MonodirectionalModeSwitch(inactiveSwitches)
 		this.disabledMode.disable()
+		this.suppressed = false
 	}
 	enable() {
-		if (this.suppressed)
+		if (this.suppressed) {
+			if (this.unsuppressState)
+				return
 			throw new Error("target is  suppressed")
+		}
 		super.enable()
 		this.disabledMode.disable()
 	}
 	disable() {
-		if (this.suppressed)
+		if (this.suppressed) {
+			if (this.unsuppressState == false)
+				return
 			throw new Error("target is  suppressed")
+		}
 		super.disable()
 		this.disabledMode.enable()
 	}
 	suppress() {
 		this.suppressed = true
 		this.unsuppressState = this.enabled
+		console.log("supressing")
+		console.log(this)
 		super.disable()
 		this.disabledMode.disable()
 	}
 	unsuppress() {
-		if (!this.suppressed)
+		if (this.suppressed == false)
 			return
 		this.suppressed = false
 		this.apply(this.unsuppressState)
 	}
 }
 
-class SuppressorSwitch extends ModeSwitch {
-	constructor( subDualSwitches ) {
-		super(subDualSwitches)
-	}
+class SuppressorSwitch extends MonodirectionalModeSwitch {
 	enable() {
+		console.log("enabling")
+		console.log(this)
 		if (this.enabled)
 			return
 		this.enabled = true
-		this.callChildren("unsuppress")
+		this.children.forEach(child => child.unsuppress())
+		this.enableCallbacks.forEach(f => f())
+		console.log(this)
+		console.log("enabled")
 	}
 	disable() {
+		console.log("disabling")
+		console.log(this)
 		if (this.enabled == false)
 			return
 		this.enabled = false
-		this.callChildren("suppress")
+		this.children.forEach(child => child.suppress())
+		this.disableCallbacks.forEach(f => f())
+		console.log(this)
+		console.log("disabled")
 	}
-}
-
-class FullscreenSwitch extends ModeSwitch {
-	enable()
 }
 
 const modeQuickSettings = new DualSwitch([
 	new VisibilitySwitch("mode-logo"),
+	new OnClickToggleSwitch("mode")
 ],[
 	new VisibilitySwitch("mode-cancel"),
 	new VisibilitySwitch("quick-settings")
 ])
-modeQuickSettings.apply()
-new OnClickToggleSwitch("mode", [modeQuickSettings]).apply()
 
 const modeButton = new DualSwitch([
-	new VisibilitySwitch("mode-fullscreen")
+	new VisibilitySwitch("mode-fullscreen"),
+	new OnClickSwitch("mode")
 ],[
 	new SuppressorSwitch([modeQuickSettings])
 ])
 modeButton.apply()
-new OnClickSwitch("mode", [modeButton]).apply()
-
-
 
 /*
 class Stack {

@@ -3,6 +3,7 @@ class MonodirectionalModeSwitch {
 		this.children = subModeSwitches
 		this.enableCallbacks = []
 		this.disableCallbacks = []
+		this.antiLoop = 0
 	}
 	apply(state=undefined) {
 		if (state == undefined) {
@@ -17,31 +18,49 @@ class MonodirectionalModeSwitch {
 		else
 			this.disable()
 	}
-	callChildren(funcname) {
-		if (this.children)
-			return this.children.map(child => child[funcname]())
-	}
 	enable() {
-		console.log("enabling")
-		console.log(this)
+		try {
+			this.unsafe_enable()
+		} catch(e) {
+			this.antiLoop++
+			if(this.antiLoop > 1)
+				throw new Error("Failed to properly set all switches")
+			try {
+				this.disable()
+			} catch(e) {
+				console.error(e)
+			}
+		}
+		this.antiLoop = 0
+	}
+	disable() {
+		try {
+			this.unsafe_disable()
+		} catch(e) {
+			this.antiLoop++
+			if(this.antiLoop > 1)
+				throw new Error("Failed to properly set all switches")
+			try {
+				this.enable()
+			} catch(e) {
+				console.error(e)
+			}
+		}
+		this.antiLoop = 0
+	}
+	unsafe_enable() {
 		if (this.enabled)
 			return
 		this.enabled = true
 		this.children.forEach(child => child.enable())
 		this.enableCallbacks.forEach(f => f())
-		console.log(this)
-		console.log("enabled")
 	}
-	disable() {
-		console.log("disabling")
-		console.log(this)
+	unsafe_disable() {
 		if (this.enabled == false)
 			return
 		this.enabled = false
 		this.children.forEach(child => child.disable())
 		this.disableCallbacks.forEach(f => f())
-		console.log(this)
-		console.log("disabled")
 	}
 	toggle() {
 		this.apply(!this.enabled)
@@ -102,7 +121,7 @@ class OnClickSwitch extends ModeSwitch {
 	}
 }
 
-class OnClickToggleSwitch extends OnClickSwitch {
+class OnClickToggleSwitch extends ModeSwitch {
 	constructor( elemID, subModeSwitches=[]) {
 		super(subModeSwitches)
 		this.element = document.getElementById(elemID)
@@ -111,7 +130,7 @@ class OnClickToggleSwitch extends OnClickSwitch {
 	}
 }
 
-class DualSwitch extends MonodirectionalModeSwitch {
+class DualSwitch extends ModeSwitch {
 	constructor( activeSwitches=[], inactiveSwitches=[]) {
 		super(activeSwitches)
 		this.disabledMode = new MonodirectionalModeSwitch(inactiveSwitches)
@@ -137,10 +156,12 @@ class DualSwitch extends MonodirectionalModeSwitch {
 		this.disabledMode.enable()
 	}
 	suppress() {
+		if (this.suppressed)
+			return
+		if (this.enabled == undefined)
+			this.apply()
 		this.suppressed = true
 		this.unsuppressState = this.enabled
-		console.log("supressing")
-		console.log(this)
 		super.disable()
 		this.disabledMode.disable()
 	}
@@ -154,26 +175,18 @@ class DualSwitch extends MonodirectionalModeSwitch {
 
 class SuppressorSwitch extends MonodirectionalModeSwitch {
 	enable() {
-		console.log("enabling")
-		console.log(this)
 		if (this.enabled)
 			return
 		this.enabled = true
 		this.children.forEach(child => child.unsuppress())
 		this.enableCallbacks.forEach(f => f())
-		console.log(this)
-		console.log("enabled")
 	}
 	disable() {
-		console.log("disabling")
-		console.log(this)
 		if (this.enabled == false)
 			return
 		this.enabled = false
 		this.children.forEach(child => child.suppress())
 		this.disableCallbacks.forEach(f => f())
-		console.log(this)
-		console.log("disabled")
 	}
 }
 

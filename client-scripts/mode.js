@@ -200,9 +200,9 @@ class DualSwitch extends ModeSwitch {
 			return
 		if (this.enabled == undefined)
 			this.apply()
-		this.suppressed = true
 		this.unsuppressState = this.enabled
 		super.disable()
+		this.suppressed = true
 		this.disabledMode.disable()
 	}
 	unsuppress() {
@@ -239,7 +239,7 @@ const modeButton = new DualSwitch([
 			new VisibilitySwitch("mode-cancel"),
 			new VisibilitySwitch("quick-settings")
 		])
-	]), new FullscreenSwitch([]),
+	]), new FullscreenSwitch()
 ])
 modeButton.apply()
 

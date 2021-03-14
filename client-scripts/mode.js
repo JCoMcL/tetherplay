@@ -243,25 +243,6 @@ const modeButton = new DualSwitch([
 ])
 modeButton.apply()
 
-/*
-class Stack {
-	constructor(){
-		this.items=[];
-	}
-
-	push(elem){
-		this.items.push(elem);
-	}
-	pop(){
-		if (this.items.length == 0)
-			return "Underflow";
-		return this.items.pop();
-	}
-	peek(){
-		return this.items[this.items.length - 1];
-	}
-}
-*/
 function isFullscreen(){
 	var doc = window.document;
 	if (doc.fullscreenElement || doc.webkitCurrentFullscreenElement || doc.mozFullScreenElement){
@@ -279,45 +260,3 @@ function fullscreen() {
 		requestFullScreen.call(docEl);
 	}
 }
-/*
-function setModeStack(){
-	var mStack = new Stack();
-	if (checkFullScreen()){
-		mStack.push(1);
-		mStack.push(0);
-	} else {
-		mStack.push(1);
-		document.getElementById('mode-img').src = 'tetherplay.png';
-	}
-	return mStack;
-}
-function changeMode(stk){
-	if (!isFullscreen()){
-		stk.push(0);
-		document.getElementById('mode-img').src = 'fullscreen.png';
-	} else {
-		stk.pop();
-		if (stk.peek() == 1){
-		document.getElementById('mode-img').src = 'tetherplay.png';
-		} else {
-		document.getElementById('mode-img').src = 'cancel.png';
-		}
-	}
-}
-function mode(){
-	var state = modeStack.pop();
-	if (state == 0){
-		fullscreen();
-		document.getElementById('mode-img').src = 'tetherplay.png';
-		modeStack.push(1);
-	} else if (state == 1) {
-		hideIDVisibility('quick-settings');
-		document.getElementById('mode-img').src = 'cancel.png';
-		modeStack.push(2);
-	} else {
-		showIDVisibility('quick-settings');
-		document.getElementById('mode-img').src = 'tetherplay.png';
-		modeStack.push(1);
-	}
-}
-*/

@@ -20,7 +20,8 @@ class MonodirectionalModeSwitch {
 	}
 	enable() {
 		try {
-			this.unsafe_enable()
+			if (this.enabled !== true)
+				this.unsafe_enable()
 		} catch(e) {
 			this.antiLoop++
 			if(this.antiLoop > 1)
@@ -35,7 +36,8 @@ class MonodirectionalModeSwitch {
 	}
 	disable() {
 		try {
-			this.unsafe_disable()
+			if (this.enabled !== false)
+				this.unsafe_disable()
 		} catch(e) {
 			this.antiLoop++
 			if(this.antiLoop > 1)
@@ -49,15 +51,11 @@ class MonodirectionalModeSwitch {
 		this.antiLoop = 0
 	}
 	unsafe_enable() {
-		if (this.enabled)
-			return
 		this.enabled = true
 		this.children.forEach(child => child.enable())
 		this.enableCallbacks.forEach(f => f())
 	}
 	unsafe_disable() {
-		if (this.enabled == false)
-			return
 		this.enabled = false
 		this.children.forEach(child => child.disable())
 		this.disableCallbacks.forEach(f => f())
@@ -78,29 +76,29 @@ class ModeSwitch extends MonodirectionalModeSwitch{
 	}
 }
 
-class InverseSwitch extends ModeSwitch{
-	enable() {
-		super.disable()
+/*class InverseSwitch extends ModeSwitch{
+	unsafe_enable() {
+		super.unsafe_disable()
 		this.enabled = true
 	}
-	disable() {
-		super.enable()
+	unsafe_disable() {
+		super.unsafe_enable()
 		this.enabled = false
 	}
 
-}
+}*/
 
 class VisibilitySwitch extends ModeSwitch {
 	constructor( elemID, subModeSwitches=[]) {
 		super(subModeSwitches)
 		this.element = document.getElementById(elemID)
 	}
-	enable() {
-		super.enable()
+	unsafe_enable() {
+		super.unsafe_enable()
 		this.element.classList.toggle('hidden', false)
 	}
-	disable() {
-		super.disable()
+	unsafe_disable() {
+		super.unsafe_disable()
 		this.element.classList.toggle('hidden', true)
 	}
 }
@@ -111,12 +109,12 @@ class OnClickSwitch extends ModeSwitch {
 		this.element = document.getElementById(elemID)
 		this.boundHandler = this.disable.bind(this)
 	}
-	enable() {
-		super.enable()
+	unsafe_enable() {
+		super.unsafe_enable()
 		this.element.addEventListener("click", this.boundHandler)
 	}
-	disable() {
-		super.disable()
+	unsafe_disable() {
+		super.unsafe_disable()
 		this.element.removeEventListener("click", this.boundHandler)
 	}
 }
@@ -141,8 +139,8 @@ class FullscreenSwitch extends ModeSwitch {
 		console.log(this.requestFullScreen)
 	}
 
-	enable() {
-		super.enable()
+	unsafe_enable() {
+		super.unsafe_enable()
 		console.log("finna request fullscreen")
 		var de = window.document.documentElement;
 
@@ -150,10 +148,13 @@ class FullscreenSwitch extends ModeSwitch {
 			de.mozRequestFullScreen ||
 			de.webkitRequestFullScreen ||
 			de.msRequestFullscreen;
-		console.log(requestFullScreen)
 
-		if (!isFullscreen())
-			requestFullScreen.call(de);
+		requestFullScreen.call(de);
+	}
+	unsafe_disable() {
+		console.log("disabling")
+		console.log(this)
+		super.unsafe_disable()
 	}
 
 	isFullscreen() {
@@ -161,7 +162,6 @@ class FullscreenSwitch extends ModeSwitch {
 	}
 
 	handleFullscreenEvent() {
-		console.log("handling event")
 		if (this.isFullscreen())
 			this.enable()
 		else
@@ -177,22 +177,22 @@ class DualSwitch extends ModeSwitch {
 		this.disabledMode.disable()
 		this.suppressed = false
 	}
-	enable() {
+	unsafe_enable() {
 		if (this.suppressed) {
 			if (this.unsuppressState)
 				return
 			throw new Error("target is  suppressed")
 		}
-		super.enable()
+		super.unsafe_enable()
 		this.disabledMode.disable()
 	}
-	disable() {
+	unsafe_disable() {
 		if (this.suppressed) {
 			if (this.unsuppressState == false)
 				return
 			throw new Error("target is  suppressed")
 		}
-		super.disable()
+		super.unsafe_disable()
 		this.disabledMode.enable()
 	}
 	suppress() {
@@ -214,16 +214,12 @@ class DualSwitch extends ModeSwitch {
 }
 
 class SuppressorSwitch extends MonodirectionalModeSwitch {
-	enable() {
-		if (this.enabled)
-			return
+	unsafe_enable() {
 		this.enabled = true
 		this.children.forEach(child => child.unsuppress())
 		this.enableCallbacks.forEach(f => f())
 	}
-	disable() {
-		if (this.enabled == false)
-			return
+	unsafe_disable() {
 		this.enabled = false
 		this.children.forEach(child => child.suppress())
 		this.disableCallbacks.forEach(f => f())

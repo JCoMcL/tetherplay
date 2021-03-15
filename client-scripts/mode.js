@@ -100,6 +100,20 @@ class InverseSwitch extends ModeSwitch{
 
 }
 
+class EnabledSwitch extends ModeSwitch {
+	disable()
+		{ this.enable() }
+	apply()
+		{ this.enable() }
+}
+
+class DisabledSwitch extends ModeSwitch {
+	enable()
+		{ this.disable() }
+	apply()
+		{ this.disable() }
+}
+
 class VisibilitySwitch extends ModeSwitch {
 	constructor( elemID, subModeSwitches=[]) {
 		super(subModeSwitches)
@@ -239,6 +253,23 @@ class SuppressorSwitch extends MonodirectionalModeSwitch {
 }
 
 
+
+const userprefs = {
+	useFullscreen: false
+}
+
+function usingFullscreen() {
+	return document.fullscreenEnabled && userprefs.useFullscreen
+}
+function isFullscreen(){
+	var doc = window.document;
+	if (doc.fullscreenElement || doc.webkitCurrentFullscreenElement || doc.mozFullScreenElement){
+		return true;
+	} else {
+		return false
+	}
+}
+
 const modeButton = new DualSwitch([
 	new VisibilitySwitch("mode-fullscreen"),
 	new OnClickSwitch("mode")
@@ -251,15 +282,7 @@ const modeButton = new DualSwitch([
 			new VisibilitySwitch("mode-cancel"),
 			new VisibilitySwitch("quick-settings")
 		])
-	]), new FullscreenSwitch()
+	]),
+	usingFullscreen() ? new FullscreenSwitch() : new EnabledSwitch()
 ])
 modeButton.apply()
-
-function isFullscreen(){
-	var doc = window.document;
-	if (doc.fullscreenElement || doc.webkitCurrentFullscreenElement || doc.mozFullScreenElement){
-		return true;
-	} else {
-		return false
-	}
-}

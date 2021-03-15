@@ -60,33 +60,45 @@ class MonodirectionalModeSwitch {
 		this.children.forEach(child => child.disable())
 		this.disableCallbacks.forEach(f => f())
 	}
-	toggle() {
-		this.apply(!this.enabled)
-	}
-	addListener(modeSwitch) {
-		this.enableCallbacks.push(modeSwitch.enable.bind(modeSwitch))
-		this.disableCallbacks.push(modeSwitch.disable.bind(modeSwitch))
+	toggle()
+		{ this.apply(!this.enabled) }
+
+	addEnableListener(fn)
+		{ this.enableCallbacks.push(fn) }
+	addDisableListener(fn)
+		{ this.disableCallbacks.push(fn) }
+	listen(modeSwitch) {
+		modeSwitch.addEnableListener(this.enable.bind(this))
+		modeSwitch.addDisableListener(this.disable.bind(this))
 	}
 }
 
 class ModeSwitch extends MonodirectionalModeSwitch{
 	constructor(subModeSwitches=[]) {
 		super(subModeSwitches)
-		subModeSwitches.forEach(child => child.addListener(this))
+		subModeSwitches.forEach(child => this.listen(child))
 	}
 }
 
-/*class InverseSwitch extends ModeSwitch{
+class InverseSwitch extends ModeSwitch{
 	unsafe_enable() {
-		super.unsafe_disable()
 		this.enabled = true
-	}
-	unsafe_disable() {
-		super.unsafe_enable()
-		this.enabled = false
+		this.children.forEach(child => child.disable())
+		this.enableCallbacks.forEach(f => f())
 	}
 
-}*/
+	unsafe_disable() {
+		this.enabled = false
+		this.children.forEach(child => child.enable())
+		this.disableCallbacks.forEach(f => f())
+	}
+
+	listen(modeSwitch) {
+		modeSwitch.addEnableListener(this.disable.bind(this))
+		modeSwitch.addDisableListener(this.enable.bind(this))
+	}
+
+}
 
 class VisibilitySwitch extends ModeSwitch {
 	constructor( elemID, subModeSwitches=[]) {
@@ -133,7 +145,6 @@ class FullscreenSwitch extends ModeSwitch {
 		super(subModeSwitches)
 
 		document.addEventListener('fullscreenchange', this.handleFullscreenEvent.bind(this))
-		this.isFullscreen = () => {}
 
 		console.log(document.documentElement.requestFullScreen)
 		console.log(this.requestFullScreen)
@@ -173,8 +184,9 @@ class FullscreenSwitch extends ModeSwitch {
 class DualSwitch extends ModeSwitch {
 	constructor( activeSwitches=[], inactiveSwitches=[]) {
 		super(activeSwitches)
-		this.disabledMode = new MonodirectionalModeSwitch(inactiveSwitches)
-		this.disabledMode.disable()
+		this.inverseMode = new InverseSwitch(inactiveSwitches)
+		this.inverseMode.enable()
+		this.listen(this.inverseMode)
 		this.suppressed = false
 	}
 	unsafe_enable() {
@@ -184,7 +196,7 @@ class DualSwitch extends ModeSwitch {
 			throw new Error("target is  suppressed")
 		}
 		super.unsafe_enable()
-		this.disabledMode.disable()
+		this.inverseMode.enable()
 	}
 	unsafe_disable() {
 		if (this.suppressed) {
@@ -193,7 +205,7 @@ class DualSwitch extends ModeSwitch {
 			throw new Error("target is  suppressed")
 		}
 		super.unsafe_disable()
-		this.disabledMode.enable()
+		this.inverseMode.disable()
 	}
 	suppress() {
 		if (this.suppressed)
@@ -203,7 +215,7 @@ class DualSwitch extends ModeSwitch {
 		this.unsuppressState = this.enabled
 		super.disable()
 		this.suppressed = true
-		this.disabledMode.disable()
+		this.inverseMode.enable()
 	}
 	unsuppress() {
 		if (this.suppressed == false)
@@ -249,14 +261,5 @@ function isFullscreen(){
 		return true;
 	} else {
 		return false
-	}
-}
-function fullscreen() {
-	var doc = window.document;
-	var docEl = doc.documentElement;
-
-	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-	if (!isFullscreen()){
-		requestFullScreen.call(docEl);
 	}
 }

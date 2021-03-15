@@ -101,15 +101,19 @@ class InverseSwitch extends ModeSwitch{
 }
 
 class EnabledSwitch extends ModeSwitch {
-	disable()
-		{ this.enable() }
+	disable() {
+		this.enable()
+		throw new Error("Disabling not allowed")
+	}
 	apply()
 		{ this.enable() }
 }
 
 class DisabledSwitch extends ModeSwitch {
-	enable()
-		{ this.disable() }
+	enable() {
+		this.disable()
+		throw new Error("enabling not allowed")
+	}
 	apply()
 		{ this.disable() }
 }
@@ -199,8 +203,8 @@ class DualSwitch extends ModeSwitch {
 	constructor( activeSwitches=[], inactiveSwitches=[]) {
 		super(activeSwitches)
 		this.inverseMode = new InverseSwitch(inactiveSwitches)
-		this.inverseMode.enable()
 		this.listen(this.inverseMode)
+		this.inverseMode.enable()
 		this.suppressed = false
 	}
 	unsafe_enable() {
@@ -255,7 +259,7 @@ class SuppressorSwitch extends MonodirectionalModeSwitch {
 
 
 const userprefs = {
-	useFullscreen: false
+	useFullscreen: true
 }
 
 function usingFullscreen() {

@@ -162,15 +162,12 @@ class FullscreenSwitch extends ModeSwitch {
 	constructor( subModeSwitches=[]) {
 		super(subModeSwitches)
 
+		/* FIXME: does not fully detect fullscreenchange on desktop browsers */
 		document.addEventListener('fullscreenchange', this.handleFullscreenEvent.bind(this))
-
-		console.log(document.documentElement.requestFullScreen)
-		console.log(this.requestFullScreen)
 	}
 
 	unsafe_enable() {
 		super.unsafe_enable()
-		console.log("finna request fullscreen")
 		var de = window.document.documentElement;
 
 		var requestFullScreen = de.requestFullscreen ||
@@ -181,8 +178,6 @@ class FullscreenSwitch extends ModeSwitch {
 		requestFullScreen.call(de);
 	}
 	unsafe_disable() {
-		console.log("disabling")
-		console.log(this)
 		super.unsafe_disable()
 	}
 
@@ -196,7 +191,6 @@ class FullscreenSwitch extends ModeSwitch {
 		else
 			this.disable()
 	}
-
 }
 
 class DualSwitch extends ModeSwitch {
@@ -255,8 +249,6 @@ class SuppressorSwitch extends MonodirectionalModeSwitch {
 		this.disableCallbacks.forEach(f => f())
 	}
 }
-
-
 
 const userprefs = {
 	useFullscreen: true

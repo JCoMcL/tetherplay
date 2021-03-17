@@ -15,12 +15,6 @@
 </head>
 <body>
 	<div id="settings-panel">
-		<label>Button Size
-			<input type="range" min="0.5" max="2" value="1" step="0.1" onInput="setButtonScale(event.target.value)">
-		</label>
-		<label>Reach
-			<input type="range" min="0.5" max="2" value="1" step="0.1" onInput="setReachScale(event.target.value)">
-		</label>
 		<label>Theme
 			<input onInput="toggleDarkMode()" type="checkbox" id="light-dark-mode"/>
 		</label>
@@ -28,7 +22,7 @@
 			<input onInput="toggleGPMode()" type="checkbox" id="change-gp-style"/>
 		</label>
 	</div>
-	<div id="bottom-nav">
+	<div id="bottom-nav" class="actions">
 		<button onClick="toggleParentIDVisibility('settings-page');"><img src="back.png"</button>
 		<button class="disabled">Save</button>
 		<button class="disabled">Export</button>

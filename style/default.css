@@ -72,7 +72,13 @@ img {
 	height: 100%;
 	margin: auto;
 }
+button img {
+	height: 1em;
+}
 
+.control button img {
+	height: 0.75em;
+}
 .hidden{
 	display: none !important;
 	visibility: hidden !important;
@@ -86,11 +92,6 @@ img {
 	border-style: dashed;
 }
 
-#debug {
-	z-index: 3;
-	box-shadow: var(--drop-shadow);
-
-}
 .display {
 	font-size: 1em;
 	display: block;
@@ -101,19 +102,14 @@ img {
 	text-align: center;
 }
 
-#settings-page iframe{
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 9;
-}
+.actions {
+	display: flex;
+	justify-content: space-between;
 
-#quick-settings {
-	width: 100%;
-} #quick-settings button{
-	width: 100%;
-	border-top: none;
+	background-color: var(--tone2);
+} .actions button{
+	border-radius: 1em;
+	/*padding: 2em 0.4em;*/
 }
 
 .options {
@@ -121,30 +117,14 @@ img {
 	justify-content: center;
 	flex-wrap: nowrap;
 	padding: 0px;
-} .options button {
-	width: auto;
+} .options button, .option label {
+	width: 100%;
 	flex-grow: 1;
 	margin: 0px;
 } .options button:not(:first-child) {
 	border-left: none;
 }
-#input {
-	-webkit-user-select: none;
-	-moz-user-select: -moz-none;
-	-ms-user-select: none;
-	-select: none;
 
-	flex: 1;
-	box-sizing: border-box;
-	height: auto;
-	padding: 0px 20px 20px 20px;
-	display: flex;
-	flex-direction: row;
-	align-items: flex-end;
-	align-content: stretch;
-	justify-content: space-between;
-	bottom: 0;
-}
 .control {
 	--push-length: calc(var(--button-diameter) / 12);
 } .control button{
@@ -152,6 +132,7 @@ img {
 	width: var(--size);
 	height: var(--size);
 	border-radius: 50%;
+	font-size: calc(var(--size) / 1.5);
 
 	box-shadow: 0 var(--push-length) 1px;
 	--translateY: calc(var(--push-length) * -1);
@@ -164,33 +145,6 @@ img {
 	border-radius: 1em;
 	--push-length: 5px;
 	margin: 0.8em;
-}
-
-#left, #right {
-	flex: 1;
-	max-width: var(--reach);
-	box-sizing: border-box;
-	height: min(100%, var(--reach));
-	display: flex;
-	align-items: flex-end;
-	align-content: stretch;
-	flex-wrap: wrap;
-	justify-content: space-between;
-} #left {
-	flex-direction: row;
-} #right {
-	flex-direction: row-reverse;
-} #middle {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	align-items: center;
-}
-
-
-#mode {
-	--size: calc(var(--button-diameter) * 1.3);
-	padding: calc(var(--size) / 6);
 }
 
 .cluster {
@@ -208,10 +162,6 @@ img {
 	margin-right: calc( var(--button-diameter) / 4);
 }.cluster button {
 	transform: rotate(calc( 0deg - var(--rotation) )) translateY(var(--translateY));
-	font-size:	calc(var(--button-diameter) / 1.5);
-	width: 1.5em;
-	height: 1.5em;
-	border-radius: .75em;
 }
 
 .joystick {
@@ -237,24 +187,92 @@ img {
 	border-radius: 50%;
 }
 
-#bottom-nav {
-	position: fixed;
-	bottom: 0;
-	z-index: 2;
-	margin: 0;
-	width: 100%;
-	background-color: var(--tone2);
+#debug {
+	z-index: 3;
+	box-shadow: var(--drop-shadow);
+}
 
+#adjust-ui-menu {
 	display: flex;
 	justify-content: space-between;
-
-	font-size: calc(1em * var(--button-diameter-scale));
-} #bottom-nav button{
-	border-radius: 1em;
-	padding: 0.2em 0.4em;
+	flex-wrap: nowrap;
+} #adjust-ui-menu label{
+	width: 100%;
+} #adjust-ui-menu button{
+	font-size: 1.2em;
+	padding: 0.1em 0.5em 0em 0.5em;
+	height: 1000000%;
+	display: block;
 }
+
+#settings-page iframe{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9;
+}
+
+#top-bar {
+	width: 100%;
+	height: 1.4em;
+} #top-bar div{
+	max-height: 100%;
+} #top-bar .options button{
+	border-top: none;
+	margin: 0px;
+	overflow: hidden;
+} #top-bar .actions button{
+	border-top: none;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	margin-top: 0px;
+}
+
+#input {
+	-webkit-user-select: none;
+	-moz-user-select: -moz-none;
+	-ms-user-select: none;
+	-select: none;
+
+	flex: 1;
+	box-sizing: border-box;
+	height: auto;
+	padding: 0px 20px 20px 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	align-content: stretch;
+	justify-content: space-between;
+	bottom: 0;
+}
+#left, #right {
+	flex: 1;
+	max-width: var(--reach);
+	box-sizing: border-box;
+	height: min(100%, var(--reach));
+	display: flex;
+	align-items: flex-end;
+	align-content: stretch;
+	flex-wrap: wrap;
+	justify-content: space-between;
+} #left {
+	flex-direction: row;
+} #right {
+	flex-direction: row-reverse;
+} #middle {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+#mode {
+	--size: calc(var(--button-diameter) * 1.3);
+}
+
+
 #settings-panel{
-	font-size: calc(1em * var(--button-diameter-scale));
 	display: flex;
 	flex-wrap: wrap;
 	overflow: auto;
@@ -265,6 +283,14 @@ img {
 	padding: 0.3em;
 } #settings-panel label input{
 	display: block;
+}
+
+#bottom-nav {
+	position: fixed;
+	bottom: 0;
+	z-index: 2;
+	margin: 0;
+	width: 100%;
 }
 
 /* xbox layout */

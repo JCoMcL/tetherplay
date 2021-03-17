@@ -133,6 +133,23 @@ class VisibilitySwitch extends ModeSwitch {
 	}
 }
 
+class TextSwitch extends ModeSwitch {
+	constructor( elemID, enabledText, disabledText, subModeSwitches=[] ) {
+		super(subModeSwitches)
+		this.element = document.getElementById(elemID)
+		this.enabledText = enabledText ? enabledText : this.element.innerHTML
+		this.disabledText = disabledText ? disabledText : this.element.innerHTML
+	}
+	unsafe_enable() {
+		super.unsafe_enable()
+		this.element.innerHTML = this.enabledText
+	}
+	unsafe_disable() {
+		super.unsafe_disable()
+		this.element.innerHTML = this.disabledText
+	}
+}
+
 class OnClickSwitch extends ModeSwitch {
 	constructor( elemID, subModeSwitches=[]) {
 		super(subModeSwitches)

@@ -96,6 +96,12 @@ function usingFullscreen() {
 	return document.fullscreenEnabled && userprefs.useFullscreen
 }
 
+const toggleDebug = new OnClickToggleSwitch("debug-toggle", [
+	new VisibilitySwitch("debug"),
+	new TextSwitch("debug-toggle", "Disable Debug", "Enable Debug")
+])
+toggleDebug.apply(false)
+
 const modeButton = new DualSwitch([
 	new VisibilitySwitch("mode-fullscreen"),
 	new OnClickSwitch("mode")

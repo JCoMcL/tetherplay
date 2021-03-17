@@ -221,7 +221,6 @@ button img {
 } #top-bar .options button{
 	border-top: none;
 	margin: 0px;
-	overflow: hidden;
 } #top-bar .actions button{
 	border-top: none;
 	border-top-left-radius: 0px;
@@ -246,6 +245,7 @@ button img {
 	justify-content: space-between;
 	bottom: 0;
 }
+
 #left, #right {
 	flex: 1;
 	max-width: var(--reach);

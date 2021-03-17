@@ -201,7 +201,7 @@ const control = {
 		constructor(element, updateCallback){
 			super(element, updateCallback)
 			this.stick = this.getChildren("button")[0]
-			this.stickMaxTravel = (getMinorDimension(this.element) - getMinorDimension(this.stick)) / 2
+			this.onSizeChange()
 			this.drawJoystick()
 		}
 
@@ -236,8 +236,13 @@ const control = {
 			this.stick.style.top = coordinates[1]
 		}
 
+		onSizeChange() {
+			this.stickMaxTravel = (getMinorDimension(this.element) - getMinorDimension(this.stick)) / 2
+		}
+
 		onPress(pressEvent = undefined){
 			super.onPress(pressEvent)
+			this.onSizeChange()
 			this.stick.classList.add("active")
 			this.onDrag(pressEvent)
 		}

@@ -28,24 +28,41 @@ function showState() {
 <body>
 	<pre id="debug" class="display hidden"> </pre>
 
-	<div id="top-bar">
-		<div class="options" id="quick-settings">
+	<div id="top-bar" class="hidden">
+		<div id="quick-settings" class="options">
 			<button id="debug-toggle">Toggle Debug</button>
 			<button onClick="toggleIDVisibility('settings-page');">Settings</button>
-			<button class="disabled">AdjustUI</button>
+			<button id="adjust-ui-enable">Adjust UI</button>
 		</div>
-		<div class="options" id="adjust-ui-menu">
+		<div id="adjust-ui-menu" class="options">
 			<label>Button Size
 				<input
 					type="range" min="0.5" max="2" value="1" step="0.1"
 					onInput="setButtonScale(event.target.value)">
 			</label>
+			<button id="adjust-ui-disable">
+				<img src="cancel.png">
+			</button>
 			<label>Reach
 				<input
 					type="range" min="0.5" max="2" value="1" step="0.1"
 					onInput="setReachScale(event.target.value)">
 			</label>
 		</div>
+		<script>
+			new DualSwitch([
+				new VisibilitySwitch("adjust-ui-menu"),
+				new OnClickSwitch("adjust-ui-disable")
+			],[
+				new VisibilitySwitch("quick-settings"),
+				new OnClickSwitch("adjust-ui-enable")
+			]).apply(false)
+
+			new OnClickToggleSwitch("debug-toggle", [
+				new VisibilitySwitch("debug"),
+				new TextSwitch("debug-toggle", "Disable Debug", "Enable Debug")
+			]).apply(false)
+		</script>
 	</div>
 
 	<div id="settings-page" class="hidden">
@@ -96,13 +113,7 @@ function usingFullscreen() {
 	return document.fullscreenEnabled && userprefs.useFullscreen
 }
 
-const toggleDebug = new OnClickToggleSwitch("debug-toggle", [
-	new VisibilitySwitch("debug"),
-	new TextSwitch("debug-toggle", "Disable Debug", "Enable Debug")
-])
-toggleDebug.apply(false)
-
-const modeButton = new DualSwitch([
+new DualSwitch([
 	new VisibilitySwitch("mode-fullscreen"),
 	new OnClickSwitch("mode")
 ],[
@@ -116,8 +127,7 @@ const modeButton = new DualSwitch([
 		])
 	]),
 	usingFullscreen() ? new FullscreenSwitch() : new EnabledSwitch()
-])
-modeButton.apply()
+]).apply()
 
 debug = document.getElementById("debug");
 

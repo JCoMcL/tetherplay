@@ -228,9 +228,9 @@ class DualSwitch extends ModeSwitch {
 			this.apply()
 		this.unsuppressState = this.enabled
 		super.disable()
+		this.enabled = undefined
 		this.suppressed = true
 		this.inverseMode.enable()
-		this.suppressed = undefined
 	}
 	unsuppress() {
 		if (this.suppressed == false)
@@ -252,28 +252,3 @@ class SuppressorSwitch extends MonodirectionalModeSwitch {
 		this.disableCallbacks.forEach(f => f())
 	}
 }
-
-const userprefs = {
-	useFullscreen: true
-}
-
-function usingFullscreen() {
-	return document.fullscreenEnabled && userprefs.useFullscreen
-}
-
-const modeButton = new DualSwitch([
-	new VisibilitySwitch("mode-fullscreen"),
-	new OnClickSwitch("mode")
-],[
-	new SuppressorSwitch([
-		new DualSwitch([
-			new VisibilitySwitch("mode-logo"),
-			new OnClickToggleSwitch("mode")
-		],[
-			new VisibilitySwitch("mode-cancel"),
-			new VisibilitySwitch("quick-settings")
-		])
-	]),
-	usingFullscreen() ? new FullscreenSwitch() : new EnabledSwitch()
-])
-modeButton.apply()

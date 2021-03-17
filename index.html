@@ -15,6 +15,7 @@
 	<script src="websocket.js"></script>
 	<script src="input.js"></script>
 	<script src="visibility.js"></script>
+	<script src="mode.js"></script>
 	<script>
 var debug;
 function showState() {
@@ -63,7 +64,6 @@ function showState() {
 		</div>
 	</div>
 
-	<script src="mode.js"></script>
 	<script>
 state = configuration.getSetup().map(item =>
 	new control[item.type] (
@@ -72,7 +72,31 @@ state = configuration.getSetup().map(item =>
 	)
 )
 
-//var modeStack = setModeStack();
+const userprefs = {
+	useFullscreen: true
+}
+
+function usingFullscreen() {
+	return document.fullscreenEnabled && userprefs.useFullscreen
+}
+
+const modeButton = new DualSwitch([
+	new VisibilitySwitch("mode-fullscreen"),
+	new OnClickSwitch("mode")
+],[
+	new SuppressorSwitch([
+		new DualSwitch([
+			new VisibilitySwitch("mode-logo"),
+			new OnClickToggleSwitch("mode")
+		],[
+			new VisibilitySwitch("mode-cancel"),
+			new VisibilitySwitch("quick-settings")
+		])
+	]),
+	usingFullscreen() ? new FullscreenSwitch() : new EnabledSwitch()
+])
+modeButton.apply()
+
 debug = document.getElementById("debug");
 
 var inputArea = document.getElementById("input");

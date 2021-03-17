@@ -16,6 +16,8 @@
 	<script src="input.js"></script>
 	<script src="visibility.js"></script>
 	<script src="mode.js"></script>
+	<script src="settings.js"></script>
+
 	<script>
 var debug;
 function showState() {
@@ -26,10 +28,24 @@ function showState() {
 <body>
 	<pre id="debug" class="display hidden"> </pre>
 
-	<div class="hidden options" id="quick-settings">
-		<button onClick="toggleIDVisibility('debug');">ToggleDebug</button>
-		<button onClick="toggleIDVisibility('settings-page');">Settings</button>
-		<button class="disabled">AdjustUI</button>
+	<div id="top-bar">
+		<div class="options" id="quick-settings">
+			<button id="debug-toggle">Toggle Debug</button>
+			<button onClick="toggleIDVisibility('settings-page');">Settings</button>
+			<button class="disabled">AdjustUI</button>
+		</div>
+		<div class="options" id="adjust-ui-menu">
+			<label>Button Size
+				<input
+					type="range" min="0.5" max="2" value="1" step="0.1"
+					onInput="setButtonScale(event.target.value)">
+			</label>
+			<label>Reach
+				<input
+					type="range" min="0.5" max="2" value="1" step="0.1"
+					onInput="setReachScale(event.target.value)">
+			</label>
+		</div>
 	</div>
 
 	<div id="settings-page" class="hidden">
@@ -90,7 +106,7 @@ const modeButton = new DualSwitch([
 			new OnClickToggleSwitch("mode")
 		],[
 			new VisibilitySwitch("mode-cancel"),
-			new VisibilitySwitch("quick-settings")
+			new VisibilitySwitch("top-bar")
 		])
 	]),
 	usingFullscreen() ? new FullscreenSwitch() : new EnabledSwitch()

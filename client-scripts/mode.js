@@ -182,7 +182,9 @@ class FullscreenSwitch extends ModeSwitch {
 	}
 
 	isFullscreen() {
-		return isFullscreen()
+		return document.fullscreenElement ||
+			document.webkitCurrentFullscreenElement ||
+			document.mozFullScreenElement
 	}
 
 	handleFullscreenEvent() {
@@ -228,6 +230,7 @@ class DualSwitch extends ModeSwitch {
 		super.disable()
 		this.suppressed = true
 		this.inverseMode.enable()
+		this.suppressed = undefined
 	}
 	unsuppress() {
 		if (this.suppressed == false)
@@ -256,14 +259,6 @@ const userprefs = {
 
 function usingFullscreen() {
 	return document.fullscreenEnabled && userprefs.useFullscreen
-}
-function isFullscreen(){
-	var doc = window.document;
-	if (doc.fullscreenElement || doc.webkitCurrentFullscreenElement || doc.mozFullScreenElement){
-		return true;
-	} else {
-		return false
-	}
 }
 
 const modeButton = new DualSwitch([

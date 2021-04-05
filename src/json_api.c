@@ -14,8 +14,6 @@ static json_instruction json_decode(char *input, char *value_buf) {
 	int result = sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value_buf);
 	if (result == EOF)
 		return (json_instruction) {errno, NULL};
-	if (result < 2)
-		return (json_instruction) {EINVAL, NULL};
 
 	return (json_instruction) {index, value_buf};
 }
@@ -50,7 +48,7 @@ static const decoder decoders[] = {
 static const int decoder_count = 4;
 
 api_instruction decode (char *input) {
-	char value_buf[100];
+	char value_buf[100] = "";
 	json_instruction ji = json_decode(input, value_buf);
 
 	if ( ji.recipient_id < 0)

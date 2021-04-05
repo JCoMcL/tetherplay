@@ -9,11 +9,15 @@ typedef struct {
 	char *value;
 } json_instruction;
 
-static json_instruction json_decode(char *input) {
+static json_instruction json_decode(char *input, char *value_buf) {
 	int index;
-	char value[100]; //FIXME returning pointer to auto; big no-no but hardly matters in reality
-	sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value);
-	return (json_instruction) {index, value}; //TODO handle error if scanf fails
+	int result = sscanf(input, "{\"i\":%d,\"v\":%s}", &index, value_buf);
+	if (result == EOF)
+		return (json_instruction) {errno, NULL};
+	if (result < 2)
+		return (json_instruction) {EINVAL, NULL};
+
+	return (json_instruction) {index, value_buf};
 }
 
 static int int4_to_abs(int int4) {
@@ -46,13 +50,19 @@ static const decoder decoders[] = {
 static const int decoder_count = 4;
 
 api_instruction decode (char *input) {
-	json_instruction ji = json_decode(input);
+	char value_buf[100];
+	json_instruction ji = json_decode(input, value_buf);
+
+	if ( ji.recipient_id < 0)
+		return (api_instruction){ji.recipient_id, NULL};
+
+	if (ji.recipient_id >= decoder_count)
+		return (api_instruction){-EFAULT, NULL};
+
 	api_instruction out;
 	memset (&out, 0, sizeof(out));
 	out.recipient_id = ji.recipient_id;
 
-	if (out.recipient_id >= decoder_count || out.recipient_id < 0)
-		return (api_instruction){-EFAULT, NULL};
-	out.value = decoders[ji.recipient_id]( ji.value ); //TODO what if this fails?
+	out.value = decoders[ji.recipient_id]( ji.value );
 	return out;
 }

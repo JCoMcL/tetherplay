@@ -5,21 +5,21 @@ TITLE = tpinput
 SRC = src/tpinput.c src/device.c src/json_api.c
 OBJ = ${SRC:.c=.o}
 
-${TITLE}: setup ${OBJ}
+${TITLE}: ${OBJ}
 	cc -o $@ ${OBJ} ${LDFLAGS}
-
-%.h: %.c
-	makeheaders $<
 
 %.o: %.c
 	cc -c ${CFLAGS} $< -o $@
 
-setup: ${SRC:.c=.h}
-
 clean:
-	-rm -f ${OBJ} ${SRC:.c=.h} ${TITLE}
+	-rm -f ${OBJ} ${TITLE}
 
 test: ${TITLE}
-	./$< ../node_server/dumpipe
+	./$< <test.json
+
+visual-test: ${TITLE}
+	 awk '{print $0; system("sleep .3");}' test.json | ./tpinput &
+	 sleep 0.3
+	 jstest /dev/input/js0
 
 .PHONY: setup clean test

@@ -1,8 +1,5 @@
 *.out
 *.o
 .ccls-cache
-src/*.h
-!src/api.h
-!src/errutil.h
 *.a
 tpinput

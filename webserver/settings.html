@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head profile="http://www.w3.org/2005/10/profile">
+	<title>Settings</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+	<link rel="stylesheet" href="default.css">
+	<link rel="stylesheet" href="settings-style.css">
+	<link rel="stylesheet" href="black.css">
+
+	<script src="settings.js"></script>
+	<script src="visibility.js"></script>
+
+</head>
+<body>
+	<div id="settings-panel">
+		<label>Theme
+			<input onInput="toggleDarkMode()" type="checkbox" id="light-dark-mode"/>
+		</label>
+		<label>Xbox/Playstation Buttons
+			<input onInput="toggleGPMode()" type="checkbox" id="change-gp-style"/>
+		</label>
+	</div>
+	<div id="bottom-nav" class="actions">
+		<button onClick="toggleParentIDVisibility('settings-page');"><img src="back.png"</button>
+		<button class="disabled">Save</button>
+		<button class="disabled">Export</button>
+		<button class="disabled">Import</button>
+		<button class="disabled"><img src="info.png"</button>
+	</div>
+</body>
+

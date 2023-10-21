@@ -1,0 +1,323 @@
+:root {
+	--button-diameter-scale: 1;
+	--button-diameter: calc(4rem * var(--button-diameter-scale));
+
+	--reach-scale: 1;
+	--reach: calc(24rem * var(--reach-scale));
+
+	--slider-diameter: calc(var(--button-diameter)/2);
+
+	--border: 3px solid;
+
+	--shadow-col: rgba(0,0,0,0.4);
+	--drop-shadow: 0px 0.1em 0.15em var(--shadow-col);
+	--inner-shadow: inset 0 0 0.3em var(--shadow-col);
+
+	/* colors */
+
+	--tone0: #e8eaea;
+	--tone1: #d9dbde;
+	--tone2: #c6cccd;
+	--tone3: #6c7683;
+	--tone4: #212731;
+	--tone5: #0a1114;
+
+	--accent: #2e96ff;
+
+	background-color: #fff;
+	color: var(--tone4);
+}
+
+body {
+	font-size: 1.3em;
+	font-family: sans;
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	width: 100vw;
+	height: 100vh;
+	bottom: 0;
+	overflow: hidden;
+	display: flex;
+	flex-flow: column nowrap;
+}
+button {
+	--light: var(--tone0);
+	--base: var(--tone1);
+	--dark: var(--tone4);
+
+	font-size: inherit;
+	color: var(--dark);
+	background-color: var(--base);
+	border: var(--border);
+	margin: 0.15em;
+
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+} button:focus {
+	outline: none;
+} button:hover {
+	--base: var(--tone2);
+	box-shadow: var(--inner-shadow);
+} button.active {
+	background-color: var(--light);
+	border: var(--border);
+}
+
+img {
+	image-rendering: pixelated;
+	height: 100%;
+	margin: auto;
+}
+button img {
+	height: 1em;
+}
+
+.control button img {
+	height: 0.75em;
+}
+.hidden{
+	display: none !important;
+	visibility: hidden !important;
+	width: 0px !important;
+	height: 0px !important;
+	padding: 0px !important;
+}
+
+.disabled{
+	opacity: 50%;
+	border-style: dashed;
+}
+
+.display {
+	font-size: 1em;
+	display: block;
+	background-color: var(--tone0);
+	color: var(--tone5);
+	margin: 0px;
+	padding: 0.3em;
+	text-align: center;
+}
+
+.actions {
+	display: flex;
+	justify-content: space-between;
+
+	background-color: var(--tone2);
+} .actions button{
+	border-radius: 1em;
+	/*padding: 2em 0.4em;*/
+}
+
+.options {
+	display: flex;
+	justify-content: center;
+	flex-wrap: nowrap;
+	padding: 0px;
+} .options button, .option label {
+	width: 100%;
+	flex-grow: 1;
+	margin: 0px;
+} .options button:not(:first-child) {
+	border-left: none;
+}
+
+.control {
+	--push-length: calc(var(--button-diameter) / 12);
+} .control button{
+	--size: var(--button-diameter);
+	width: var(--size);
+	height: var(--size);
+	border-radius: 50%;
+	font-size: calc(var(--size) / 1.5);
+
+	box-shadow: 0 var(--push-length) 1px;
+	--translateY: calc(var(--push-length) * -1);
+	transform: translateY( var(--translateY) );
+} .control button.active{
+	--push-length: calc(var(--button-diameter) / 24);
+} .control .small {
+	font-size: calc(var(--button-diameter) / 3);
+	height: auto;
+	border-radius: 1em;
+	--push-length: 5px;
+	margin: 0.8em;
+}
+
+.cluster {
+	--rotation: 45deg;
+	transform: rotate(var(--rotation));
+} .cluster.of-2 {
+	margin-bottom: calc( var(--button-diameter) / 2);
+} .cluster.of-3 {
+	--rotation: 0deg;
+} .cluster.of-4 {
+	margin-bottom: calc( var(--button-diameter) / 4);
+} #left .cluster.of-4 {
+	margin-left: calc( var(--button-diameter) / 4);
+} #right .cluster.of-4 {
+	margin-right: calc( var(--button-diameter) / 4);
+}.cluster button {
+	transform: rotate(calc( 0deg - var(--rotation) )) translateY(var(--translateY));
+}
+
+.joystick {
+	--size: calc(var(--button-diameter) * 2.5);
+	width: var(--size);
+	height: var(--size);
+	border: var(--border);
+	border-radius: 50%;
+
+	background-color: var(--tone3);
+	box-shadow: var(--inner-shadow);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.joystick button {
+	position: relative;
+	--subsize: calc(var(--size) / 2);
+	width: 50%;
+	height: 50%;
+	border-radius: 50%;
+}
+
+#debug {
+	z-index: 3;
+	box-shadow: var(--drop-shadow);
+}
+
+#adjust-ui-menu {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+} #adjust-ui-menu label{
+	width: 100%;
+} #adjust-ui-menu button{
+	font-size: 1.2em;
+	padding: 0.1em 0.5em 0em 0.5em;
+	height: 1000000%;
+	display: block;
+}
+
+#settings-page iframe{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9;
+}
+
+#top-bar {
+	width: 100%;
+	height: 1.4em;
+} #top-bar div{
+	max-height: 100%;
+} #top-bar .options button{
+	border-top: none;
+	margin: 0px;
+} #top-bar .actions button{
+	border-top: none;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	margin-top: 0px;
+}
+
+#input {
+	-webkit-user-select: none;
+	-moz-user-select: -moz-none;
+	-ms-user-select: none;
+	-select: none;
+
+	flex: 1;
+	box-sizing: border-box;
+	height: auto;
+	padding: 0px 20px 20px 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	align-content: stretch;
+	justify-content: space-between;
+	bottom: 0;
+}
+
+#left, #right {
+	flex: 1;
+	max-width: var(--reach);
+	box-sizing: border-box;
+	height: min(100%, var(--reach));
+	display: flex;
+	align-items: flex-end;
+	align-content: stretch;
+	flex-wrap: wrap;
+	justify-content: space-between;
+} #left {
+	flex-direction: row;
+} #right {
+	flex-direction: row-reverse;
+} #middle {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+#mode {
+	--size: calc(var(--button-diameter) * 1.3);
+}
+
+
+#settings-panel{
+	display: flex;
+	flex-wrap: wrap;
+	overflow: auto;
+}
+#settings-panel label{
+	background-color: var(--tone0);
+	margin: 3px;
+	padding: 0.3em;
+} #settings-panel label input{
+	display: block;
+}
+
+#bottom-nav {
+	position: fixed;
+	bottom: 0;
+	z-index: 2;
+	margin: 0;
+	width: 100%;
+}
+
+/* xbox layout */
+#gp-south {
+	--base: #53ff40;
+	--light: #cbff49;
+	--dark: #0d4428;
+}
+#gp-south::after { content: "A"; }
+
+#gp-east {
+	--base: #ff5640;
+	--light: #ff9e4c;
+	--dark: #551220;
+}
+#gp-east::after { content: "B"; }
+
+#gp-north {
+	--base: #f9ff3d;
+	--light: #fff8ba;
+	--dark: #834b00;
+}
+#gp-north::after { content: "Y"; }
+
+#gp-west {
+	--base: #3da1ff;
+	--light: #69ecff;
+	--dark: #213259;
+}
+#gp-west::after { content: "X"; }

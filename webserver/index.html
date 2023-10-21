@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<head profile="http://www.w3.org/2005/10/profile">
+	<title>Tetherplay</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+	<link rel="stylesheet" href="black.css">
+	<link rel="stylesheet" href="playstation.css">
+	<link rel="stylesheet" href="default.css">
+
+	<script src="configuration.js"></script>
+	<script src="control.js"></script>
+	<script src="checks.js"></script>
+	<script src="websocket.js"></script>
+	<script src="input.js"></script>
+	<script src="visibility.js"></script>
+	<script src="mode.js"></script>
+	<script src="settings.js"></script>
+
+	<script>
+var debug;
+function showState() {
+	debug.innerHTML = state.map( v => v.valueOf() )
+}
+	</script>
+</head>
+<body>
+	<pre id="debug" class="display hidden"> </pre>
+
+	<div id="top-bar" class="hidden">
+		<div id="quick-settings" class="options">
+			<button id="debug-toggle">Toggle Debug</button>
+			<button onClick="toggleIDVisibility('settings-page');">Settings</button>
+			<button id="adjust-ui-enable">Adjust UI</button>
+		</div>
+		<div id="adjust-ui-menu" class="actions">
+			<label>Button Size
+				<input
+					type="range" min="0.5" max="2" value="1" step="0.1"
+					onInput="setButtonScale(event.target.value)">
+			</label>
+			<button id="adjust-ui-disable">
+				<img src="cancel.png">
+			</button>
+			<label>Reach
+				<input
+					type="range" min="0.5" max="2" value="1" step="0.1"
+					onInput="setReachScale(event.target.value)">
+			</label>
+		</div>
+		<script>
+			new DualSwitch([
+				new VisibilitySwitch("adjust-ui-menu"),
+				new OnClickSwitch("adjust-ui-disable")
+			],[
+				new VisibilitySwitch("quick-settings"),
+				new OnClickSwitch("adjust-ui-enable")
+			]).apply(false)
+
+			new OnClickToggleSwitch("debug-toggle", [
+				new VisibilitySwitch("debug"),
+				new TextSwitch("debug-toggle", "Disable Debug", "Enable Debug")
+			]).apply(false)
+		</script>
+	</div>
+
+	<div id="settings-page" class="hidden">
+		<iframe src="/settings" frameBorder="0"></iframe>
+	</div>
+
+	<div id="input" class="control">
+		<div id="left">
+			<div id="gp-ljoy" class="joystick">
+				<button> </button>
+			</div>
+		</div>
+		<div id="middle">
+			</button>
+			<button id="gp-start" class="small">start</button>
+
+			<button id="mode">
+				<img id="mode-fullscreen" src="fullscreen.png">
+				<img id="mode-logo" src="tetherplay.png">
+				<img id="mode-cancel" src="cancel.png">
+			</button>
+
+		</div>
+		<div id="right">
+
+			<table class="cluster of-2" id="gamepad">
+				<tr>
+					<td><button id="gp-west"></button></td>
+					<td><button id="gp-south"></button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<script>
+state = configuration.getSetup().map(item =>
+	new control[item.type] (
+		document.getElementById(item.id),
+		onStateUpdate
+	)
+)
+
+const userprefs = {
+	useFullscreen: true
+}
+
+function usingFullscreen() {
+	return document.fullscreenEnabled && userprefs.useFullscreen
+}
+
+new DualSwitch([
+	new VisibilitySwitch("mode-fullscreen"),
+	new OnClickSwitch("mode")
+],[
+	new SuppressorSwitch([
+		new DualSwitch([
+			new VisibilitySwitch("mode-logo"),
+			new OnClickToggleSwitch("mode")
+		],[
+			new VisibilitySwitch("mode-cancel"),
+			new VisibilitySwitch("top-bar")
+		])
+	]),
+	usingFullscreen() ? new FullscreenSwitch() : new EnabledSwitch()
+]).apply()
+
+debug = document.getElementById("debug");
+
+var inputArea = document.getElementById("input");
+inputArea.addEventListener("pointerdown", handlePressEvent, {passive: false})
+inputArea.addEventListener("pointermove", handleDragEvent, {passive: false})
+inputArea.addEventListener("pointerup", handleReleaseEvent, {passive: false})
+inputArea.addEventListener("pointercancel", handleReleaseEvent, {passive: false})
+
+inputArea.addEventListener("touchmove", evt => evt.preventDefault());
+inputArea.addEventListener("contextmenu", evt => evt.preventDefault());
+
+showState()
+	</script>
+</body>

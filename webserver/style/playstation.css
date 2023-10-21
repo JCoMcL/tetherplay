@@ -1,0 +1,28 @@
+.ps #gp-south {
+	--base: #6eb7ff;
+	--light: #adefff;
+	--dark: #283850;
+}
+.ps #gp-south::after { content: "X"; }
+
+.ps #gp-east {
+	--base: #ff6a45;
+	--light: #ffbd45;
+	--dark: #6f0c02;
+}
+.ps #gp-east::after { content: "○"; }
+
+.ps #gp-north {
+	--base: #2ee885;
+	--light: #77ffde;
+	--dark: #093f3e;
+}
+.ps #gp-north::after { content: "△"; }
+
+.ps #gp-west {
+	--base: #ff6e83;
+	--light: #ffadd8;
+	--dark: #781728;
+}
+.ps #gp-west::after { content: "□"; }
+

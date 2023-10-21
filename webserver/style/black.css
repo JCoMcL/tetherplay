@@ -1,0 +1,43 @@
+.dark-mode {
+	background: black;
+	color: var(--tone2);
+}
+
+.dark-mode button {
+	background: transparent;
+	color: var(--base);
+}
+.dark-mode .control button.active {
+	--push-length: 0px !important;
+	background: transparent;
+	color: var(--light);
+	box-shadow: 0px 0px 0.2em;
+}
+
+.dark-mode img {
+	filter: invert();
+}
+
+.dark-mode .joystick {
+	background-color: var(--tone5);
+}
+
+.dark-mode .control {
+	--push-length: 0px !important;
+}
+.dark-mode .control .small{
+	--push-length: 0px !important;
+}
+
+.dark-mode .display {
+	background-color: var(--tone5);
+	color: var(--tone0);
+}
+
+.dark-mode #settings-panel label{
+	background-color: var(--tone5);
+}
+
+.dark-mode #bottom-nav {
+	background-color: var(--tone4);
+}

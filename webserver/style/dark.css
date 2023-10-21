@@ -1,0 +1,17 @@
+.dark-mode {
+	background: var(--dark);
+	color: var(--base);
+}
+
+.dark-mode button {
+	--color: var(--base);
+	background-color: var(--dark);
+}
+.dark-mode button.active {
+	--color: var(--light);
+	background-color: var(--base);
+}
+
+.dark-mode img {
+	filter: invert();
+}

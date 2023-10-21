@@ -3,3 +3,4 @@
 .ccls-cache
 *.a
 /tpinput/tpinput
+node_modules

@@ -2,8 +2,8 @@
 Turn a web browser into a game controller
 
 ## Screenshots
-![](./main screen light.jpg)
-![](./main screen dark with extra ui.jpg)
+![](./main%20screen%20light.jpg)
+![](./main%20screen%20dark%20with%20extra%20ui.jpg)
 
 # Building
 The project currently only runs on Linux

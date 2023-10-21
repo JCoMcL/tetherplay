@@ -14,4 +14,4 @@ The project currently only runs on Linux
 - npm
 - make
 
-To launch, simply run `make` in the project root and follow the onscreen insttuctions (there is currently no `install` option)
+To launch, simply run `make` in the project root and follow the onscreen instructions (there is currently no `install` option)

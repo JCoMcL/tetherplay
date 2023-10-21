@@ -2,4 +2,4 @@
 *.o
 .ccls-cache
 *.a
-tpinput
+/tpinput/tpinput

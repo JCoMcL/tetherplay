@@ -11,4 +11,4 @@ clean:
 	${MAKE} -C tpinput clean
 	rm -rf webserver/node_modules
 
-.PHONY: start
+.PHONY: start clean
